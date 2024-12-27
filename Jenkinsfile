@@ -51,7 +51,7 @@ pipeline {
       steps {
         echo "작업 브랜치: ${env.GIT_BRANCH}"
 
-        git branch: BUILD_BRANCH, credentialsId: GIT_KEY_ID, url: 'git@github.com:donghquinn/synology_backup.git'
+        git branch: BUILD_BRANCH, credentialsId: GIT_KEY_ID, url: 'git@github.com:Dong-Ian/blog_back_go.git'
       }
     }
 
@@ -132,7 +132,7 @@ pipeline {
                   sshPut remote: remote, from: DOTENV, into: "${target.COPY_DIR}/.env", failOnError: 'true'
                   sshPut remote: remote, from: DB_ENV, into: "${target.COPY_DIR}/.db.env", failOnError: 'true'
                   sshPut remote: remote, from: REDIS_ENV, into: "${target.COPY_DIR}/.redis.env", failOnError: 'true'
-                  
+
                   // 도커 이미지 Pull 및 재시작
                   sshCommand remote: remote, command: """
                     cd ${target.COPY_DIR}/
