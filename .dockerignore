@@ -4,3 +4,4 @@ test/decode.go
 mariadb
 .github
 *.md
+*.png

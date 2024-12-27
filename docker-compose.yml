@@ -49,8 +49,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    ports:
-      - ${APP_PORT}:${APP_PORT}
+    expose:
+      - 5000
+    # ports:
+    #   - ${APP_PORT}:${APP_PORT}
     volumes:
       - ./.env:/home/node/.env
     networks:
