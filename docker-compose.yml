@@ -41,7 +41,7 @@ services:
     depends_on: 
       - redis
       - db
-    image: ${REGISTRY_URL}
+    image: "sjc.vultrcr.com/dongregistry/blog_back:latest"
     # build:
       # context: .
       # dockerfile: Dockerfile
