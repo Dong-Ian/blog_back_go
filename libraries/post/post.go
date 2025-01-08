@@ -31,8 +31,6 @@ func QueryUnpinnedPostData(blogId string, page int, size int) ([]types.SelectAll
 		return nil, queryErr
 	}
 
-	defer connect.Close()
-
 	var queryResult = []types.SelectAllPostDataResponse{}
 
 	for result.Next() {
@@ -84,8 +82,6 @@ func QueryisPinnedPostList(blogId string, page int, size int) ([]types.SelectAll
 		return nil, queryErr
 	}
 
-	defer connect.Close()
-
 	var queryResult = []types.SelectAllPostDataResponse{}
 
 	for result.Next() {
@@ -136,8 +132,6 @@ func QueryisPinnedPostData(blogId string) ([]types.SelectAllPostDataResponse, er
 
 		return nil, queryErr
 	}
-
-	defer connect.Close()
 
 	var queryResult = []types.SelectAllPostDataResponse{}
 
@@ -233,8 +227,6 @@ func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.
 		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{}, selectErr
 	}
 
-	defer connect.Close()
-
 	var postsData []types.SelectPostsByTags
 
 	// Array https://stackoverflow.com/questions/14477941/read-select-columns-into-string-in-go
@@ -321,8 +313,6 @@ func GetPostByCategory(data types.GetPostsByCategoryRequest, page int, size int)
 		log.Printf("[POST_CATEGORY] GET Post by CategoryName Error: %v", selectErr)
 		return []types.PostByCategoryResponseType{}, types.PostTotalUnPinnedCountType{}, selectErr
 	}
-
-	defer connect.Close()
 
 	var postsData []types.SelectPostsByTags
 
