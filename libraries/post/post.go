@@ -15,7 +15,7 @@ import (
 
 // 포스트들 가져오기 - 모듈함수
 func QueryUnpinnedPostData(blogId string, page int, size int) ([]types.SelectAllPostDataResponse, error) {
-		// parseBodyErr :=utils.DecodeBody(&req.Body)
+	// parseBodyErr :=utils.DecodeBody(&req.Body)
 	connect, dbErr := database.InitDatabaseConnection()
 
 	if dbErr != nil {
@@ -23,14 +23,14 @@ func QueryUnpinnedPostData(blogId string, page int, size int) ([]types.SelectAll
 	}
 
 	// 페이징 파라미터 파싱
-	result, queryErr := connect.GetMultiple(queries.SelectUnPinnedPosts, blogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page - 1) * size))
+	result, queryErr := connect.GetMultiple(queries.SelectUnPinnedPosts, blogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page-1)*size))
 
 	if queryErr != nil {
 		log.Printf("[LIST] Get Unpinned Post Data Error: %v", queryErr)
 
 		return nil, queryErr
 	}
-	
+
 	defer connect.Close()
 
 	var queryResult = []types.SelectAllPostDataResponse{}
@@ -68,7 +68,7 @@ func QueryUnpinnedPostData(blogId string, page int, size int) ([]types.SelectAll
 
 // 포스트들 가져오기 - 모듈함수
 func QueryisPinnedPostList(blogId string, page int, size int) ([]types.SelectAllPostDataResponse, error) {
-		// parseBodyErr :=utils.DecodeBody(&req.Body)
+	// parseBodyErr :=utils.DecodeBody(&req.Body)
 	connect, dbErr := database.InitDatabaseConnection()
 
 	if dbErr != nil {
@@ -76,14 +76,14 @@ func QueryisPinnedPostList(blogId string, page int, size int) ([]types.SelectAll
 	}
 
 	// 페이징 파라미터 파싱
-	result, queryErr := connect.GetMultiple(queries.SelectAllPinnedPosts, blogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page - 1) * size))
+	result, queryErr := connect.GetMultiple(queries.SelectAllPinnedPosts, blogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page-1)*size))
 
 	if queryErr != nil {
 		log.Printf("[LIST] Get Pinned Post Data Error: %v", queryErr)
 
 		return nil, queryErr
 	}
-	
+
 	defer connect.Close()
 
 	var queryResult = []types.SelectAllPostDataResponse{}
@@ -121,7 +121,7 @@ func QueryisPinnedPostList(blogId string, page int, size int) ([]types.SelectAll
 
 // 포스트들 가져오기 - 모듈함수
 func QueryisPinnedPostData(blogId string) ([]types.SelectAllPostDataResponse, error) {
-		// parseBodyErr :=utils.DecodeBody(&req.Body)
+	// parseBodyErr :=utils.DecodeBody(&req.Body)
 	connect, dbErr := database.InitDatabaseConnection()
 
 	if dbErr != nil {
@@ -136,7 +136,7 @@ func QueryisPinnedPostData(blogId string) ([]types.SelectAllPostDataResponse, er
 
 		return nil, queryErr
 	}
-	
+
 	defer connect.Close()
 
 	var queryResult = []types.SelectAllPostDataResponse{}
@@ -218,7 +218,6 @@ func GetTotalPinnedPostCount(blogId string) (types.PostTotalUnPinnedCountType, e
 	return unPinnedTotalCount, nil
 }
 
-
 // 게시글 태그로 조회
 func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.PostsByTagsResponseType, types.PostTotalUnPinnedCountType, error) {
 	connect, dbErr := database.InitDatabaseConnection()
@@ -227,11 +226,11 @@ func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.
 		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{}, dbErr
 	}
 
-	posts, selectErr := connect.GetMultiple(queries.SelectPostByTags, "%"+data.TagName+"%", data.BlogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page - 1) * size))
+	posts, selectErr := connect.GetMultiple(queries.SelectPostByTags, "%"+data.TagName+"%", data.BlogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page-1)*size))
 
 	if selectErr != nil {
 		log.Printf("[POST_TAG] GET Post by TagName Error: %v", selectErr)
-		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{} ,selectErr
+		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{}, selectErr
 	}
 
 	defer connect.Close()
@@ -252,7 +251,7 @@ func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.
 			&row.Viewed,
 			&row.RegDate,
 			&row.ModDate)
-		
+
 		if scanErr != nil {
 			log.Printf("[POST_TAG] Scan Query Result Error: %v", scanErr)
 			return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{}, scanErr
@@ -264,17 +263,15 @@ func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.
 	connect2, dbErr2 := database.InitDatabaseConnection()
 
 	if dbErr2 != nil {
-		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{} ,dbErr2
+		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{}, dbErr2
 	}
 
-	count, countErr := connect.QueryOne(queries.SelectTotalPostCountByTags, "%"+data.TagName+"%", data.BlogId)
-	
+	count, countErr := connect2.QueryOne(queries.SelectTotalPostCountByTags, "%"+data.TagName+"%", data.BlogId)
+
 	if countErr != nil {
 		log.Printf("[POST_TAG] GET Post Total Count by TagName Error: %v", countErr)
-		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{} ,countErr
+		return []types.PostsByTagsResponseType{}, types.PostTotalUnPinnedCountType{}, countErr
 	}
-
-	defer connect2.Close()
 
 	var totalPostCount types.PostTotalUnPinnedCountType
 
@@ -283,10 +280,10 @@ func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.
 	// stringify된 array를 array로
 	var postByTagsList []types.PostsByTagsResponseType
 
-	for _, d := range(postsData) {
+	for _, d := range postsData {
 		var tempTag []string
 
-		jsonErr :=  json.Unmarshal([]byte(d.TagName), &tempTag)
+		jsonErr := json.Unmarshal([]byte(d.TagName), &tempTag)
 
 		if jsonErr != nil {
 			log.Printf("[POST_TAG] Unmarshing Array Error: %v", jsonErr)
@@ -294,21 +291,20 @@ func GetPostByTag(data types.GetPostsByTagRequest, page int, size int) ([]types.
 		}
 
 		data := types.PostsByTagsResponseType{
-			TagName: tempTag,
+			TagName:      tempTag,
 			CategoryName: d.CategoryName,
-			PostTitle: d.PostTitle,
+			PostTitle:    d.PostTitle,
 			PostContents: d.PostContents,
-			PostSeq: d.PostSeq,
-			Viewed: d.Viewed,
-			RegDate: d.RegDate,
-			ModDate: d.ModDate}
+			PostSeq:      d.PostSeq,
+			Viewed:       d.Viewed,
+			RegDate:      d.RegDate,
+			ModDate:      d.ModDate}
 
 		postByTagsList = append(postByTagsList, data)
 	}
 
 	return postByTagsList, totalPostCount, nil
 }
-
 
 // 게시글 카테고리로 조회
 func GetPostByCategory(data types.GetPostsByCategoryRequest, page int, size int) ([]types.PostByCategoryResponseType, types.PostTotalUnPinnedCountType, error) {
@@ -319,7 +315,7 @@ func GetPostByCategory(data types.GetPostsByCategoryRequest, page int, size int)
 	}
 
 	log.Println(data.BlogId)
-	posts, selectErr := connect.GetMultiple(queries.SelectPostByCategory, "%"+data.CategoryName+"%", data.BlogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page - 1) * size))
+	posts, selectErr := connect.GetMultiple(queries.SelectPostByCategory, "%"+data.CategoryName+"%", data.BlogId, fmt.Sprintf("%d", size), fmt.Sprintf("%d", (page-1)*size))
 
 	if selectErr != nil {
 		log.Printf("[POST_CATEGORY] GET Post by CategoryName Error: %v", selectErr)
@@ -344,15 +340,15 @@ func GetPostByCategory(data types.GetPostsByCategoryRequest, page int, size int)
 			&row.Viewed,
 			&row.RegDate,
 			&row.ModDate)
-		
+
 		if scanErr != nil {
 			if scanErr == sql.ErrNoRows {
-					postsData = make([]types.SelectPostsByTags, 0)
-			}  else {
+				postsData = make([]types.SelectPostsByTags, 0)
+			} else {
 				log.Printf("[POST_CATEGORY] Scan Query Result Error: %v", scanErr)
 				return []types.PostByCategoryResponseType{}, types.PostTotalUnPinnedCountType{}, scanErr
 			}
-		
+
 		}
 
 		postsData = append(postsData, row)
@@ -361,30 +357,28 @@ func GetPostByCategory(data types.GetPostsByCategoryRequest, page int, size int)
 	connect2, dbErr2 := database.InitDatabaseConnection()
 
 	if dbErr2 != nil {
-		return []types.PostByCategoryResponseType{}, types.PostTotalUnPinnedCountType{} ,dbErr2
+		return []types.PostByCategoryResponseType{}, types.PostTotalUnPinnedCountType{}, dbErr2
 	}
 
-	count, countErr := connect.QueryOne(queries.SelectTotalPostCountByCategory, "%"+data.CategoryName+"%", data.BlogId)
-	
+	count, countErr := connect2.QueryOne(queries.SelectTotalPostCountByCategory, "%"+data.CategoryName+"%", data.BlogId)
+
 	if countErr != nil {
 		log.Printf("[POST_TAG] GET Post Total Count by Category Error: %v", countErr)
 		return []types.PostByCategoryResponseType{}, types.PostTotalUnPinnedCountType{}, countErr
 	}
 
-	defer connect2.Close()
-
 	var totalPostCount types.PostTotalUnPinnedCountType
 
 	count.Scan(&totalPostCount.Count)
-	
+
 	// stringify된 array를 array로
 	var postByCategoryList []types.PostByCategoryResponseType
 
-	for _, d := range(postsData) {
+	for _, d := range postsData {
 		var tempTag []string
 
 		if d.TagName != "NULL" {
-			jsonErr :=  json.Unmarshal([]byte(d.TagName), &tempTag)
+			jsonErr := json.Unmarshal([]byte(d.TagName), &tempTag)
 			if jsonErr != nil {
 				log.Printf("[POST_CATEGORY] Unmarshing Array Error: %v", jsonErr)
 				return []types.PostByCategoryResponseType{}, types.PostTotalUnPinnedCountType{}, jsonErr
@@ -392,14 +386,14 @@ func GetPostByCategory(data types.GetPostsByCategoryRequest, page int, size int)
 		}
 
 		data := types.PostByCategoryResponseType{
-			TagName: tempTag,
+			TagName:      tempTag,
 			CategoryName: d.CategoryName,
-			PostTitle: d.PostTitle,
+			PostTitle:    d.PostTitle,
 			PostContents: d.PostContents,
-			PostSeq: d.PostSeq,
-			Viewed: d.Viewed,
-			RegDate: d.RegDate,
-			ModDate: d.ModDate}
+			PostSeq:      d.PostSeq,
+			Viewed:       d.Viewed,
+			RegDate:      d.RegDate,
+			ModDate:      d.ModDate}
 
 		postByCategoryList = append(postByCategoryList, data)
 	}
