@@ -9,22 +9,23 @@ import (
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	"github.com/donghquinn/blog_back_go/middlewares"
 	"github.com/donghquinn/blog_back_go/routers"
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
 
-func OpenServer() *http.Server{
-	server := http.NewServeMux()
+func OpenServer() *http.Server {
+	router := mux.NewRouter()
 
-	middleWareHandler := middlewares.CorsMiddlewares(server)
+	middleWareHandler := middlewares.CorsMiddlewares(router)
 
-	routers.DefaultRouter(server)
-	routers.AdminRouter(server)
+	routers.DefaultRouter(router)
+	routers.AdminRouter(router)
 
 	serving := &http.Server{
-		Handler: 		middleWareHandler,
-		Addr: 			configs.GlobalConfig.AppHost,
-		WriteTimeout: 	30 * time.Second,
-		ReadTimeout:  	30 * time.Second,
+		Handler:      middleWareHandler,
+		Addr:         configs.GlobalConfig.AppHost,
+		WriteTimeout: 30 * time.Second,
+		ReadTimeout:  30 * time.Second,
 	}
 
 	return serving
@@ -36,7 +37,7 @@ func DatabaseConnect() {
 	if minioErr != nil {
 		log.Printf("[START] Minio Connection Check Error: %v", minioErr)
 	}
-	
+
 	checkErr := database.CheckConnection()
 
 	if checkErr != nil {
@@ -57,7 +58,7 @@ func SetConfigs() {
 	if envErr != nil {
 		log.Printf("[ENV] Load Env Error")
 	}
-	
+
 	configs.SetGlobalConfig()
 	configs.SetDatabaseConfig()
 	configs.SetMinioConfig()

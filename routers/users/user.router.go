@@ -4,15 +4,15 @@ import (
 	"net/http"
 
 	controllers "github.com/donghquinn/blog_back_go/controllers/users"
+	"github.com/gorilla/mux"
 )
 
+func UserRouter(server *mux.Router) {
+	server.HandleFunc("/user/signup", controllers.SignupController).Methods(http.MethodPost)
+	server.HandleFunc("/user/login", controllers.LoginController).Methods(http.MethodPost)
 
-func UserRouter(server *http.ServeMux) {
-	server.HandleFunc("POST /user/signup", controllers.SignupController)
-	server.HandleFunc("POST /user/login", controllers.LoginController)
+	server.HandleFunc("/user/search/email", controllers.SearchEmailController).Methods(http.MethodPost)
+	server.HandleFunc("/user/search/password", controllers.SearchPasswordController).Methods(http.MethodPost)
 
-	server.HandleFunc("POST /user/search/email", controllers.SearchEmailController)
-	server.HandleFunc("POST /user/search/password", controllers.SearchPasswordController)
-
-	server.HandleFunc("POST /user/profile", controllers.GetUserProfileController)
-}		
+	server.HandleFunc("/user/profile", controllers.GetUserProfileController).Methods(http.MethodPost)
+}

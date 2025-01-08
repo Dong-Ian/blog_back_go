@@ -4,16 +4,17 @@ import (
 	"net/http"
 
 	admincontrollers "github.com/donghquinn/blog_back_go/controllers/admin/posts"
+	"github.com/gorilla/mux"
 )
 
-func AdminPostRouter(server *http.ServeMux) {
-	server.HandleFunc("POST /admin/post/register", admincontrollers.RegisterPostController)
-	server.HandleFunc("POST /admin/post/edit", admincontrollers.EditPostController)
-	
-	server.HandleFunc("POST /admin/post/delete", admincontrollers.DeletePostController)
+func AdminPostRouter(server *mux.Router) {
+	server.HandleFunc("/admin/post/register", admincontrollers.RegisterPostController).Methods(http.MethodPost)
+	server.HandleFunc("/admin/post/edit", admincontrollers.EditPostController).Methods(http.MethodPost)
 
-	server.HandleFunc("POST /admin/post/update/pin", admincontrollers.UpdatePinPostController)
-	server.HandleFunc("POST /admin/post/update/unpin", admincontrollers.UpdateUnPinPostController)
- 	server.HandleFunc("POST /admin/post/update/secret", admincontrollers.ChangeToSecretPostController)
-	server.HandleFunc("POST /admin/post/update/unsecret", admincontrollers.ChangeToNotSecretPostController)
+	server.HandleFunc("/admin/post/delete", admincontrollers.DeletePostController).Methods(http.MethodPost)
+
+	server.HandleFunc("/admin/post/update/pin", admincontrollers.UpdatePinPostController).Methods(http.MethodPost)
+	server.HandleFunc("/admin/post/update/unpin", admincontrollers.UpdateUnPinPostController).Methods(http.MethodPost)
+	server.HandleFunc("/admin/post/update/secret", admincontrollers.ChangeToSecretPostController).Methods(http.MethodPost)
+	server.HandleFunc("/admin/post/update/unsecret", admincontrollers.ChangeToNotSecretPostController).Methods(http.MethodPost)
 }
