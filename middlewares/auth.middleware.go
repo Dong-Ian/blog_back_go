@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"strings"
 
@@ -47,6 +48,9 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// accessToken 쿠키 추출
 		cookie, err := r.Cookie("accessToken")
+
+		log.Printf("Cookie: %s", cookie)
+
 		if err != nil {
 			if err == http.ErrNoCookie {
 				response.Response(w, response.CommonResponseWithMessage{
