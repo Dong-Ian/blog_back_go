@@ -55,6 +55,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		log.Printf("Cookie: %s", cookie)
 
 		if err != nil {
+			log.Printf("Get Cookie Error :%v", err)
+
 			if err == http.ErrNoCookie {
 				response.Response(w, response.CommonResponseWithMessage{
 					Status:  http.StatusUnauthorized,
@@ -77,6 +79,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		userId, userEmail, userStatus, blogId, validateErr := auth.ValidateJwtTokenFromString(accessToken)
 
 		if validateErr != nil {
+			log.Printf("ValidateErr Cookie Error :%v", validateErr)
+
 			// 토큰 만료에 대한 응답
 			if strings.Contains(validateErr.Error(), "token expired") {
 				response.Response(w, response.CommonResponseWithMessage{
@@ -93,6 +97,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 				Code:    "AUTH004",
 				Message: "Invalid token",
 			})
+
 			return
 		}
 		// 사용자 정보를 구조체로 생성
