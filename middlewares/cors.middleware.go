@@ -8,7 +8,7 @@ import (
 
 var originList = []string{
 	"http://localhost:3000",
-	"https://blog.minjae-dev.com/",
+	"https://blog.minjae-dev.com",
 	"https://blog.donghyuns.com",
 	"unknown",
 }
