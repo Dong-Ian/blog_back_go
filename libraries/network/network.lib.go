@@ -25,7 +25,7 @@ func OpenServer() *http.Server {
 	routers.UserRouter(router)
 	routers.PostRouter(router)
 
-	middlewares.AuthMiddleware(router)
+	router.Use(middlewares.AuthMiddleware)
 	// handler := middlewares.CorsMiddlewares(router)
 	// handler := cors.Default().Handler(router)
 
