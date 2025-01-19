@@ -29,7 +29,7 @@ func OpenServer() *http.Server {
 	routers.UserRouter(router)
 	routers.PostRouter(router)
 
-	router.Use(mux.CORSMethodMiddleware(router))
+	// router.Use(mux.CORSMethodMiddleware(router))
 
 	serving := &http.Server{
 		Handler:      router,
