@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/profile"
 	"github.com/donghquinn/blog_back_go/middlewares"
@@ -43,10 +42,11 @@ func UpdateProfileController(res http.ResponseWriter, req *http.Request) {
 
 // 색상 변경 컨트롤러
 func UpdateColorController(res http.ResponseWriter, req *http.Request) {
-	userId, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+
 		return
 	}
 
@@ -60,7 +60,7 @@ func UpdateColorController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	changeColorErr := profile.ChangeColor(changeColorRequest, userId, blogId)
+	changeColorErr := profile.ChangeColor(changeColorRequest, user.UserId, user.BlogId)
 
 	if changeColorErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Change Color Error", changeColorErr)
@@ -72,10 +72,11 @@ func UpdateColorController(res http.ResponseWriter, req *http.Request) {
 
 // 블로그 타이틀 변경 컨트롤러
 func UpdateTitleController(res http.ResponseWriter, req *http.Request) {
-	userId, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+
 		return
 	}
 
@@ -89,7 +90,7 @@ func UpdateTitleController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	changeTitleErr := profile.ChangeBlogTitle(changeTitleRequest, userId, blogId)
+	changeTitleErr := profile.ChangeBlogTitle(changeTitleRequest, user.UserId, user.BlogId)
 
 	if changeTitleErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Change Title Error", changeTitleErr)

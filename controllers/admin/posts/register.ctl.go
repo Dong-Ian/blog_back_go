@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	post "github.com/donghquinn/blog_back_go/libraries/post/admin"
 	"github.com/donghquinn/blog_back_go/middlewares"
@@ -42,10 +41,10 @@ func RegisterPostController(res http.ResponseWriter, req *http.Request) {
 }
 
 func DeletePostController(res http.ResponseWriter, req *http.Request) {
-	_, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
@@ -60,7 +59,7 @@ func DeletePostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	deleteErr := post.DeletePost(deleteRequest.PostSeq, blogId)
+	deleteErr := post.DeletePost(deleteRequest.PostSeq, user.BlogId)
 
 	if deleteErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Delete Post Error", deleteErr)
@@ -72,10 +71,10 @@ func DeletePostController(res http.ResponseWriter, req *http.Request) {
 
 // 고정 게시글 데이터 업데이트
 func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
-	_, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
@@ -90,7 +89,7 @@ func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateErr := post.UpdatePinPost(updatePinRequest, blogId)
+	updateErr := post.UpdatePinPost(updatePinRequest, user.BlogId)
 
 	if updateErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Update Pin Error", updateErr)
@@ -102,10 +101,10 @@ func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
 
 // 고정 게시글 해제 데이터 업데이트
 func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request) {
-	_, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
@@ -120,7 +119,7 @@ func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateErr := post.UpdateUnPinPost(updateUnPinRequest, blogId)
+	updateErr := post.UpdateUnPinPost(updateUnPinRequest, user.BlogId)
 
 	if updateErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Update Un-Pin Error", updateErr)
