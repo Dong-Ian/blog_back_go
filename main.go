@@ -19,7 +19,5 @@ func main() {
 	log.Printf("[START] Server Listening On: %s", configs.GlobalConfig.AppPort)
 	log.Printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
-
 	serving.ListenAndServe()
 }
-
