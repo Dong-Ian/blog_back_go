@@ -14,8 +14,6 @@ var originList = []string{
 
 func CorsMiddlewares(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
-		log.Println("CORS middleware reached") // 호출 확인
-
 		origin := req.Header.Get("Origin")
 		log.Printf("Origin: %s", origin)
 
@@ -46,7 +44,7 @@ func CorsMiddlewares(next http.Handler) http.Handler {
 
 		// Handle preflight request
 		if req.Method == http.MethodOptions {
-			log.Println("Handling OPTIONS request")
+			res.Header().Set("Access-Control-Allow-Origin", origin)
 			res.WriteHeader(http.StatusOK)
 			return
 		}
