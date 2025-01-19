@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -13,6 +14,8 @@ var originList = []string{
 func CorsMiddlewares(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		origin := req.Header.Get("Origin")
+		log.Printf("Origin: %s", origin)
+
 		// 요청의 Origin이 허용된 Origin 목록에 있는지 확인
 		isAllowed := false
 		for _, allowedOrigin := range originList {
