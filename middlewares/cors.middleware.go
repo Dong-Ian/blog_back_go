@@ -19,8 +19,8 @@ func CorsHanlder() *cors.Cors {
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodOptions},
 		AllowedHeaders:   []string{"Origin", "Accept", "Content-Type", "X-Requested-With"},
 		AllowCredentials: true,
-		MaxAge:           0,
-		Debug:            true,
+		MaxAge:           86400,
+		Debug:            false,
 	})
 
 	return corHandler
