@@ -8,6 +8,7 @@ import (
 
 	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/response"
+	"github.com/gorilla/mux"
 )
 
 // 사용자 정의 키 타입을 사용하여 컨텍스트 충돌 방지
@@ -36,7 +37,7 @@ var excludeRouteList = []string{
 }
 
 // AuthMiddleware는 accessToken 쿠키를 추출하고 JWT를 검증하는 미들웨어입니다.
-func AuthMiddleware(next http.Handler) http.Handler {
+func AuthMiddleware(next *mux.Router) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 제외할 경로는 바로 다음 핸들러로 넘김
 		for _, route := range excludeRouteList {
