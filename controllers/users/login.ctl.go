@@ -120,8 +120,11 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 		SameSite: http.SameSiteNoneMode,
 	}
 
-	res.Header().Set("Set-Cookie", accessTokenCookie.String())
-	res.Header().Add("Set-Cookie", refreshTokenCookie.String())
+	http.SetCookie(res, &accessTokenCookie)
+	http.SetCookie(res, &refreshTokenCookie)
+
+	// res.Header().Set("Set-Cookie", accessTokenCookie.String())
+	// res.Header().Add("Set-Cookie", refreshTokenCookie.String())
 
 	dto.SetTokenResponse(res, 200, "01", types.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken})
 }
