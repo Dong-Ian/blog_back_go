@@ -7,19 +7,19 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	upload "github.com/donghquinn/blog_back_go/libraries/upload/image"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	queries "github.com/donghquinn/blog_back_go/queries/upload"
 )
 
 // 게시글 이미지 업로드
 func UploadPostImageController(res http.ResponseWriter, req *http.Request) {
-	userId, _, _, _, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
@@ -57,22 +57,22 @@ func UploadPostImageController(res http.ResponseWriter, req *http.Request) {
 
 	var insertId int64
 
-// 데이터 입력 - DB
+	// 데이터 입력 - DB
 	seq, insertErr := connect.InsertQuery(
 		queries.InsertPostImageData,
 		// USER ID from JWT
 		"1",
-		userId,
+		user.UserId,
 		"post_table",
 		"POST_IMAGE",
 		strconv.Itoa(int(handler.Size)),
-		handler.Filename, 
+		handler.Filename,
 		contentType)
-    
+
 	if insertErr != nil {
- 		dto.SetErrorResponse(res, 405, "05", "Insert Image Info Error", insertErr)
+		dto.SetErrorResponse(res, 405, "05", "Insert Image Info Error", insertErr)
 		return
-    }
+	}
 
 	insertId = seq
 

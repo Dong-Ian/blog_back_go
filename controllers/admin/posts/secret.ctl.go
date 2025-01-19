@@ -3,19 +3,19 @@ package admincontrollers
 import (
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	post "github.com/donghquinn/blog_back_go/libraries/post/admin"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/posts"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
 // 비공개 게시글로 변경
 func ChangeToSecretPostController(response http.ResponseWriter, request *http.Request) {
-	_, _, _, _, err := auth.ValidateJwtToken(request)
+	_, ok := middlewares.GetUserFromContext(request.Context())
 
-	if (err != nil ) {
-		dto.SetErrorResponse(response, 401, "01", "JWT Validate Error", err)
+	if !ok {
+		dto.SetErrorResponse(response, 401, "01", "JWT Validate Error", nil)
 		return
 	}
 
@@ -23,14 +23,14 @@ func ChangeToSecretPostController(response http.ResponseWriter, request *http.Re
 
 	parseErr := utils.DecodeBody(request, &changeRequest)
 
-	if (parseErr != nil ) {
+	if parseErr != nil {
 		dto.SetErrorResponse(response, 402, "02", "Invalid Request Body", parseErr)
 		return
 	}
-	
+
 	changeErr := post.ChangeToSecretPost(changeRequest.PostSeq)
 
-	if (changeErr != nil ) {
+	if changeErr != nil {
 		dto.SetErrorResponse(response, 403, "03", "Change Secret Failed", changeErr)
 		return
 	}
@@ -40,10 +40,10 @@ func ChangeToSecretPostController(response http.ResponseWriter, request *http.Re
 
 // 비공개 게시글에서 공개 게시글로 변경
 func ChangeToNotSecretPostController(response http.ResponseWriter, request *http.Request) {
-	_, _, _, _, err := auth.ValidateJwtToken(request)
+	_, ok := middlewares.GetUserFromContext(request.Context())
 
-	if (err != nil ) {
-		dto.SetErrorResponse(response, 401, "01", "JWT Validate Error", err)
+	if !ok {
+		dto.SetErrorResponse(response, 401, "01", "JWT Validate Error", nil)
 		return
 	}
 
@@ -51,14 +51,14 @@ func ChangeToNotSecretPostController(response http.ResponseWriter, request *http
 
 	parseErr := utils.DecodeBody(request, &changeRequest)
 
-	if (parseErr != nil ) {
+	if parseErr != nil {
 		dto.SetErrorResponse(response, 402, "02", "Invalid Request Body", parseErr)
 		return
 	}
-	
+
 	changeErr := post.ChangeToNotSecretPost(changeRequest.PostSeq)
 
-	if (changeErr != nil ) {
+	if changeErr != nil {
 		dto.SetErrorResponse(response, 403, "03", "Change Not Secret Failed", changeErr)
 		return
 	}

@@ -7,16 +7,17 @@ import (
 	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	post "github.com/donghquinn/blog_back_go/libraries/post/admin"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/posts"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
 // 게시글 등록
 func RegisterPostController(res http.ResponseWriter, req *http.Request) {
-	userId, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
@@ -30,7 +31,7 @@ func RegisterPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	postSeq, insertErr := post.InsertPostData(registerPostRequest, userId, blogId)
+	postSeq, insertErr := post.InsertPostData(registerPostRequest, user.UserId, user.BlogId)
 
 	if insertErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Insert Post Data Error", insertErr)
@@ -39,7 +40,6 @@ func RegisterPostController(res http.ResponseWriter, req *http.Request) {
 
 	dto.SetPostRegisterResponse(res, 200, "01", postSeq)
 }
-
 
 func DeletePostController(res http.ResponseWriter, req *http.Request) {
 	_, _, _, blogId, err := auth.ValidateJwtToken(req)
@@ -66,12 +66,12 @@ func DeletePostController(res http.ResponseWriter, req *http.Request) {
 		dto.SetErrorResponse(res, 403, "03", "Delete Post Error", deleteErr)
 		return
 	}
-	
+
 	dto.SetResponse(res, 200, "01")
 }
 
 // 고정 게시글 데이터 업데이트
-func UpdatePinPostController(res http.ResponseWriter, req *http.Request ) {
+func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
 	_, _, _, blogId, err := auth.ValidateJwtToken(req)
 
 	if err != nil {
@@ -101,7 +101,7 @@ func UpdatePinPostController(res http.ResponseWriter, req *http.Request ) {
 }
 
 // 고정 게시글 해제 데이터 업데이트
-func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request ) {
+func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request) {
 	_, _, _, blogId, err := auth.ValidateJwtToken(req)
 
 	if err != nil {

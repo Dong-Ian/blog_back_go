@@ -2,11 +2,9 @@ package middlewares
 
 import (
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
-func CorsMiddlewares(next *mux.Router) http.Handler {
+func CorsMiddlewares(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Set("Access-Control-Allow-Origin", "*")
 		res.Header().Set("Access-Control-Max-Age", "86400")

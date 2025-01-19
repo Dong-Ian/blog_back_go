@@ -3,18 +3,18 @@ package admincontrollers
 import (
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	post "github.com/donghquinn/blog_back_go/libraries/post/admin"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/posts"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
 func EditPostController(res http.ResponseWriter, req *http.Request) {
-	userId, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
@@ -28,7 +28,7 @@ func EditPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	editErr := post.EditPost(editPostRequest, userId, blogId)
+	editErr := post.EditPost(editPostRequest, user.UserId, user.BlogId)
 
 	if editErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Edit Post Data Error", editErr)

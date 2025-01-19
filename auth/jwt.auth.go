@@ -69,7 +69,7 @@ func CreateJwtToken(userId string, uuid string, userEmail string, userStatus str
 
 		return "", err
 	}
-	
+
 	setErr := database.RedisLoginSet(redis, uuid, userEmail, userStatus, userId, blogId)
 
 	if setErr != nil {
@@ -78,6 +78,53 @@ func CreateJwtToken(userId string, uuid string, userEmail string, userStatus str
 	}
 
 	return token, nil
+}
+
+// JWT 키  검증
+func ValidateJwtTokenFromString(token string) (string, string, string, string, error) {
+	redis, redisErr := database.RedisInstance()
+
+	if redisErr != nil {
+		return "", "", "", "", redisErr
+	}
+
+	globalConfig := configs.GlobalConfig
+
+	// JWT 토큰 파싱
+	parseToken, err := jwt.ParseWithClaims(token, &types.JwtInterface{}, func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			parseErr := fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+
+			log.Printf("[JWT] Parse With Claims Error: %v", parseErr)
+			return nil, parseErr
+		}
+
+		return []byte(globalConfig.JwtKey), nil
+	})
+
+	if err != nil {
+		log.Printf("[JWT] Parsing JWT Validation Error: %v", err)
+
+		return "", "", "", "", err
+	}
+
+	claim, ok := parseToken.Claims.(*types.JwtInterface)
+
+	if !ok {
+		claimErr := fmt.Errorf("can't parse values from token")
+		log.Printf("[JWT] Parse Token with Claims: %v", claimErr)
+		return "", "", "", "", claimErr
+	}
+
+	_, getErr := database.RedisLoginGet(redis, claim.Uuid)
+
+	if getErr != nil {
+		log.Printf("[JWT] Get Token Error: %v", getErr)
+		return "", "", "", "", getErr
+	}
+
+	return claim.UserId, claim.UserEmail, claim.UserType, claim.BlogId, nil
 }
 
 // JWT 키  검증
@@ -119,7 +166,7 @@ func ValidateJwtToken(req *http.Request) (string, string, string, string, error)
 	}
 
 	_, getErr := database.RedisLoginGet(redis, claim.Uuid)
-	
+
 	if getErr != nil {
 		log.Printf("[JWT] Get Token Error: %v", getErr)
 		return "", "", "", "", getErr

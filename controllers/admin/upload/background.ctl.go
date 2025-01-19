@@ -6,24 +6,24 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	upload "github.com/donghquinn/blog_back_go/libraries/upload/image"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	queries "github.com/donghquinn/blog_back_go/queries/upload"
 )
 
 // 프로필 이미지 업로드
 func UploadBackgroundImageController(res http.ResponseWriter, req *http.Request) {
-	userId, _, _, _, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
 
-		// 요청으로부터 이미지 파일 가져오기
+	// 요청으로부터 이미지 파일 가져오기
 	file, handler, fileErr := upload.GetImagefileFromRequest(res, req)
 
 	if fileErr != nil {
@@ -58,23 +58,23 @@ func UploadBackgroundImageController(res http.ResponseWriter, req *http.Request)
 		queries.InsertProfileImageData,
 		// USER ID from JWT
 		"1",
-		userId,
+		user.UserId,
 		"user_table",
 		"USER_BACKGROUND",
 		strconv.Itoa(int(handler.Size)),
-		handler.Filename, 
+		handler.Filename,
 		contentType)
-    
+
 	if insertErr != nil {
- 		dto.SetErrorResponse(res, 405, "05", "Insert Image Info Error", insertErr)
+		dto.SetErrorResponse(res, 405, "05", "Insert Image Info Error", insertErr)
 
 		return
-    }
+	}
 
 	defer connect.Close()
 
 	removeErr := os.Remove(tempFile.Name())
-	
+
 	if removeErr != nil {
 		log.Printf("[UPLOAD] Remove Saved Image Error: %v", removeErr)
 

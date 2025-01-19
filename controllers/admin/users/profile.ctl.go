@@ -7,6 +7,7 @@ import (
 	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/profile"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/users"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -15,13 +16,13 @@ import (
 func UpdateProfileController(res http.ResponseWriter, req *http.Request) {
 	var updateProfile types.UserChangeProfileRequest
 
-	userId, _, _, blogId, err := auth.ValidateJwtToken(req)
+	user, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 		return
 	}
-	
+
 	parseErr := utils.DecodeBody(req, &updateProfile)
 
 	if parseErr != nil {
@@ -30,7 +31,7 @@ func UpdateProfileController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateErr := profile.ChangeProfile(updateProfile, userId, blogId)
+	updateErr := profile.ChangeProfile(updateProfile, user.UserId, user.BlogId)
 
 	if updateErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Insert Profile Update Error", updateErr)
@@ -63,7 +64,7 @@ func UpdateColorController(res http.ResponseWriter, req *http.Request) {
 
 	if changeColorErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Change Color Error", changeColorErr)
-		return 
+		return
 	}
 
 	dto.SetResponse(res, 200, "01")
@@ -92,7 +93,7 @@ func UpdateTitleController(res http.ResponseWriter, req *http.Request) {
 
 	if changeTitleErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Change Title Error", changeTitleErr)
-		return 
+		return
 	}
 
 	dto.SetResponse(res, 200, "01")

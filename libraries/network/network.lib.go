@@ -16,13 +16,14 @@ import (
 func OpenServer() *http.Server {
 	router := mux.NewRouter()
 
-	middleWareHandler := middlewares.CorsMiddlewares(router)
+	router.Use(middlewares.CorsMiddlewares)
+	router.Use(middlewares.AuthMiddleware)
 
 	routers.DefaultRouter(router)
 	routers.AdminRouter(router)
 
 	serving := &http.Server{
-		Handler:      middleWareHandler,
+		Handler:      router,
 		Addr:         configs.GlobalConfig.AppHost,
 		WriteTimeout: 30 * time.Second,
 		ReadTimeout:  30 * time.Second,
