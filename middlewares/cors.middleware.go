@@ -31,7 +31,7 @@ func CorsMiddlewares(next http.Handler) http.Handler {
 				res.Header().Set("Access-Control-Max-Age", "86400")
 				res.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 				res.Header().Set("Access-Control-Allow-Credentials", "true")
-				res.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+				res.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
 
 				break
 			}
