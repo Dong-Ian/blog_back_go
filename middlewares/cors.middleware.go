@@ -9,17 +9,19 @@ var originList = []string{
 	"http://localhost:3000",
 	"https://blog.minjae-dev.com/",
 	"https://blog.donghyuns.com",
+	"unknown",
 }
 
 func CorsMiddlewares(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		log.Println("CORS middleware reached") // 호출 확인
+
 		origin := req.Header.Get("Origin")
 		log.Printf("Origin: %s", origin)
 
 		// Origin 헤더가 없으면 기본 설정
 		if origin == "" {
-			origin = "http://localhost:3000"
+			origin = "unknown"
 		}
 
 		// 요청의 Origin이 허용된 Origin 목록에 있는지 확인
