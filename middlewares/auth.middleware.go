@@ -28,7 +28,7 @@ type User struct {
 }
 
 var excludeRouteList = []string{
-	"/", "/api",
+	"/", "/api", "/refresh",
 	"/user/signup", "/user/login", "/user/search/email", "/user/search/password", "/user/profile",
 	"/post/contents", "/post/list", "/post/list/pinned", "/post/list/tag", "/post/list/category", "/post/url", "/post/category/list",
 }
