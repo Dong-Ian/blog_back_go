@@ -11,13 +11,13 @@ import (
 	"github.com/donghquinn/blog_back_go/routers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func OpenServer() *http.Server {
 	router := mux.NewRouter()
 
-	handler := middlewares.CorsMiddlewares(router)
-	middlewares.AuthMiddleware(handler)
+	// handler := middlewares.CorsMiddlewares(router)
 
 	routers.DefaultRouter(router)
 
@@ -27,7 +27,10 @@ func OpenServer() *http.Server {
 
 	routers.UserRouter(router)
 	routers.PostRouter(router)
+	handler := cors.Default().Handler(router)
 
+	handler = middlewares.CorsHanlder().Handler(handler)
+	handler = middlewares.AuthMiddleware(handler)
 	// router.Use(mux.CORSMethodMiddleware(router))
 
 	serving := &http.Server{
