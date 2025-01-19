@@ -4,8 +4,6 @@ import (
 	"net/http"
 
 	"github.com/donghquinn/blog_back_go/controllers"
-	postRouters "github.com/donghquinn/blog_back_go/routers/posts"
-	userRouters "github.com/donghquinn/blog_back_go/routers/users"
 	"github.com/gorilla/mux"
 )
 
@@ -16,6 +14,4 @@ func DefaultRouter(server *mux.Router) {
 
 	server.HandleFunc("/refresh", controllers.RefreshController).Methods(http.MethodPost)
 
-	userRouters.UserRouter(server)
-	postRouters.PostRouter(server)
 }

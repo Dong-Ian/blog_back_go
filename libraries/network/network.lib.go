@@ -20,7 +20,13 @@ func OpenServer() *http.Server {
 	router.Use(middlewares.AuthMiddleware)
 
 	routers.DefaultRouter(router)
-	routers.AdminRouter(router)
+
+	routers.UploadImageController(router)
+	routers.AdminUserRouter(router)
+	routers.AdminPostRouter(router)
+
+	routers.UserRouter(router)
+	routers.PostRouter(router)
 
 	serving := &http.Server{
 		Handler:      router,
