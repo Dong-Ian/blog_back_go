@@ -14,7 +14,7 @@ import (
 )
 
 // JWT 토큰 생성
-func CreateJwtToken(userId string, uuid string, userEmail string, userStatus string, blogId string) (string, error) {
+func CreateJwtToken(userId string, uuid string, userEmail string, userStatus string, blogId string, expire time.Duration) (string, error) {
 	globalConfig := configs.GlobalConfig
 
 	redis, redisPingErr := database.RedisInstance()
@@ -60,7 +60,7 @@ func CreateJwtToken(userId string, uuid string, userEmail string, userStatus str
 	claims["blogId"] = blogId
 
 	// 만료 시간 - 3시간
-	claims["exp"] = time.Now().Add(time.Hour * 3).Unix()
+	claims["exp"] = time.Now().Add(expire).Unix()
 
 	token, err := jwtToken.SignedString([]byte(globalConfig.JwtKey))
 
@@ -124,7 +124,7 @@ func ValidateJwtTokenFromString(token string) (string, string, string, string, e
 		return "", "", "", "", getErr
 	}
 
-	return claim.UserId, claim.UserEmail, claim.UserType, claim.BlogId, nil
+	return claim.UserId, claim.UserEmail, claim.UserStatus, claim.BlogId, nil
 }
 
 // JWT 키  검증
@@ -172,5 +172,5 @@ func ValidateJwtToken(req *http.Request) (string, string, string, string, error)
 		return "", "", "", "", getErr
 	}
 
-	return claim.UserId, claim.UserEmail, claim.UserType, claim.BlogId, nil
+	return claim.UserId, claim.UserEmail, claim.UserStatus, claim.BlogId, nil
 }

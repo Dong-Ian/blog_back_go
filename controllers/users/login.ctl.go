@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/donghquinn/blog_back_go/auth"
 	"github.com/donghquinn/blog_back_go/dto"
@@ -35,7 +36,7 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 		dto.SetErrorResponse(res, 402, "02", "Decode Login Request", decodeErr)
 		return
 	}
-	
+
 	// DB에서 유저 데이터 체크
 	queryResult, queryErr := getUserInfo(loginRequst.Email)
 
@@ -43,7 +44,7 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 		dto.SetErrorResponse(res, 403, "03", "Query User Info Error", queryErr)
 		return
 	}
-	
+
 	// 패스워드 비교 (암호화 해싱된 패스워드)
 	isMatch, matchErr := crypt.PasswordCompare(queryResult.UserPassword, decodePassword)
 
@@ -60,11 +61,11 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	uuid, uuidErr := uuid.NewUUID()
+	uuid1, uuidErr1 := uuid.NewUUID()
 
-	if uuidErr != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr)
-		dto.SetErrorResponse(res, 406, "06", "Create Uuid Error", uuidErr)
+	if uuidErr1 != nil {
+		log.Printf("[REDIS] Create UUID Error: %v", uuidErr1)
+		dto.SetErrorResponse(res, 406, "06", "Create Uuid Error", uuidErr1)
 	}
 
 	// dbCon, dbErr := database.InitDatabaseConnection()
@@ -81,14 +82,29 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 	// }
 
 	// JWT 토큰 생성
-	token, tokenErr := auth.CreateJwtToken(queryResult.UserId, uuid.String(), decodeEmail, queryResult.UserStatus, queryResult.BlogId)
+	accessToken, tokenErr := auth.CreateJwtToken(queryResult.UserId, uuid1.String(), decodeEmail, queryResult.UserStatus, queryResult.BlogId, 3*time.Hour)
 
 	if tokenErr != nil {
 		dto.SetErrorResponse(res, 407, "07", "Create JWT Token Error", tokenErr)
 		return
 	}
 
-	dto.SetTokenResponse(res, 200, "01", token)
+	uuid2, uuidErr2 := uuid.NewUUID()
+
+	if uuidErr2 != nil {
+		log.Printf("[REDIS] Create UUID Error: %v", uuidErr2)
+		dto.SetErrorResponse(res, 406, "06", "Create Uuid Error", uuidErr2)
+	}
+
+	// JWT 토큰 생성
+	refreshToken, tokenErr := auth.CreateJwtToken(queryResult.UserId, uuid2.String(), decodeEmail, queryResult.UserStatus, queryResult.BlogId, 7*24*time.Hour)
+
+	if tokenErr != nil {
+		dto.SetErrorResponse(res, 407, "07", "Create JWT Token Error", tokenErr)
+		return
+	}
+
+	dto.SetTokenResponse(res, 200, "01", types.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken})
 }
 
 func decodeLoginRequest(loginRequest types.UserLoginRequest) (string, string, error) {
@@ -101,9 +117,9 @@ func decodeLoginRequest(loginRequest types.UserLoginRequest) (string, string, er
 
 	decodePassword, decodePassErr := crypt.DecryptString(loginRequest.Password)
 
-	if decodePassErr!= nil {
+	if decodePassErr != nil {
 		log.Printf("[LOGIN] Decode Password Err: %v", decodePassErr)
-		return "","",decodePassErr
+		return "", "", decodePassErr
 	}
 
 	return decodeEmail, decodePassword, nil
@@ -113,7 +129,7 @@ func decodeLoginRequest(loginRequest types.UserLoginRequest) (string, string, er
 
 // }
 
-func getUserInfo(encodedEmail string) (types.UserLoginQueryResult, error){
+func getUserInfo(encodedEmail string) (types.UserLoginQueryResult, error) {
 	connect, connectErr := database.InitDatabaseConnection()
 
 	if connectErr != nil {

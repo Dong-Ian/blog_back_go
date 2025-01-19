@@ -14,6 +14,8 @@ func DefaultRouter(server *mux.Router) {
 
 	server.HandleFunc("/", controllers.CorsTestController).Methods(http.MethodGet)
 
+	server.HandleFunc("/refresh", controllers.RefreshController).Methods(http.MethodPost)
+
 	userRouters.UserRouter(server)
 	postRouters.PostRouter(server)
 }

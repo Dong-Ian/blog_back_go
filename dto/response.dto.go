@@ -22,7 +22,6 @@ func SetSignupResponse(res http.ResponseWriter, statusCode int, code string, blo
 	res.Write(responseObject)
 }
 
-
 func SetImageUrlResponse(res http.ResponseWriter, statusCode int, code string, urls []string) {
 	responseObject, _ := json.Marshal(types.ResponseImageUrl{Code: code, Result: true, ImageResult: urls})
 
@@ -38,7 +37,6 @@ func SetProfileResponse(res http.ResponseWriter, statusCode int, code string, pr
 	res.Write(responseObject)
 }
 
-
 // 메세지 담은 응답
 func SetResponseWithMessage(res http.ResponseWriter, statusCode int, code string, message string) {
 	responseObject, _ := json.Marshal(types.ResponseMessageType{Code: code, Result: true, Message: message})
@@ -48,8 +46,8 @@ func SetResponseWithMessage(res http.ResponseWriter, statusCode int, code string
 }
 
 // 토큰 담은 메세지
-func SetTokenResponse(res http.ResponseWriter, statusCode int, code string, token string) {
-	responseObject, _ := json.Marshal(types.ResponseTokenType{Code: code, Result: true, Token: token})
+func SetTokenResponse(res http.ResponseWriter, statusCode int, code string, token types.LoginResponse) {
+	responseObject, _ := json.Marshal(types.ResponseTokenType{Code: code, Result: true, AccessToken: token.AccessToken, RefreshToken: token.RefreshToken})
 
 	res.WriteHeader(200)
 	res.Write(responseObject)
@@ -71,7 +69,7 @@ func SetPasswordResponse(res http.ResponseWriter, statusCode int, code string, p
 }
 
 // 에러 응답
-func SetErrorResponse(res http.ResponseWriter, statusCode int, code string, message string, err error ) {
+func SetErrorResponse(res http.ResponseWriter, statusCode int, code string, message string, err error) {
 	responseObject, _ := json.Marshal(types.ErrorResponseType{Code: code, Result: false, Message: message})
 
 	res.WriteHeader(500)

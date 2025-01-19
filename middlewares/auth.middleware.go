@@ -21,10 +21,10 @@ const (
 
 // 사용자 정보 구조체
 type User struct {
-	UserId    string
-	UserEmail string
-	UserType  string
-	BlogId    string
+	UserId     string
+	UserEmail  string
+	UserStatus string
+	BlogId     string
 }
 
 var excludeRouteList = []string{
@@ -60,7 +60,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		accessToken := cookie.Value
 
-		userId, userEmail, userType, blogId, validateErr := auth.ValidateJwtTokenFromString(accessToken)
+		userId, userEmail, userStatus, blogId, validateErr := auth.ValidateJwtTokenFromString(accessToken)
 
 		if validateErr != nil {
 			http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
@@ -69,10 +69,10 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// 사용자 정보를 구조체로 생성
 		user := User{
-			UserId:    userId,
-			UserEmail: userEmail,
-			UserType:  userType,
-			BlogId:    blogId,
+			UserId:     userId,
+			UserEmail:  userEmail,
+			UserStatus: userStatus,
+			BlogId:     blogId,
 		}
 
 		// 사용자 정보를 컨텍스트에 추가
