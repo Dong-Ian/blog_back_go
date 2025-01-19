@@ -3,6 +3,7 @@ package middlewares
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/donghquinn/blog_back_go/auth"
 )
@@ -26,9 +27,23 @@ type User struct {
 	BlogId    string
 }
 
+var excludeRouteList = []string{
+	"/", "/api",
+	"/user/signup", "/user/login", "/user/search/email", "/user/search/password", "/user/profile",
+	"/post/contents", "/post/list", "/post/list/pinned", "/post/list/tag", "/post/list/category", "/post/url", "/post/category/list",
+}
+
 // AuthMiddleware는 accessToken 쿠키를 추출하고 JWT를 검증하는 미들웨어입니다.
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 제외할 경로는 바로 다음 핸들러로 넘김
+		for _, route := range excludeRouteList {
+			if strings.HasPrefix(r.URL.Path, route) {
+				next.ServeHTTP(w, r)
+				return
+			}
+		}
+
 		// accessToken 쿠키 추출
 		cookie, err := r.Cookie("accessToken")
 
