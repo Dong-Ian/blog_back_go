@@ -19,7 +19,7 @@ func CorsMiddlewares(next http.Handler) http.Handler {
 
 		// Origin 헤더가 없으면 기본 설정
 		if origin == "" {
-			origin = "unknown"
+			origin = "http://localhost:3000"
 		}
 
 		// 요청의 Origin이 허용된 Origin 목록에 있는지 확인
