@@ -107,16 +107,16 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 	accessTokenCookie := http.Cookie{
 		Name:   "accessToken",
 		Value:  accessToken,
-		Secure: true,
-		// HttpOnly: true,
+		Secure: false, // 로컬 환경에서는 FALSE, 실제에서는 TRUE
+		// HttpOnly: true, // 로컬 환경에서는 FALSE, 실제에서는 TRUE
 		SameSite: http.SameSiteNoneMode,
 	}
 
 	refreshTokenCookie := http.Cookie{
 		Name:   "refreshToken",
 		Value:  refreshToken,
-		Secure: true,
-		// HttpOnly: true,
+		Secure: false, // 로컬 환경에서는 FALSE, 실제에서는 TRUE
+		// HttpOnly: true, // 로컬 환경에서는 FALSE, 실제에서는 TRUE
 		SameSite: http.SameSiteNoneMode,
 	}
 
