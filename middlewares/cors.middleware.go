@@ -20,7 +20,7 @@ func CorsHanlder() *cors.Cors {
 		AllowedHeaders:   []string{"Origin", "Accept", "Content-Type", "X-Requested-With", "Authorization"},
 		AllowCredentials: true,
 		MaxAge:           86400,
-		Debug:            false,
+		Debug:            true,
 	})
 
 	return corHandler
