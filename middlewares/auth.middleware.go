@@ -42,7 +42,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// 제외할 경로는 바로 다음 핸들러로 넘김
 		for _, route := range excludeRouteList {
-			if strings.HasPrefix(r.URL.Path, route) {
+			if r.URL.Path == route {
+				log.Printf("Found Match Route: %s", route)
 				next.ServeHTTP(w, r)
 				return
 			}
