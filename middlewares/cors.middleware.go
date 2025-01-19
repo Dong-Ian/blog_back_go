@@ -17,7 +17,7 @@ func CorsHanlder() *cors.Cors {
 	corHandler := cors.New(cors.Options{
 		AllowedOrigins:   originList,
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodOptions},
-		AllowedHeaders:   []string{"Origin", "Accept", "Content-Type", "X-Requested-With"},
+		AllowedHeaders:   []string{"Origin", "Accept", "Content-Type", "X-Requested-With", "Authorization"},
 		AllowCredentials: true,
 		MaxAge:           86400,
 		Debug:            false,
