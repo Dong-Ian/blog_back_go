@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/donghquinn/blog_back_go/auth"
+	"github.com/donghquinn/blog_back_go/response"
 )
 
 // 사용자 정의 키 타입을 사용하여 컨텍스트 충돌 방지
@@ -46,15 +47,21 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		// accessToken 쿠키 추출
 		cookie, err := r.Cookie("accessToken")
-
 		if err != nil {
 			if err == http.ErrNoCookie {
-				// 쿠키가 없을 경우 401 Unauthorized 응답
-				http.Error(w, "Unauthorized: No access token", http.StatusUnauthorized)
+				response.Response(w, response.CommonResponseWithMessage{
+					Status:  http.StatusUnauthorized,
+					Code:    "AUTH001",
+					Message: "No access token provided",
+				})
 				return
 			}
 			// 다른 쿠키 에러 처리
-			http.Error(w, "Bad Request", http.StatusBadRequest)
+			response.Response(w, response.CommonResponseWithMessage{
+				Status:  http.StatusUnauthorized,
+				Code:    "AUTH002",
+				Message: "Invalid cookie format",
+			})
 			return
 		}
 
@@ -63,10 +70,24 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		userId, userEmail, userStatus, blogId, validateErr := auth.ValidateJwtTokenFromString(accessToken)
 
 		if validateErr != nil {
-			http.Error(w, "Unauthorized: Invalid token", http.StatusUnauthorized)
+			// 토큰 만료에 대한 응답
+			if strings.Contains(validateErr.Error(), "token expired") {
+				response.Response(w, response.CommonResponseWithMessage{
+					Status:  http.StatusUnauthorized,
+					Code:    "AUTH003",
+					Message: "Token expired",
+				})
+				return
+			}
+
+			// 일반적인 JWT 검증 실패 응답
+			response.Response(w, response.CommonResponseWithMessage{
+				Status:  http.StatusUnauthorized,
+				Code:    "AUTH004",
+				Message: "Invalid token",
+			})
 			return
 		}
-
 		// 사용자 정보를 구조체로 생성
 		user := User{
 			UserId:     userId,
