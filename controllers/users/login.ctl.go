@@ -104,6 +104,21 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	accessTokenCookie := http.Cookie{
+		Name:     "accessToken",
+		Value:    accessToken,
+		HttpOnly: true,
+	}
+
+	refreshTokenCookie := http.Cookie{
+		Name:     "refreshToken",
+		Value:    refreshToken,
+		HttpOnly: true,
+	}
+
+	res.Header().Set("Set-Cookie", accessTokenCookie.String())
+	res.Header().Add("Set-Cookie", refreshTokenCookie.String())
+
 	dto.SetTokenResponse(res, 200, "01", types.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken})
 }
 
