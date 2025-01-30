@@ -31,6 +31,9 @@ type UserSearchPasswordRequest struct {
 }
 
 type LoginResponse struct {
+	Status       int    `json:"status"`
+	Code         string `json:"code"`
+	Message      string `json:"message"`
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
 }
@@ -57,6 +60,7 @@ type LoginRedisStruct struct {
 	Email      string `json:"email"`
 	UserStatus string `json:"userStatus"`
 	UserId     string `json:"userId"`
+	BlogId     string `json:"blogId"`
 }
 
 // 유저 프로필 쿼리 결과
