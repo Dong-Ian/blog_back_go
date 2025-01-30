@@ -299,8 +299,11 @@ func GetRefreshTokenFromCookie(request *http.Request) (string, error) {
 	refreshToken, refreshErr := request.Cookie("refreshToken")
 
 	if refreshErr != nil {
+		log.Printf("Get Refresh Token Error: %v", refreshErr)
 		return "", refreshErr
 	}
+
+	log.Printf("Giot Refresh Token : %s", refreshToken)
 
 	return refreshToken.Value, nil
 }
