@@ -38,8 +38,6 @@ var excludeRouteList = []string{
 // AuthMiddleware는 accessToken 쿠키를 추출하고 JWT를 검증하는 미들웨어입니다.
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("Auth Middleware: %s", r.URL.Path)
-
 		// 제외할 경로는 바로 다음 핸들러로 넘김
 		for _, route := range excludeRouteList {
 			if r.URL.Path == route {
@@ -52,11 +50,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		// accessToken 쿠키 추출
 		cookie, err := r.Cookie("accessToken")
 
-		log.Printf("Cookie: %s", cookie)
-
 		if err != nil {
-			log.Printf("Get Cookie Error :%v", err)
-
 			if err == http.ErrNoCookie {
 				response.Response(w, response.CommonResponseWithMessage{
 					Status:  http.StatusUnauthorized,
