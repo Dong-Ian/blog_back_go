@@ -1,4 +1,4 @@
-FROM golang:alpine3.19 as base
+FROM golang:alpine3.23 as base
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -17,7 +17,7 @@ RUN go mod download
 RUN go build -o backend .
 
 
-FROM golang:alpine3.19 as release
+FROM golang:alpine3.23 as release
 
 WORKDIR /home/node
 
