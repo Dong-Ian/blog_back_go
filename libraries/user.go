@@ -185,7 +185,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 
 	return types.LoginResponse{
 		Status:       200,
-		Code:         "01",
+		Code:         "0000",
 		Message:      "SUCCESS",
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,

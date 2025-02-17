@@ -13,10 +13,10 @@ import (
 )
 
 func DefaultController(res http.ResponseWriter, req *http.Request) {
-	_, _, _, _, err := auth.ValidateJwtToken(req)
+	_, ok := middlewares.GetUserFromContext(req.Context())
 
-	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", err)
+	if !ok {
+		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
 
 		return
 	}
