@@ -1,9 +1,9 @@
-FROM golang:1.24rc2-alpine3.21 as base
+FROM golang:1.24.0-alpine3.20 AS base
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
-    GOARCH=amd64
+    GOARCH=arm64
 
     
 FROM base as builder
@@ -17,7 +17,7 @@ RUN go mod download
 RUN go build -o backend .
 
 
-FROM golang:1.24rc2-alpine3.21 as release
+FROM golang:1.24.0-alpine3.20 AS RUNNER
 
 WORKDIR /home/node
 
