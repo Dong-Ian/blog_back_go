@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/middlewares"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -15,7 +15,12 @@ func RegisterPostController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -25,25 +30,50 @@ func RegisterPostController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &registerPostRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Parsing Request Body", parseErr)
+		log.Printf("[POST_REGIST] Parsing Request Body: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Parsing Request Body",
+			Result:  false,
+		})
+
 		return
 	}
 
 	postSeq, insertErr := InsertPostData(registerPostRequest, user.UserId, user.BlogId)
 
 	if insertErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Insert Post Data Error", insertErr)
+		log.Printf("[POST_REGIST] Insert Post Data Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Insert Post Data Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetPostRegisterResponse(res, 200, "01", postSeq)
+	response.Response(res, types.ResponsePostRegisterType{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+		PostSeq: postSeq,
+	})
 }
 
 func DeletePostController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -54,18 +84,36 @@ func DeletePostController(res http.ResponseWriter, req *http.Request) {
 
 	if parseErr != nil {
 		log.Printf("[DELETE] Parse Delete Request Error: %v", parseErr)
-		dto.SetErrorResponse(res, 402, "02", "Delete Post Error", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Delete Post Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	deleteErr := DeletePost(deleteRequest.PostSeq, user.BlogId)
 
 	if deleteErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Delete Post Error", deleteErr)
+		log.Printf("[DELETE] Parse Delete Request Error: %v", deleteErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Delete Post Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCESS",
+		Result:  true,
+	})
 }
 
 // 고정 게시글 데이터 업데이트
@@ -73,7 +121,12 @@ func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -84,18 +137,38 @@ func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
 
 	if parseErr != nil {
 		log.Printf("[PIN] Parse Pin Request Error: %v", parseErr)
-		dto.SetErrorResponse(res, 402, "02", "Update Pin Error", parseErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Update Pin Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	updateErr := UpdatePinPost(updatePinRequest, user.BlogId)
 
 	if updateErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Update Pin Error", updateErr)
+		log.Printf("[PIN] Update Pin Error: %v", updateErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Update Pin Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
 }
 
 // 고정 게시글 해제 데이터 업데이트
@@ -103,7 +176,12 @@ func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -114,16 +192,33 @@ func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request) {
 
 	if parseErr != nil {
 		log.Printf("[PIN] Parse Un-Pin Request Error: %v", parseErr)
-		dto.SetErrorResponse(res, 402, "02", "Update Un-Pin Error", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Parse Un-Pin Request Error",
+			Result:  false,
+		})
 		return
 	}
 
 	updateErr := UpdateUnPinPost(updateUnPinRequest, user.BlogId)
 
 	if updateErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Update Un-Pin Error", updateErr)
+		log.Printf("[PIN] Parse Un-Pin Request Error: %v", updateErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Update Un-Pin Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
 }

@@ -6,10 +6,10 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	"github.com/donghquinn/blog_back_go/middlewares"
 	queries "github.com/donghquinn/blog_back_go/queries/upload"
+	"github.com/donghquinn/blog_back_go/response"
 )
 
 // 프로필 이미지 업로드
@@ -17,7 +17,12 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -26,7 +31,13 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 	file, handler, fileErr := GetImagefileFromRequest(res, req)
 
 	if fileErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "File Getting Error", fileErr)
+		log.Printf("[UPLOAD_PROFILE] File Getting Error: %v", fileErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "File Getting Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -35,7 +46,13 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 	tempFile, tempErr := CreateFileImage(res, req, file, handler)
 
 	if tempErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Create Temp Image File", tempErr)
+		log.Printf("[UPLOAD_PROFILE] Create Temp Image File Error: %v", fileErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Create Temp Image File",
+			Result:  false,
+		})
 
 		return
 	}
@@ -46,7 +63,14 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 	_, uploadErr := database.UploadImage(handler.Filename, tempFile.Name(), contentType)
 
 	if uploadErr != nil {
-		dto.SetErrorResponse(res, 404, "04", "Upload Image Error", uploadErr)
+		log.Printf("[UPLOAD_PROFILE] Upload Image Error: %v", uploadErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  404,
+			Code:    "04",
+			Message: "Upload Image Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -65,7 +89,13 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 		contentType)
 
 	if insertErr != nil {
-		dto.SetErrorResponse(res, 405, "05", "Insert Image Info Error", insertErr)
+		log.Printf("[UPLOAD_PROFILE] Insert Image Info Error: %v", insertErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  405,
+			Code:    "05",
+			Message: "Insert Image Info Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -76,10 +106,21 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 
 	if removeErr != nil {
 		log.Printf("[UPLOAD] Remove Saved Image Error: %v", removeErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  406,
+			Code:    "06",
+			Message: "Remove Image Error",
+			Result:  false,
+		})
 
-		dto.SetErrorResponse(res, 406, "06", "Remove Image Error", removeErr)
 		return
 	}
 
-	dto.SetResponseWithMessage(res, 200, "01", "Successfully Image Uploaded")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
+
 }

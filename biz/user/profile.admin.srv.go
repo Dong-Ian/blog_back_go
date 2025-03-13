@@ -5,7 +5,7 @@ import (
 
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
-	"github.com/donghquinn/blog_back_go/types"
+	types "github.com/donghquinn/blog_back_go/types/user"
 )
 
 func GetUserProfile(blogId string, userId string) (types.UserProfileDataResponseType, error) {

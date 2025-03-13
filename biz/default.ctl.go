@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/donghquinn/blog_back_go/auth"
-	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/middlewares"
-	"github.com/donghquinn/blog_back_go/types"
+	"github.com/donghquinn/blog_back_go/response"
+	types "github.com/donghquinn/blog_back_go/types/user"
 	"github.com/google/uuid"
 )
 
@@ -16,19 +16,35 @@ func DefaultController(res http.ResponseWriter, req *http.Request) {
 	_, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
 
-	dto.SetResponseWithMessage(res, 200, "01", "Hello World")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "Hello, World!",
+		Result:  true,
+	})
 }
 
 func RefreshController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -37,21 +53,43 @@ func RefreshController(res http.ResponseWriter, req *http.Request) {
 
 	if uuidErr1 != nil {
 		log.Printf("[REDIS] Create UUID Error: %v", uuidErr1)
-		dto.SetErrorResponse(res, 406, "06", "Create Uuid Error", uuidErr1)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Create UUID Error",
+			Result:  false,
+		})
+
 	}
 
 	uuid2, uuidErr2 := uuid.NewUUID()
 
 	if uuidErr2 != nil {
 		log.Printf("[REDIS] Create UUID Error: %v", uuidErr2)
-		dto.SetErrorResponse(res, 406, "06", "Create Uuid Error", uuidErr2)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  406,
+			Code:    "06",
+			Message: "Create UUID Error",
+			Result:  false,
+		})
+
 	}
 
 	// JWT 토큰 생성
 	accessToken, tokenErr := auth.CreateJwtToken(user.UserId, uuid1.String(), user.UserEmail, user.UserStatus, user.BlogId, 3*time.Hour)
 
 	if tokenErr != nil {
-		dto.SetErrorResponse(res, 407, "07", "Create JWT Token Error", tokenErr)
+		log.Printf("[REFRESH] Create Token Error: %v", tokenErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  407,
+			Code:    "07",
+			Message: "Create Token Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -59,13 +97,34 @@ func RefreshController(res http.ResponseWriter, req *http.Request) {
 	refreshToken, tokenErr := auth.CreateJwtToken(user.UserId, uuid2.String(), user.UserEmail, user.UserStatus, user.BlogId, 7*24*time.Hour)
 
 	if tokenErr != nil {
-		dto.SetErrorResponse(res, 407, "07", "Create JWT Token Error", tokenErr)
+		log.Printf("[REFRESH] Create Refresh Token Error: %v", tokenErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  408,
+			Code:    "08",
+			Message: "Create Refresh Token Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetTokenResponse(res, 200, "01", types.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken})
+	response.Response(res, types.LoginResponse{
+		Status:       http.StatusOK,
+		Code:         "01",
+		Message:      "SUCCESS",
+		Result:       true,
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	})
 }
 
 func CorsTestController(res http.ResponseWriter, req *http.Request) {
-	dto.SetResponseWithMessage(res, 200, "01", "Hi")
+
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "Hi",
+		Result:  true,
+	})
 }

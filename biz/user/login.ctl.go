@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/response"
-	"github.com/donghquinn/blog_back_go/types"
+	types "github.com/donghquinn/blog_back_go/types/user"
+
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
@@ -18,7 +18,12 @@ func LoginController(res http.ResponseWriter, req *http.Request) {
 	if parseErr != nil {
 		log.Printf("[LOGIN] Parse Body Error: %v", parseErr)
 
-		dto.SetErrorResponse(res, 401, "01", "SignUp Parsing Error", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Body Error",
+			Result:  false,
+		})
 		return
 	}
 

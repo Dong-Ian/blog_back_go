@@ -1,8 +1,10 @@
 package types
 
 type ResponseCategoryResponseType struct {
-	Code string `json:"code"`
-	Result bool `json:"result"`
+	Code         string   `json:"code"`
+	Status       int      `json:"status"`
+	Message      string   `json:"message"`
+	Result       bool     `json:"result"`
 	CategoryList []string `json:"categoryList"`
 }
 

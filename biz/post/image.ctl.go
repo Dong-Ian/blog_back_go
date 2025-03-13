@@ -1,10 +1,11 @@
 package post
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -15,13 +16,27 @@ func GetImageUrl(res http.ResponseWriter, req *http.Request) {
 	err := utils.DecodeBody(req, &getPostRequest)
 
 	if err != nil {
-		dto.SetErrorResponse(res, 401, "01", "Request Is Not Valid", err)
+		log.Printf("[GET_IMAGE] Request Is Not Valid: %v", err)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Request Is Not Valid",
+			Result:  false,
+		})
+
 	}
 
 	imageData, imageErr := GetImageData(getPostRequest.PostSeq)
 
 	if imageErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Image Data Error", imageErr)
+		log.Printf("[GET_IMAGE] Image Data Error: %v", err)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Image Data Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -32,7 +47,14 @@ func GetImageUrl(res http.ResponseWriter, req *http.Request) {
 		url, getErr := database.GetImageUrl(data.ObjectName, data.FileFormat)
 
 		if getErr != nil {
-			dto.SetErrorResponse(res, 403, "03", "Get Presigned URL Error", getErr)
+			log.Printf("[GET_IMAGE] Get Presigned URL Error: %v", err)
+			response.Response(res, response.CommonResponseWithMessage{
+				Status:  403,
+				Code:    "03",
+				Message: "Get Presigned URL Error",
+				Result:  false,
+			})
+
 			return
 		}
 
@@ -42,5 +64,12 @@ func GetImageUrl(res http.ResponseWriter, req *http.Request) {
 	// responseData := types.ViewImageUrl {
 	// 	Urls: urlArray}
 
-	dto.SetImageUrlResponse(res, 200, "01", urlArray)
+	response.Response(res, types.ResponseGetImageUrlType{
+		Status:      http.StatusOK,
+		Code:        "01",
+		Message:     "Get Presigned URL Error",
+		ImageResult: urlArray,
+		Result:      true,
+	})
+
 }

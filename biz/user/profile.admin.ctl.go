@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/middlewares"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/user"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -17,7 +17,13 @@ func UpdateProfileController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -25,18 +31,37 @@ func UpdateProfileController(res http.ResponseWriter, req *http.Request) {
 
 	if parseErr != nil {
 		log.Printf("[PROFILE] Change Profile Request Error: %v", parseErr)
-		dto.SetErrorResponse(res, 402, "02", "Change Profile Request Error", parseErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Change Profile Request Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	updateErr := ChangeProfile(updateProfile, user.UserId, user.BlogId)
 
 	if updateErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Insert Profile Update Error", updateErr)
+		log.Printf("[UPLOAD_PROFILE] Insert Profile Update Error: %v", updateErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Insert Profile Update Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
 }
 
 // 색상 변경 컨트롤러
@@ -44,7 +69,13 @@ func UpdateColorController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -55,18 +86,38 @@ func UpdateColorController(res http.ResponseWriter, req *http.Request) {
 
 	if parseErr != nil {
 		log.Printf("[COLOR] Change Color Request Error: %v", parseErr)
-		dto.SetErrorResponse(res, 402, "02", "Change Color Request Error", parseErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Chnage Color Request Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	changeColorErr := ChangeColor(changeColorRequest, user.UserId, user.BlogId)
 
 	if changeColorErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Change Color Error", changeColorErr)
+		log.Printf("[UPLOAD_PROFILE] Change Color Error: %v", changeColorErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Change Color Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
+
 }
 
 // 블로그 타이틀 변경 컨트롤러
@@ -74,7 +125,12 @@ func UpdateTitleController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -85,16 +141,35 @@ func UpdateTitleController(res http.ResponseWriter, req *http.Request) {
 
 	if parseErr != nil {
 		log.Printf("[TITLE] Change Title Request Error: %v", parseErr)
-		dto.SetErrorResponse(res, 402, "02", "Change Title Request Error", parseErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Chnage Title Requeset Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	changeTitleErr := ChangeBlogTitle(changeTitleRequest, user.UserId, user.BlogId)
 
 	if changeTitleErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Change Title Error", changeTitleErr)
+		log.Printf("[UPLOAD_PROFILE] File Getting Error: %v", changeTitleErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Change Title Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
 }

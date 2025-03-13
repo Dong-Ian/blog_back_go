@@ -6,10 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/posts"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -21,7 +21,15 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &postContentsRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse View Specific Post Contents Error", parseErr)
+		log.Printf("[POST_CONTENT] Parse Request ERror: %v", parseErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse View Specific Post Contents Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -29,14 +37,30 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 	queryResult, queryErr := GetPostData(postContentsRequest.PostSeq, postContentsRequest.BlogId)
 
 	if queryErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Query Specific Contents Error", queryErr)
+		log.Printf("[POST_CONTENT] Query Specific Contents Error: %v", queryErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Query Specific Contents Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	imageData, imageErr := GetImageData(postContentsRequest.PostSeq)
 
 	if imageErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Image Data Error", imageErr)
+		log.Printf("[POST_CONTENT] Image Data Error: %v", queryErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Image Data Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -48,7 +72,15 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 			url, getErr := database.GetImageUrl(data.ObjectName, data.FileFormat)
 
 			if getErr != nil {
-				dto.SetErrorResponse(res, 404, "04", "Get Presigned URL Error", getErr)
+				log.Printf("[POST_CONTENT] Get Presigned URL Error: %v", getErr)
+
+				response.Response(res, response.CommonResponseWithMessage{
+					Status:  404,
+					Code:    "04",
+					Message: "Get Presigned URL Error",
+					Result:  false,
+				})
+
 				return
 			}
 
@@ -69,7 +101,14 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 		jsonErr := json.Unmarshal([]byte(*queryResult.Tags), &tagsArray)
 		if jsonErr != nil {
 			log.Printf("[CONTENTS] JSON Unmarsh tag array Error: %v", jsonErr)
-			dto.SetErrorResponse(res, 405, "05", "Unmarshing Tags Error", jsonErr)
+
+			response.Response(res, response.CommonResponseWithMessage{
+				Status:  405,
+				Code:    "05",
+				Message: "Unmarshing Tags Error",
+				Result:  false,
+			})
+
 			return
 		}
 	} else {
@@ -99,7 +138,14 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 		ModDate:      queryResult.ModDate,
 	}
 
-	dto.SetPostContentsResponse(res, 200, "01", postContentsData)
+	response.Response(res, types.ResponsePostContentsType{
+		Status:   http.StatusOK,
+		Code:     "01",
+		Message:  "SUCCESS",
+		PostList: postContentsData,
+		Result:   true,
+	})
+
 }
 
 // 게시글 번호에 맞는 file 데이터 전부 가져오기

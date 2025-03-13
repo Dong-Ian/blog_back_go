@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
-	"github.com/donghquinn/blog_back_go/types"
+	"github.com/donghquinn/blog_back_go/response"
+	types "github.com/donghquinn/blog_back_go/types/user"
 	"github.com/donghquinn/blog_back_go/utils"
 	"github.com/google/uuid"
 )
@@ -22,7 +22,13 @@ func SignupController(res http.ResponseWriter, req *http.Request) {
 	if parseErr != nil {
 		log.Printf("[SIGN_UP] Parse Body Error: %v", parseErr)
 
-		dto.SetErrorResponse(res, 401, "01", "SignUp Parsing Error", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -32,22 +38,46 @@ func SignupController(res http.ResponseWriter, req *http.Request) {
 	// log.Printf("[SIGNUP] decodedEmail: %s, decodedName: %s, decodedPassword: %s", decodedEmail, decodedName, decodedPassword)
 
 	if decodeErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Decode Received User Info", decodeErr)
+		log.Printf("[LOGIN] Not Found User Error: %v", decodeErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Decode Received User Info Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	connect, dbErr := database.InitDatabaseConnection()
 
 	if dbErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Database Connect Error", dbErr)
+		log.Printf("[LOGIN] Not Found User Error: %v", dbErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Database Connect Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	// 암호화해서 업로드
-	userId, encodedEmail, encodedName, encodedPassword, enocodErr := encodeSignupUserInfo(decodedEmail, decodedPassword, decodedName)
+	userId, encodedEmail, encodedName, encodedPassword, encodeErr := encodeSignupUserInfo(decodedEmail, decodedPassword, decodedName)
 
-	if enocodErr != nil {
-		dto.SetErrorResponse(res, 404, "04", "Encoding Process Error", enocodErr)
+	if encodeErr != nil {
+		log.Printf("[LOGIN] Not Found User Error: %v", encodeErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  404,
+			Code:    "04",
+			Message: "Encoding Process Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -56,11 +86,24 @@ func SignupController(res http.ResponseWriter, req *http.Request) {
 	_, insertErr := connect.InsertQuery(queries.InsertSignupUser, userId, encodedEmail, encodedPassword, encodedName, signupRequestBody.BlogId)
 
 	if insertErr != nil {
-		dto.SetErrorResponse(res, 405, "05", "Insert New User Info Error", insertErr)
+		log.Printf("[LOGIN] Insert New User Info Error: %v", insertErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  405,
+			Code:    "05",
+			Message: "Insert New User Info Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
 }
 
 func decodeSignupUserRequest(signupRequest types.UserSignupRequest) (string, string, string, error) {

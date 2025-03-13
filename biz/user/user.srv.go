@@ -1,17 +1,15 @@
 package user
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/donghquinn/blog_back_go/auth"
-	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
-	"github.com/donghquinn/blog_back_go/types"
+	types "github.com/donghquinn/blog_back_go/types/user"
 	"github.com/google/uuid"
 )
 
@@ -21,7 +19,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 
 	if decodeErr != nil {
 		log.Printf("[LOGIN] Decode Requested User Info Error: %v", decodeErr)
-		dto.SetErrorResponse(res, 402, "02", "Decode Login Request", decodeErr)
+
 		return types.LoginResponse{
 			Status:  402,
 			Code:    "02",
@@ -33,7 +31,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 	queryResult, queryErr := getUserInfo(loginRequst.Email)
 
 	if queryErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Query User Info Error", queryErr)
+
 		return types.LoginResponse{
 			Status:  403,
 			Code:    "03",
@@ -46,7 +44,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 
 	if matchErr != nil {
 		log.Printf("[LOGIN] Match Hashed Password Error: %v", matchErr)
-		dto.SetErrorResponse(res, 404, "04", "Matching User Password Error", matchErr)
+
 		return types.LoginResponse{
 			Status:  404,
 			Code:    "04",
@@ -57,7 +55,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 	// 패스워드 일치하지 않을 때
 	if !isMatch {
 		log.Printf("[LOGIN] Password Does Not Match: %v", isMatch)
-		dto.SetErrorResponse(res, 405, "05", "Password Does not Match", fmt.Errorf("password does not match"))
+
 		return types.LoginResponse{
 			Status:  405,
 			Code:    "05",
@@ -93,7 +91,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 	accessToken, tokenErr := auth.CreateJwtToken(queryResult.UserId, uuid1.String(), decodeEmail, queryResult.UserStatus, queryResult.BlogId, 3*time.Hour)
 
 	if tokenErr != nil {
-		dto.SetErrorResponse(res, 407, "07", "Create JWT Token Error", tokenErr)
+
 		return types.LoginResponse{
 			Status:  407,
 			Code:    "07",
@@ -142,7 +140,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 
 		if deletErr != nil {
 			log.Printf("[JWT] Delete Token Error: %v", deletErr)
-			dto.SetErrorResponse(res, 406, "06", "Delete Redis Key Error", deletErr)
+
 			return types.LoginResponse{
 				Status:  407,
 				Code:    "07",

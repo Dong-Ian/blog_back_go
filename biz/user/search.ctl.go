@@ -1,13 +1,14 @@
 package user
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
-	"github.com/donghquinn/blog_back_go/types"
+	"github.com/donghquinn/blog_back_go/response"
+	types "github.com/donghquinn/blog_back_go/types/user"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
@@ -15,10 +16,18 @@ import (
 func SearchEmailController(res http.ResponseWriter, req *http.Request) {
 	var findEmailRequest types.UserSearchEmailRequest
 
-	parsErr := utils.DecodeBody(req, &findEmailRequest)
+	parseErr := utils.DecodeBody(req, &findEmailRequest)
 
-	if parsErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse Find Email Request Body", parsErr)
+	if parseErr != nil {
+		log.Printf("[LOGIN] Parse Body Error: %v", parseErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -26,7 +35,15 @@ func SearchEmailController(res http.ResponseWriter, req *http.Request) {
 	foundUserEmail, findErr := getUserEmail(findEmailRequest.Name)
 
 	if findErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Could Not Found User Email Error", findErr)
+		log.Printf("[LOGIN] No User Found Error: %v", findErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "No User Found Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -34,11 +51,25 @@ func SearchEmailController(res http.ResponseWriter, req *http.Request) {
 	decodedEmail, decodedErr := crypt.DecryptString(foundUserEmail.UserEmail)
 
 	if decodedErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Decoding Queried Email Error", decodedErr)
+		log.Printf("[LOGIN] Parse Body Error: %v", decodedErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Decode Email Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetEmailResponse(res, 200, "01", decodedEmail)
+	response.Response(res, types.ResponseFoundEmailType{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+		Email:   decodedEmail,
+	})
 }
 
 func getUserEmail(userName string) (types.SelectUserSearchEmailResult, error) {
@@ -69,7 +100,15 @@ func SearchPasswordController(res http.ResponseWriter, req *http.Request) {
 	parsErr := utils.DecodeBody(req, &findEmailRequest)
 
 	if parsErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse Find Email Request Body", parsErr)
+		log.Printf("[LOGIN] Parse Body Error: %v", parsErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -77,11 +116,25 @@ func SearchPasswordController(res http.ResponseWriter, req *http.Request) {
 	foundUserPassword, findErr := getUserPassword(findEmailRequest.Email, findEmailRequest.Name)
 
 	if findErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Could Not Found User Email Error", findErr)
+		log.Printf("[LOGIN] Not Found User Error: %v", findErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Not User Found Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetEmailResponse(res, 200, "01", foundUserPassword.UserPassword)
+	response.Response(res, types.ResponseFoundPasswdType{
+		Status:   http.StatusOK,
+		Code:     "01",
+		Message:  "SUCCESS",
+		Result:   true,
+		Password: foundUserPassword.UserPassword,
+	})
 }
 
 func getUserPassword(userEmail string, userName string) (types.SelectUserSearchPasswordResult, error) {

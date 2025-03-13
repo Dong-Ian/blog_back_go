@@ -4,4 +4,5 @@ type CommonResponseWithMessage struct {
 	Status  int    `json:"status"`
 	Code    string `json:"code"`
 	Message string `json:"message"`
+	Result  bool   `json:"result"`
 }

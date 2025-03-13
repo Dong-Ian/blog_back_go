@@ -1,9 +1,10 @@
 package post
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
 
 	"github.com/donghquinn/blog_back_go/middlewares"
@@ -15,7 +16,12 @@ func EditPostController(res http.ResponseWriter, req *http.Request) {
 	user, ok := middlewares.GetUserFromContext(req.Context())
 
 	if !ok {
-		dto.SetErrorResponse(res, 401, "01", "JWT Verifying Error", nil)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "JWT Verifying Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -25,16 +31,35 @@ func EditPostController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &editPostRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Parse Request Body Error", parseErr)
+		log.Printf("[POST_EDIT] Parse Request Body Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Parse Request Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	editErr := EditPost(editPostRequest, user.UserId, user.BlogId)
 
 	if editErr != nil {
-		dto.SetErrorResponse(res, 403, "03", "Edit Post Data Error", editErr)
+		log.Printf("[POST_EDIT] Edit Post Data Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Edit Post Data Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetResponse(res, 200, "01")
+	response.Response(res, response.CommonResponseWithMessage{
+		Status:  http.StatusOK,
+		Code:    "01",
+		Message: "SUCCESS",
+		Result:  true,
+	})
 }

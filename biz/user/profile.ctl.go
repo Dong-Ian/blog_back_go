@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/user"
 
 	"github.com/donghquinn/blog_back_go/utils"
@@ -19,14 +19,27 @@ func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
 	if parseErr != nil {
 		log.Printf("[LOGIN] Parse Body Error: %v", parseErr)
 
-		dto.SetErrorResponse(res, 401, "01", "SignUp Parsing Error", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	profile, querErr := GetUserProfile(getUserProfileRequest.BlogId, getUserProfileRequest.UserId)
 
 	if querErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Profile query Error", querErr)
+		log.Printf("[UPLOAD_PROFILE] Profile Query Error: %v", querErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Profile Query Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -34,7 +47,14 @@ func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
 
 	if nameErr != nil {
 		log.Printf("[PROFILE] Decode User Name: %v", nameErr)
-		dto.SetErrorResponse(res, 403, "03", "Decode User Name Error", nameErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Decode User Name Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -42,12 +62,25 @@ func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
 
 	if emailErr != nil {
 		log.Printf("[PROFILE] Decode User Email: %v", emailErr)
-		dto.SetErrorResponse(res, 404, "04", "Decode User Email Error", emailErr)
+
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  404,
+			Code:    "04",
+			Message: "Decode User Email Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	profile.UserName = decodedName
 	profile.UserEmail = decodedEmail
 
-	dto.SetProfileResponse(res, 200, "01", profile)
+	response.Response(res, types.ResponseProfileType{
+		Status:        http.StatusOK,
+		Code:          "01",
+		Message:       "SUCCESS",
+		Result:        true,
+		ProfileResult: profile,
+	})
 }

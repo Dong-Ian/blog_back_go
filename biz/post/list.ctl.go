@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
+	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -21,14 +21,27 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &getPostListRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse View Specific Post Contents Error", parseErr)
+		log.Printf("[POST_EDIT] Parse View Specific Post Contents Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse View Specific Post Contents Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	unpinnedQueryResult, queryErr := QueryUnpinnedPostData(getPostListRequest.BlogId, page, size)
 
 	if queryErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Query Post Data Error", queryErr)
+		log.Printf("[POST_EDIT] Query Post Data Error: %v", queryErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Query Post Data Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -36,7 +49,13 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 	pinnedQueryResult, pinnedErr := QueryisPinnedPostData(getPostListRequest.BlogId)
 
 	if pinnedErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Query Post Data Error", pinnedErr)
+		log.Printf("[POST_EDIT] Query Post Data Error: %v", pinnedErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Pin Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -44,7 +63,13 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 	unpinnedTotalCount, unpinnedTotalCountErr := GetTotalUnPinnedPostCount(getPostListRequest.BlogId)
 
 	if unpinnedTotalCountErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Query Post Data Error", unpinnedTotalCountErr)
+		log.Printf("[POST_EDIT] Query Post Data Error: %v", unpinnedTotalCountErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  404,
+			Code:    "04",
+			Message: "UnPin Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -57,7 +82,13 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 
 		if decodeErr != nil {
 			log.Printf("[LIST] Decoding User Name Error: %v", decodeErr)
-			dto.SetErrorResponse(res, 403, "03", "Decode Name Error", decodeErr)
+			response.Response(res, response.CommonResponseWithMessage{
+				Status:  405,
+				Code:    "05",
+				Message: "Decode Name Error",
+				Result:  false,
+			})
+
 			return
 		}
 
@@ -80,7 +111,13 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 
 		if decodeErr != nil {
 			log.Printf("[LIST] Decoding User Name Error: %v", decodeErr)
-			dto.SetErrorResponse(res, 403, "03", "Decode Name Error", decodeErr)
+			response.Response(res, response.CommonResponseWithMessage{
+				Status:  406,
+				Code:    "06",
+				Message: "Decode Name Error",
+				Result:  false,
+			})
+
 			return
 		}
 
@@ -97,7 +134,18 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 		})
 	}
 
-	dto.SetPostListResponse(res, 200, "01", unpinnedData, pinnedData, unpinnedTotalCount.Count, page, size)
+	response.Response(res, types.ResponsePostListType{
+		Status:           http.StatusOK,
+		Code:             "01",
+		Message:          "SUCCESS",
+		Result:           true,
+		PinnedPostList:   pinnedData,
+		UnpinnedPostList: unpinnedData,
+		PostCount:        unpinnedTotalCount.Count,
+		Page:             page,
+		Size:             size,
+	})
+
 }
 
 // 전체 포스트 가져오기 - 페이징
@@ -109,14 +157,27 @@ func GetPinnedPostController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &getPinnedPostRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse View Specific Post Contents Error", parseErr)
+		log.Printf("[POST_PINNED] Parse View Specific Post Contents Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse View Specific Post Contents Error",
+			Result:  false,
+		})
+
 		return
 	}
 
 	pinnedQueryResult, pinnedErr := QueryisPinnedPostList(getPinnedPostRequest.BlogId, page, size)
 
 	if pinnedErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Query Post Data Error", pinnedErr)
+		log.Printf("[POST_PINNED] Query Post Data Error: %v", pinnedErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Query Post Data Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -124,7 +185,13 @@ func GetPinnedPostController(res http.ResponseWriter, req *http.Request) {
 	pinnedTotalCount, pinnedTotalCountErr := GetTotalPinnedPostCount(getPinnedPostRequest.BlogId)
 
 	if pinnedTotalCountErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Query Post Data Error", pinnedTotalCountErr)
+		log.Printf("[POST_PINNED] Query Post Data Error: %v", pinnedTotalCountErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  403,
+			Code:    "03",
+			Message: "Query Post Data Error",
+			Result:  false,
+		})
 
 		return
 	}
@@ -137,7 +204,13 @@ func GetPinnedPostController(res http.ResponseWriter, req *http.Request) {
 
 		if decodeErr != nil {
 			log.Printf("[LIST] Decoding User Name Error: %v", decodeErr)
-			dto.SetErrorResponse(res, 402, "02", "Decode Name Error", decodeErr)
+			response.Response(res, response.CommonResponseWithMessage{
+				Status:  403,
+				Code:    "03",
+				Message: "Decode Name Error",
+				Result:  false,
+			})
+
 			return
 		}
 
@@ -154,7 +227,16 @@ func GetPinnedPostController(res http.ResponseWriter, req *http.Request) {
 		})
 	}
 
-	dto.SetPinnedPostListResponse(res, 200, "01", pinnedData, pinnedTotalCount.Count, page, size)
+	response.Response(res, types.ResponsePinnedPostListType{
+		Status:         http.StatusOK,
+		Code:           "01",
+		Message:        "SUCCESS",
+		Result:         true,
+		PinnedPostList: pinnedData,
+		PostCount:      pinnedTotalCount.Count,
+		Page:           page,
+		Size:           size,
+	})
 }
 
 // 태그로 포스트 찾기
@@ -164,7 +246,14 @@ func GetPostsByTagController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &getPostByTagRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse Request Body Error", parseErr)
+		log.Printf("[LIST] Parse Request Body Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Request Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -174,11 +263,25 @@ func GetPostsByTagController(res http.ResponseWriter, req *http.Request) {
 	postList, totalPostCount, postErr := GetPostByTag(getPostByTagRequest, page, size)
 
 	if postErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Get Post List By Tag Error", postErr)
+		log.Printf("[LIST] Get Post List By Tag Error: %v", postErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Get Post List By Tag Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetPostByTagResponse(res, 200, "01", postList, totalPostCount.Count)
+	response.Response(res, types.ResponsePostByTagListType{
+		Status:    http.StatusOK,
+		Code:      "01",
+		Message:   "SUCCES",
+		Result:    true,
+		PostList:  postList,
+		PostCount: totalPostCount.Count,
+	})
 }
 
 // 태그로 포스트 찾기
@@ -188,7 +291,14 @@ func GetPostsByCategoryController(res http.ResponseWriter, req *http.Request) {
 	parseErr := utils.DecodeBody(req, &getPostByCategoryRequest)
 
 	if parseErr != nil {
-		dto.SetErrorResponse(res, 401, "01", "Parse Request Body Error", parseErr)
+		log.Printf("[LIST] Parse Request Body Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  401,
+			Code:    "01",
+			Message: "Parse Request Body Error",
+			Result:  false,
+		})
+
 		return
 	}
 
@@ -198,9 +308,24 @@ func GetPostsByCategoryController(res http.ResponseWriter, req *http.Request) {
 	postList, totalCount, postErr := GetPostByCategory(getPostByCategoryRequest, page, size)
 
 	if postErr != nil {
-		dto.SetErrorResponse(res, 402, "02", "Get Post List By Tag Error", postErr)
+		log.Printf("[LIST] Get Post List By Tag Error: %v", parseErr)
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  402,
+			Code:    "02",
+			Message: "Get Post List By Tag Error",
+			Result:  false,
+		})
+
 		return
 	}
 
-	dto.SetPostByCategoryResponse(res, 200, "01", postList, totalCount.Count)
+	response.Response(res, types.ResponsePostByCategoryListType{
+		Status:    http.StatusOK,
+		Code:      "01",
+		Message:   "SUCCESS",
+		Result:    true,
+		PostList:  postList,
+		PostCount: totalCount.Count,
+	})
+
 }
