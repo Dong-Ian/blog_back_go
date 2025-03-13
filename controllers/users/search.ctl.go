@@ -12,7 +12,7 @@ import (
 )
 
 // 이메일 찾기
-func SearchEmailController(res http.ResponseWriter, req *http.Request){ 
+func SearchEmailController(res http.ResponseWriter, req *http.Request) {
 	var findEmailRequest types.UserSearchEmailRequest
 
 	parsErr := utils.DecodeBody(req, &findEmailRequest)
@@ -26,7 +26,7 @@ func SearchEmailController(res http.ResponseWriter, req *http.Request){
 	foundUserEmail, findErr := getUserEmail(findEmailRequest.Name)
 
 	if findErr != nil {
-		dto.SetErrorResponse(res, 402, "02",  "Could Not Found User Email Error", findErr)
+		dto.SetErrorResponse(res, 402, "02", "Could Not Found User Email Error", findErr)
 		return
 	}
 
@@ -58,12 +58,12 @@ func getUserEmail(userName string) (types.SelectUserSearchEmailResult, error) {
 
 	queryResult.Scan(
 		&emailQueryResult.UserEmail)
-	
+
 	return emailQueryResult, nil
 }
 
 // 페스워드 찾기
-func SearchPasswordController(res http.ResponseWriter, req *http.Request){ 
+func SearchPasswordController(res http.ResponseWriter, req *http.Request) {
 	var findEmailRequest types.UserSearchPasswordRequest
 
 	parsErr := utils.DecodeBody(req, &findEmailRequest)
@@ -77,7 +77,7 @@ func SearchPasswordController(res http.ResponseWriter, req *http.Request){
 	foundUserPassword, findErr := getUserPassword(findEmailRequest.Email, findEmailRequest.Name)
 
 	if findErr != nil {
-		dto.SetErrorResponse(res, 402, "02",  "Could Not Found User Email Error", findErr)
+		dto.SetErrorResponse(res, 402, "02", "Could Not Found User Email Error", findErr)
 		return
 	}
 
@@ -101,6 +101,6 @@ func getUserPassword(userEmail string, userName string) (types.SelectUserSearchP
 
 	queryResult.Scan(
 		&emailQueryResult.UserPassword)
-	
+
 	return emailQueryResult, nil
 }
