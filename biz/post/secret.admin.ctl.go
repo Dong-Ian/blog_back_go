@@ -5,7 +5,7 @@ import (
 
 	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/middlewares"
-	types "github.com/donghquinn/blog_back_go/types/admin/posts"
+	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 

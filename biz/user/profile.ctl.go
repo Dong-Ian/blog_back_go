@@ -6,7 +6,8 @@ import (
 
 	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
-	types "github.com/donghquinn/blog_back_go/types/admin/users"
+	types "github.com/donghquinn/blog_back_go/types/user"
+
 	"github.com/donghquinn/blog_back_go/utils"
 )
 

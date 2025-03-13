@@ -4,9 +4,10 @@ import (
 	"net/http"
 
 	"github.com/donghquinn/blog_back_go/dto"
+	types "github.com/donghquinn/blog_back_go/types/post"
 
 	"github.com/donghquinn/blog_back_go/middlewares"
-	types "github.com/donghquinn/blog_back_go/types/admin/posts"
+
 	"github.com/donghquinn/blog_back_go/utils"
 )
 

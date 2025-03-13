@@ -6,7 +6,7 @@ import (
 
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/admin/posts"
-	types "github.com/donghquinn/blog_back_go/types/admin/posts"
+	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
@@ -35,7 +35,7 @@ func EditPost(data types.EditPostRequest, userId string, blogId string) error {
 		return editImageErr
 	}
 
-	editPost := UpdatePostEdit(data.PostTitle, data.PostContents, data.IsPinned,  data.PostSeq)
+	editPost := UpdatePostEdit(data.PostTitle, data.PostContents, data.IsPinned, data.PostSeq)
 
 	if editPost != nil {
 		return editPost
@@ -44,7 +44,7 @@ func EditPost(data types.EditPostRequest, userId string, blogId string) error {
 	return nil
 }
 
-func UpdatePostEdit(postTitle string, postContents string, isPinned string,postSeq string) error {
+func UpdatePostEdit(postTitle string, postContents string, isPinned string, postSeq string) error {
 	connect, connectErr := database.InitDatabaseConnection()
 
 	if connectErr != nil {
@@ -53,12 +53,12 @@ func UpdatePostEdit(postTitle string, postContents string, isPinned string,postS
 
 	// 데이터 업데이트
 	_, resultErr := connect.InsertQuery(
-		queries.UpdateEditPost, 
-		postTitle, 
+		queries.UpdateEditPost,
+		postTitle,
 		postContents,
 		isPinned,
 		postSeq)
-	
+
 	defer connect.Close()
 
 	if resultErr != nil {
@@ -77,7 +77,7 @@ func InsertUpdateCategory(postSeq string, category string, blogId string, isVali
 	}
 
 	if isValidCategory {
-			_, categoryErr := connect.InsertQuery(queries.InsertUpdateCategory, category, postSeq, blogId)
+		_, categoryErr := connect.InsertQuery(queries.InsertUpdateCategory, category, postSeq, blogId)
 
 		if categoryErr != nil {
 			log.Printf("[EDIT] INSERT/UPDATE category data Error: %v", categoryErr)
@@ -107,8 +107,8 @@ func InsertUpdateTagList(tagList []string, postSeq string, blogId string) error 
 
 	if len(tagList) > 0 {
 		tagArray, _ := json.Marshal(tagList)
-		
-		_, tagQueryErr := connect.InsertQuery( queries.UpdateTag, string(tagArray), postSeq, blogId)
+
+		_, tagQueryErr := connect.InsertQuery(queries.UpdateTag, string(tagArray), postSeq, blogId)
 		// _, tagQueryErr := database.InsertQuery(connect, queries.InsertTag, postSeq, string(tagArray))
 
 		if tagQueryErr != nil {
@@ -118,7 +118,7 @@ func InsertUpdateTagList(tagList []string, postSeq string, blogId string) error 
 		}
 	} else {
 		// 요청에 태그 데이터가 없다면 기존 태그 제거
-		_, deleteTagErr := connect.InsertQuery( queries.DeletePostTag, postSeq, blogId)
+		_, deleteTagErr := connect.InsertQuery(queries.DeletePostTag, postSeq, blogId)
 
 		if deleteTagErr != nil {
 			log.Printf("[EDIT] DELETE Tag data Error: %v", deleteTagErr)
@@ -138,9 +138,9 @@ func InsertImageSeqList(imageSeqs []string, postSeq string) error {
 		return connectErr
 	}
 
-	for _, seq := range(imageSeqs) {
+	for _, seq := range imageSeqs {
 		// 파일 데이터 업데이트
-		_, insertUpdateErr := connect.InsertQuery( queries.InsertUpdatePostImage, postSeq, seq)
+		_, insertUpdateErr := connect.InsertQuery(queries.InsertUpdatePostImage, postSeq, seq)
 
 		if insertUpdateErr != nil {
 			log.Printf("[EDIT] Insert Update File Data Error: %v", insertUpdateErr)

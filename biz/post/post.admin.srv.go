@@ -5,7 +5,7 @@ import (
 
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/admin/posts"
-	types "github.com/donghquinn/blog_back_go/types/admin/posts"
+	types "github.com/donghquinn/blog_back_go/types/post"
 )
 
 // 게시글 삭제
@@ -36,7 +36,7 @@ func DeletePost(postSeq string, blogId string) error {
 	if deleteTagErr != nil {
 		return deleteTagErr
 	}
-	
+
 	return nil
 }
 
@@ -117,4 +117,3 @@ func UpdateUnPinPost(data types.UpdatePinRequest, blogId string) error {
 
 	return nil
 }
-

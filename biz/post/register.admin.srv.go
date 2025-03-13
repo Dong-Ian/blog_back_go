@@ -6,7 +6,7 @@ import (
 
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/admin/posts"
-	types "github.com/donghquinn/blog_back_go/types/admin/posts"
+	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
@@ -19,9 +19,9 @@ func InsertPostData(registerPostRequest types.RegisterPostRequest, userId string
 
 	// 데이터 입력
 	insertId, queryErr := connect.InsertQuery(
-		queries.InsertPost, 
-		userId, 
-		registerPostRequest.PostTitle, 
+		queries.InsertPost,
+		userId,
+		registerPostRequest.PostTitle,
 		registerPostRequest.PostContents,
 		registerPostRequest.IsPinned,
 		// strconv.Itoa(registerPostRequest.IsSecret),
@@ -38,7 +38,7 @@ func InsertPostData(registerPostRequest types.RegisterPostRequest, userId string
 
 	categories := registerPostRequest.Category
 
-	if categories != ""  {
+	if categories != "" {
 		insertCategoriesErr := InsertCategories(categories, postSeq, blogId)
 
 		if insertCategoriesErr != nil {
@@ -58,7 +58,7 @@ func InsertPostData(registerPostRequest types.RegisterPostRequest, userId string
 		}
 	}
 
-	for _, seq := range(registerPostRequest.ImageSeqs) {
+	for _, seq := range registerPostRequest.ImageSeqs {
 		// 파일 데이터 업데이트
 		_, insertUpdateErr := connect.InsertQuery(queries.InsertUpdatePostImage, postSeq, seq)
 

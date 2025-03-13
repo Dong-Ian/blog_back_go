@@ -6,7 +6,7 @@ import (
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
-	types "github.com/donghquinn/blog_back_go/types/admin/users"
+	types "github.com/donghquinn/blog_back_go/types/user"
 )
 
 // 프로필 전체 변경
