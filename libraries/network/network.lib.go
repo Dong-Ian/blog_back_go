@@ -19,13 +19,12 @@ func OpenServer() *http.Server {
 	routers.DefaultRouter(router)
 
 	routers.UploadImageController(router)
-	routers.AdminUserRouter(router)
-	routers.AdminPostRouter(router)
+	routers.PostAdminRouter(router)
+	routers.UserAdminRouter(router)
 
 	routers.UserRouter(router)
 	routers.PostRouter(router)
 
-	router.Use(middlewares.AuthMiddleware)
 	// handler := middlewares.CorsMiddlewares(router)
 	// handler := cors.Default().Handler(router)
 

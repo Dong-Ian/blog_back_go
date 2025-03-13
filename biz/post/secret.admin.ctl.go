@@ -1,10 +1,9 @@
-package admincontrollers
+package post
 
 import (
 	"net/http"
 
 	"github.com/donghquinn/blog_back_go/dto"
-	post "github.com/donghquinn/blog_back_go/libraries/post/admin"
 	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/posts"
 	"github.com/donghquinn/blog_back_go/utils"
@@ -28,7 +27,7 @@ func ChangeToSecretPostController(response http.ResponseWriter, request *http.Re
 		return
 	}
 
-	changeErr := post.ChangeToSecretPost(changeRequest.PostSeq)
+	changeErr := ChangeToSecretPost(changeRequest.PostSeq)
 
 	if changeErr != nil {
 		dto.SetErrorResponse(response, 403, "03", "Change Secret Failed", changeErr)
@@ -56,7 +55,7 @@ func ChangeToNotSecretPostController(response http.ResponseWriter, request *http
 		return
 	}
 
-	changeErr := post.ChangeToNotSecretPost(changeRequest.PostSeq)
+	changeErr := ChangeToNotSecretPost(changeRequest.PostSeq)
 
 	if changeErr != nil {
 		dto.SetErrorResponse(response, 403, "03", "Change Not Secret Failed", changeErr)

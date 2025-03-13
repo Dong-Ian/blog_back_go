@@ -3,13 +3,17 @@ package routers
 import (
 	"net/http"
 
-	admincontrollers "github.com/donghquinn/blog_back_go/controllers/admin/upload"
+	"github.com/donghquinn/blog_back_go/biz/upload"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	"github.com/gorilla/mux"
 )
 
 func UploadImageController(server *mux.Router) {
-	server.HandleFunc("/admin/upload/image/profile", admincontrollers.UploadProfileImageController).Methods(http.MethodPost)
-	server.HandleFunc("/admin/upload/image/background", admincontrollers.UploadBackgroundImageController).Methods(http.MethodPost)
+	sub := server.PathPrefix("/admin").Subrouter()
+	sub.Use(middlewares.AuthMiddleware)
 
-	server.HandleFunc("/admin/upload/image/post", admincontrollers.UploadPostImageController).Methods(http.MethodPost)
+	sub.HandleFunc("/upload/image/profile", upload.UploadProfileImageController).Methods(http.MethodPost)
+	sub.HandleFunc("/upload/image/background", upload.UploadBackgroundImageController).Methods(http.MethodPost)
+
+	sub.HandleFunc("/upload/image/post", upload.UploadPostImageController).Methods(http.MethodPost)
 }

@@ -1,6 +1,6 @@
 module github.com/donghquinn/blog_back_go
 
-go 1.22.2
+go 1.24.1
 
 require (
 	github.com/go-sql-driver/mysql v1.8.1
@@ -17,6 +17,7 @@ require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/donghquinn/go-query-builder v0.1.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.8 // indirect

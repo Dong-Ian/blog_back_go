@@ -1,11 +1,10 @@
-package admincontrollers
+package post
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/donghquinn/blog_back_go/dto"
-	post "github.com/donghquinn/blog_back_go/libraries/post/admin"
 	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/posts"
 	"github.com/donghquinn/blog_back_go/utils"
@@ -30,7 +29,7 @@ func RegisterPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	postSeq, insertErr := post.InsertPostData(registerPostRequest, user.UserId, user.BlogId)
+	postSeq, insertErr := InsertPostData(registerPostRequest, user.UserId, user.BlogId)
 
 	if insertErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Insert Post Data Error", insertErr)
@@ -59,7 +58,7 @@ func DeletePostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	deleteErr := post.DeletePost(deleteRequest.PostSeq, user.BlogId)
+	deleteErr := DeletePost(deleteRequest.PostSeq, user.BlogId)
 
 	if deleteErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Delete Post Error", deleteErr)
@@ -89,7 +88,7 @@ func UpdatePinPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateErr := post.UpdatePinPost(updatePinRequest, user.BlogId)
+	updateErr := UpdatePinPost(updatePinRequest, user.BlogId)
 
 	if updateErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Update Pin Error", updateErr)
@@ -119,7 +118,7 @@ func UpdateUnPinPostController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateErr := post.UpdateUnPinPost(updateUnPinRequest, user.BlogId)
+	updateErr := UpdateUnPinPost(updateUnPinRequest, user.BlogId)
 
 	if updateErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Update Un-Pin Error", updateErr)

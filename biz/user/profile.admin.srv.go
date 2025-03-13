@@ -1,4 +1,4 @@
-package profile
+package user
 
 import (
 	"log"
@@ -7,7 +7,6 @@ import (
 	queries "github.com/donghquinn/blog_back_go/queries/users"
 	"github.com/donghquinn/blog_back_go/types"
 )
-
 
 func GetUserProfile(blogId string, userId string) (types.UserProfileDataResponseType, error) {
 	var userProfileResult types.UserProfileDataResponseType
@@ -19,23 +18,23 @@ func GetUserProfile(blogId string, userId string) (types.UserProfileDataResponse
 	}
 
 	imageUrlList, imageUrlErr := GetUserProfileImageList(userProfileData.UserId)
-	
+
 	if imageUrlErr != nil {
 		return types.UserProfileDataResponseType{}, imageUrlErr
 	}
 
-	 userProfileResult = types.UserProfileDataResponseType {
-		UserId: userProfileData.UserId,
-		UserName: userProfileData.UserName,
-		UserEmail: userProfileData.UserEmail,
-		Color: userProfileData.Color,
-		Title: userProfileData.Title,
-		Instagram: userProfileData.Instagram,
-		GithubUrl: userProfileData.GithubUrl,
+	userProfileResult = types.UserProfileDataResponseType{
+		UserId:      userProfileData.UserId,
+		UserName:    userProfileData.UserName,
+		UserEmail:   userProfileData.UserEmail,
+		Color:       userProfileData.Color,
+		Title:       userProfileData.Title,
+		Instagram:   userProfileData.Instagram,
+		GithubUrl:   userProfileData.GithubUrl,
 		PersonalUrl: userProfileData.PersonalUrl,
-		Memo: userProfileData.Memo,
-		Images: imageUrlList,
-	 }
+		Memo:        userProfileData.Memo,
+		Images:      imageUrlList,
+	}
 
 	return userProfileResult, nil
 }
@@ -106,8 +105,8 @@ func GetUserProfileByUserId(userId string) (types.SelectUserProfileQueryResult, 
 	return userProfileData, nil
 }
 
-func GetUserProfileImageList(userId string) (types.UserImageFileData, error){
-		// 이미지 데이터 url 가져오기 시작
+func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
+	// 이미지 데이터 url 가져오기 시작
 	var userImageData []types.SelectFileQueryResult
 	var imageUrlList types.UserImageFileData
 
@@ -118,12 +117,12 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error){
 	}
 
 	images, imagesErr := connect.GetMultiple(queries.SelectUserProfileProfileAndBackground, userId, "USER_PROFILE", "USER_BACKGROUND")
-	
+
 	if imagesErr != nil {
 		log.Printf("[PROFILE] Get Profile And Background Images Error: %v", imagesErr)
 		return types.UserImageFileData{}, imagesErr
 	}
-	
+
 	defer connect.Close()
 
 	for images.Next() {
@@ -150,12 +149,10 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error){
 	return imageUrlList, nil
 }
 
-
-
-func getImages(imageData []types.SelectFileQueryResult) (types.UserImageFileData, error){
+func getImages(imageData []types.SelectFileQueryResult) (types.UserImageFileData, error) {
 	var imageUrlData types.UserImageFileData
 
-	for _, row := range(imageData) {
+	for _, row := range imageData {
 		imageUrl, err := database.GetImageUrl(row.ObjectName, row.FileType)
 
 		if err != nil {

@@ -1,4 +1,4 @@
-package admincontrollers
+package user
 
 import (
 	"net/http"

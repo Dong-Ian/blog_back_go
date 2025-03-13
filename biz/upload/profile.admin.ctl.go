@@ -1,4 +1,4 @@
-package admincontrollers
+package upload
 
 import (
 	"log"
@@ -8,7 +8,6 @@ import (
 
 	"github.com/donghquinn/blog_back_go/dto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
-	upload "github.com/donghquinn/blog_back_go/libraries/upload/image"
 	"github.com/donghquinn/blog_back_go/middlewares"
 	queries "github.com/donghquinn/blog_back_go/queries/upload"
 )
@@ -24,7 +23,7 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// 요청으로부터 이미지 파일 가져오기
-	file, handler, fileErr := upload.GetImagefileFromRequest(res, req)
+	file, handler, fileErr := GetImagefileFromRequest(res, req)
 
 	if fileErr != nil {
 		dto.SetErrorResponse(res, 402, "02", "File Getting Error", fileErr)
@@ -33,7 +32,7 @@ func UploadProfileImageController(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// 파일 생성
-	tempFile, tempErr := upload.CreateFileImage(res, req, file, handler)
+	tempFile, tempErr := CreateFileImage(res, req, file, handler)
 
 	if tempErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Create Temp Image File", tempErr)

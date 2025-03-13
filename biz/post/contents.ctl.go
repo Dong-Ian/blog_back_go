@@ -1,4 +1,4 @@
-package controllers
+package post
 
 import (
 	"database/sql"
@@ -9,7 +9,6 @@ import (
 	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
-	"github.com/donghquinn/blog_back_go/libraries/post"
 	queries "github.com/donghquinn/blog_back_go/queries/posts"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
@@ -27,7 +26,7 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// 게시글 쿼리
-	queryResult, queryErr := post.GetPostData(postContentsRequest.PostSeq, postContentsRequest.BlogId)
+	queryResult, queryErr := GetPostData(postContentsRequest.PostSeq, postContentsRequest.BlogId)
 
 	if queryErr != nil {
 		dto.SetErrorResponse(res, 402, "02", "Query Specific Contents Error", queryErr)
@@ -35,18 +34,17 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 	}
 
 	imageData, imageErr := GetImageData(postContentsRequest.PostSeq)
-	
+
 	if imageErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Image Data Error", imageErr)
 		return
 	}
 
-	
 	var urlArray []string
 
 	if len(imageData) > 0 {
 		// 게시글 URL 배열 만들기
-		for _, data := range(imageData) {
+		for _, data := range imageData {
 			url, getErr := database.GetImageUrl(data.ObjectName, data.FileFormat)
 
 			if getErr != nil {
@@ -61,7 +59,7 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 			urlArray = append(urlArray, url.String())
 		}
 	}
-	
+
 	userName, _ := crypt.DecryptString(queryResult.UserName)
 
 	// 특정 게시글 태그 배열 가공해서 담아 응답
@@ -88,24 +86,24 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 
 	// 게시글 컨텐츠 데이터
 	postContentsData := types.ViewSpecificPostContentsResponse{
-		PostSeq: queryResult.PostSeq,
-		PostTitle: queryResult.PostTitle,
-		Tags: tagsArray,
+		PostSeq:      queryResult.PostSeq,
+		PostTitle:    queryResult.PostTitle,
+		Tags:         tagsArray,
 		PostContents: queryResult.PostContents,
 		CategoryName: categoryName,
-		UserName: userName,
-		Urls: urlArray,
-		Viewed: queryResult.Viewed,
-		IsPinned: queryResult.IsPinned,
-		RegDate: queryResult.RegDate,
-		ModDate: queryResult.ModDate,
+		UserName:     userName,
+		Urls:         urlArray,
+		Viewed:       queryResult.Viewed,
+		IsPinned:     queryResult.IsPinned,
+		RegDate:      queryResult.RegDate,
+		ModDate:      queryResult.ModDate,
 	}
-	
+
 	dto.SetPostContentsResponse(res, 200, "01", postContentsData)
 }
 
 // 게시글 번호에 맞는 file 데이터 전부 가져오기
-func GetImageData(postSeq string) ([]types.SelectPostImageData, error){
+func GetImageData(postSeq string) ([]types.SelectPostImageData, error) {
 	var returnImageDate []types.SelectPostImageData
 
 	connect, connectErr := database.InitDatabaseConnection()
@@ -133,15 +131,15 @@ func GetImageData(postSeq string) ([]types.SelectPostImageData, error){
 			&row.TargetPurpose,
 			&row.TargetSeq)
 
-			if scanErr != nil {
-				if scanErr == sql.ErrNoRows {
-					returnImageDate = append(returnImageDate, types.SelectPostImageData{})
-				} else {
-					log.Printf("[CONTENTS] Scan Files Error: %v", scanErr)
-					return []types.SelectPostImageData{}, nil
-				}
+		if scanErr != nil {
+			if scanErr == sql.ErrNoRows {
+				returnImageDate = append(returnImageDate, types.SelectPostImageData{})
+			} else {
+				log.Printf("[CONTENTS] Scan Files Error: %v", scanErr)
+				return []types.SelectPostImageData{}, nil
 			}
-			
+		}
+
 		returnImageDate = append(returnImageDate, row)
 	}
 

@@ -1,4 +1,4 @@
-package controllers
+package user
 
 import (
 	"log"
@@ -6,7 +6,6 @@ import (
 
 	"github.com/donghquinn/blog_back_go/dto"
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
-	"github.com/donghquinn/blog_back_go/libraries/profile"
 	types "github.com/donghquinn/blog_back_go/types/admin/users"
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -23,7 +22,7 @@ func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	profile, querErr := profile.GetUserProfile(getUserProfileRequest.BlogId, getUserProfileRequest.UserId)
+	profile, querErr := GetUserProfile(getUserProfileRequest.BlogId, getUserProfileRequest.UserId)
 
 	if querErr != nil {
 		dto.SetErrorResponse(res, 402, "02", "Profile query Error", querErr)

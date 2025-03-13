@@ -1,4 +1,4 @@
-package controllers
+package user
 
 import (
 	"log"
@@ -50,7 +50,7 @@ func SignupController(res http.ResponseWriter, req *http.Request) {
 		dto.SetErrorResponse(res, 404, "04", "Encoding Process Error", enocodErr)
 		return
 	}
-	
+
 	// log.Printf("[SIGNUP] userId: %s, encodedEmail: %s, encodedName: %s, encodedPassword: %s",userId, encodedEmail, encodedName, encodedPassword)
 	// 새로운 유저 데이터 입력
 	_, insertErr := connect.InsertQuery(queries.InsertSignupUser, userId, encodedEmail, encodedPassword, encodedName, signupRequestBody.BlogId)
@@ -68,21 +68,21 @@ func decodeSignupUserRequest(signupRequest types.UserSignupRequest) (string, str
 
 	if decodeEmailErr != nil {
 		log.Printf("[SIGNUP] Decode Email Error: %v", decodeEmailErr)
-		return "","","",decodeEmailErr
+		return "", "", "", decodeEmailErr
 	}
 
 	decodedName, decodeNameErr := crypt.DecryptString(signupRequest.Name)
 
 	if decodeNameErr != nil {
 		log.Printf("[SIGNUP] Decode Name Error: %v", decodeNameErr)
-		return "","","",decodeNameErr
+		return "", "", "", decodeNameErr
 	}
 
 	decodedPassword, decodePasswordErr := crypt.DecryptString(signupRequest.Password)
 
 	if decodePasswordErr != nil {
 		log.Printf("[SIGNUP] Decode Password Error: %v", decodePasswordErr)
-		return "","","",decodePasswordErr
+		return "", "", "", decodePasswordErr
 	}
 
 	return decodedEmail, decodedName, decodedPassword, nil
@@ -97,23 +97,23 @@ func encodeSignupUserInfo(decodeEmail string, decodePassword string, decodeName 
 
 		return "", "", "", "", uuidErr
 	}
-	
+
 	encodedEmail, encodeEmailErr := crypt.EncryptString(decodeEmail)
 
 	if encodeEmailErr != nil {
-		return "","","","",encodeEmailErr
+		return "", "", "", "", encodeEmailErr
 	}
 
 	encodedName, encodeNameErr := crypt.EncryptString(decodeName)
 
 	if encodeNameErr != nil {
-		return "","","","",encodeNameErr
+		return "", "", "", "", encodeNameErr
 	}
 
 	encodedPassword, encodePasswordErr := crypt.EncryptHashPassword(decodePassword)
 
 	if encodePasswordErr != nil {
-		return "","","","",encodePasswordErr
+		return "", "", "", "", encodePasswordErr
 	}
 
 	return userId.String(), encodedEmail, encodedName, encodedPassword, nil

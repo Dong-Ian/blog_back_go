@@ -1,4 +1,4 @@
-package profile
+package user
 
 import (
 	"log"
@@ -24,7 +24,7 @@ func ChangeProfile(data types.UserChangeProfileRequest, userId string, blogId st
 		return encodeErr
 	}
 
-	_ , insertErr := connect.InsertQuery(
+	_, insertErr := connect.InsertQuery(
 		queries.InsertUpdateProfileInfo,
 		encodedName,
 		data.Color,
@@ -33,7 +33,7 @@ func ChangeProfile(data types.UserChangeProfileRequest, userId string, blogId st
 		data.GithubUrls,
 		data.PersonalUrls,
 		data.Memo,
-		userId, 
+		userId,
 		blogId)
 
 	if insertErr != nil {
@@ -60,7 +60,7 @@ func ChangeColor(data types.UserUpdateProfileColorRequest, userId string, blogId
 
 	_, updateErr := connect.InsertQuery(queries.UpdateProfileColor, data.Color, userId, blogId)
 
-	if updateErr!= nil {
+	if updateErr != nil {
 		log.Printf("[COLOR] Update Color Error: %v", updateErr)
 
 		return updateErr
@@ -87,6 +87,6 @@ func ChangeBlogTitle(data types.UserUpdateBlogTitleRequest, userId string, blogI
 	}
 
 	defer connect.Close()
-	
+
 	return nil
 }

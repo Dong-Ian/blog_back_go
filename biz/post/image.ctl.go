@@ -1,4 +1,4 @@
-package controllers
+package post
 
 import (
 	"net/http"
@@ -13,7 +13,7 @@ func GetImageUrl(res http.ResponseWriter, req *http.Request) {
 	var getPostRequest types.GetPostByPostSeq
 
 	err := utils.DecodeBody(req, &getPostRequest)
-	
+
 	if err != nil {
 		dto.SetErrorResponse(res, 401, "01", "Request Is Not Valid", err)
 	}
@@ -28,7 +28,7 @@ func GetImageUrl(res http.ResponseWriter, req *http.Request) {
 	var urlArray []string
 
 	// 게시글 URL 배열 만들기
-	for _, data := range(imageData) {
+	for _, data := range imageData {
 		url, getErr := database.GetImageUrl(data.ObjectName, data.FileFormat)
 
 		if getErr != nil {

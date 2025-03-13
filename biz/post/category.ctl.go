@@ -1,17 +1,16 @@
-package controllers
+package post
 
 import (
 	"net/http"
 
 	"github.com/donghquinn/blog_back_go/dto"
-	"github.com/donghquinn/blog_back_go/libraries/post"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
 func GetCategoryController(res http.ResponseWriter, req *http.Request) {
 	var getCategoryListRequest types.GetPostListRequest
-	
+
 	parseErr := utils.DecodeBody(req, &getCategoryListRequest)
 
 	if parseErr != nil {
@@ -19,7 +18,7 @@ func GetCategoryController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	categoryList, categoryErr := post.GetAllCategoryList(getCategoryListRequest.BlogId)
+	categoryList, categoryErr := GetAllCategoryList(getCategoryListRequest.BlogId)
 
 	if categoryErr != nil {
 		dto.SetErrorResponse(res, 400, "01", "Get All Category Error", categoryErr)

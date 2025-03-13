@@ -1,11 +1,10 @@
-package admincontrollers
+package user
 
 import (
 	"log"
 	"net/http"
 
 	"github.com/donghquinn/blog_back_go/dto"
-	"github.com/donghquinn/blog_back_go/libraries/profile"
 	"github.com/donghquinn/blog_back_go/middlewares"
 	types "github.com/donghquinn/blog_back_go/types/admin/users"
 	"github.com/donghquinn/blog_back_go/utils"
@@ -30,7 +29,7 @@ func UpdateProfileController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateErr := profile.ChangeProfile(updateProfile, user.UserId, user.BlogId)
+	updateErr := ChangeProfile(updateProfile, user.UserId, user.BlogId)
 
 	if updateErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Insert Profile Update Error", updateErr)
@@ -60,7 +59,7 @@ func UpdateColorController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	changeColorErr := profile.ChangeColor(changeColorRequest, user.UserId, user.BlogId)
+	changeColorErr := ChangeColor(changeColorRequest, user.UserId, user.BlogId)
 
 	if changeColorErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Change Color Error", changeColorErr)
@@ -90,7 +89,7 @@ func UpdateTitleController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	changeTitleErr := profile.ChangeBlogTitle(changeTitleRequest, user.UserId, user.BlogId)
+	changeTitleErr := ChangeBlogTitle(changeTitleRequest, user.UserId, user.BlogId)
 
 	if changeTitleErr != nil {
 		dto.SetErrorResponse(res, 403, "03", "Change Title Error", changeTitleErr)
