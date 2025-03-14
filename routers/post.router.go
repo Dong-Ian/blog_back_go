@@ -9,7 +9,6 @@ import (
 )
 
 func PostRouter(server *mux.Router) {
-
 	server.HandleFunc("/post/contents", post.PostContentsController).Methods(http.MethodPost)
 	server.HandleFunc("/post/list", post.GetPostController).Methods(http.MethodPost)
 	server.HandleFunc("/post/list/pinned", post.GetPinnedPostController).Methods(http.MethodPost)
