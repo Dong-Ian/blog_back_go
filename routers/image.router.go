@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func UploadImageController(server *mux.Router) {
+func UploadImageRouter(server *mux.Router) {
 	sub := server.PathPrefix("/admin").Subrouter()
 	sub.Use(middlewares.AuthMiddleware)
 

@@ -18,7 +18,7 @@ func OpenServer() *http.Server {
 
 	routers.DefaultRouter(router)
 
-	routers.UploadImageController(router)
+	routers.UploadImageRouter(router)
 	routers.PostAdminRouter(router)
 	routers.UserAdminRouter(router)
 
