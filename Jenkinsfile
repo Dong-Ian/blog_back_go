@@ -9,6 +9,13 @@ def getDeployTargets(envName) {
     SSH_KEY_ID: 'dong-ssh-key',
     COPY_DIR: '/containers/blog_back'
   ]]
+  
+  targets['dev'] = [[
+  COMPOSE_ENV: 'dev',
+  SSH_MODE: 'KEYONLY',
+  SSH_KEY_ID: 'dong-ssh-key',
+  COPY_DIR: '/containers/blog_back-dev'
+]]
 
   return targets[envName]
 }
@@ -16,7 +23,8 @@ def getDeployTargets(envName) {
 // 브랜치별 환경 정보
 def getBuildBranch(branchName) {
   branches = [
-    'origin/master': 'master'
+    'origin/master': 'master',
+    'origin/dev': 'dev'
   ]
 
   return branches[branchName]

@@ -4,7 +4,7 @@ services:
     # build:
       # context: .
       # dockerfile: Dockerfile
-    container_name: blog_back
+    container_name: blog_back-${BUILD_BRANCH}
     restart: unless-stopped
     env_file:
       - .env
