@@ -15,7 +15,7 @@ import (
 // TODO List 조회에 비밀글 값 추가
 
 // 포스트들 가져오기 - 모듈함수
-func QueryUnpinnedPostData(blogId string, isPinned string, category string, tag string, limit int, offset int) ([]types.SelectAllPostDataResponse, error) {
+func QueryPostList(blogId string, isPinned string, category string, tag string, limit int, offset int) ([]types.SelectAllPostDataResponse, error) {
 	qb := gqbd.BuildSelect(gqbd.MariaDB, "post_table p", "p.post_seq", "p.post_title", "p.post_contents",
 		"c.category_name", "IFNULL(u.user_name, 'unknown') AS user_name", "p.is_pinned", "p.viewd",
 		"p.reg_date", "p.mod_date").
@@ -29,12 +29,12 @@ func QueryUnpinnedPostData(blogId string, isPinned string, category string, tag 
 	}
 
 	if category != "" {
-		qb = qb.Where("p.category_name LIKE ?", "%"+category+"%")
+		qb = qb.Where("c.category_name LIKE ?", "%"+category+"%")
 	}
 
 	if tag != "" {
-		// tagList := strings.Split(tag, ",")
-		qb = qb.Where("p.tags LIKE ?", "%"+tag+"%")
+		qb = qb.LeftJoin("tag_table t", "t.post_seq = p.post_seeq").
+			Where("t.tags LIKE ?", "%"+tag+"%")
 	}
 
 	qb = qb.OrderBy("p.reg_date", "DESC", nil).
@@ -227,12 +227,13 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 	}
 
 	if category != "" {
-		qb = qb.Where("p.category_name LIKE ?", "%"+category+"%")
+		qb = qb.LeftJoin("category_table c", "c.post_seq = p.post_seeq").
+			Where("p.category_name LIKE ?", "%"+category+"%")
 	}
 
 	if tag != "" {
-		// tagList := strings.Split(tag, ",")
-		qb = qb.Where("p.tags LIKE ?", "%"+tag+"%")
+		qb = qb.LeftJoin("tag_table t", "t.post_seq = p.post_seeq").
+			Where("t.tags LIKE ?", "%"+tag+"%")
 	}
 
 	query, args, queryBuildErr := qb.Build()

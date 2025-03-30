@@ -36,7 +36,7 @@ func GetPostListController(res http.ResponseWriter, req *http.Request) {
 
 	offset, limit := utils.ParsePaginationParams(page, size)
 
-	unpinnedQueryResult, queryErr := QueryUnpinnedPostData(blogId, isPinned, category, tag, limit, offset)
+	unpinnedQueryResult, queryErr := QueryPostList(blogId, isPinned, category, tag, limit, offset)
 
 	if queryErr != nil {
 		log.Printf("[POST_LIST] Query Post Data Error: %v", queryErr)
