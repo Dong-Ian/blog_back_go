@@ -7,14 +7,14 @@ def getDeployTargets(envName) {
     COMPOSE_ENV: 'master',
     SSH_MODE: 'KEYONLY',
     SSH_KEY_ID: 'dong-ssh-key',
-    COPY_DIR: '/containers/blog_back'
+    COPY_DIR: '/home/dong/containers/blog_back'
   ]]
-  
+
   targets['dev'] = [[
   COMPOSE_ENV: 'dev',
   SSH_MODE: 'KEYONLY',
   SSH_KEY_ID: 'dong-ssh-key',
-  COPY_DIR: '/containers/blog_back-dev'
+  COPY_DIR: '/home/dong/containers/blog_back-dev'
 ]]
 
   return targets[envName]

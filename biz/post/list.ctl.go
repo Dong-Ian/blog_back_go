@@ -23,6 +23,7 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 
 		return
 	}
+
 	log.Printf("[DEBUGGING] blogId: %s", blogId)
 
 	page := req.URL.Query().Get("page")
