@@ -42,8 +42,6 @@ func QueryPostList(blogId string, isPinned string, category string, tag string, 
 
 	query, args, queryBuildErr := qb.Build()
 
-	log.Printf("[DEBUGGING] Debugging - q: %s, args: %v", query, args)
-
 	if queryBuildErr != nil {
 		log.Printf("[POST_LIST] Create Query Builder Error: %v", queryBuildErr)
 		return nil, queryBuildErr

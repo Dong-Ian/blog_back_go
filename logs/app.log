@@ -45,3 +45,17 @@
 2025/03/31 00:08:57 [POST_LIST] Query Post Data Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
 2025/03/31 00:09:13 Received Shut Down Signal
 2025/03/31 00:09:13 Server Has been Shutdown Gracefully
+2025/03/31 00:09:25 === 로그 초기화 완료 ===
+2025/03/31 00:09:25 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:09:25 [MINIO] Found Already Existing Bucket
+2025/03/31 00:09:25 Waiting for Database Connection,,,
+2025/03/31 00:09:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:09:36 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:09:36 [START] Server Listening On: 9473
+2025/03/31 00:09:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:09:37 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:09:37 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:09:37 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewed, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY p.reg_date DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:09:37 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:10:10 Received Shut Down Signal
+2025/03/31 00:10:10 Server Has been Shutdown Gracefully

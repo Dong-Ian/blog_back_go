@@ -28,15 +28,11 @@ func GetPostListController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	log.Printf("[DEBUGGING] blogId: %s", blogId)
-
 	page := req.URL.Query().Get("page")
 	size := req.URL.Query().Get("size")
 	tag := req.URL.Query().Get("tag")
 	category := req.URL.Query().Get("category")
 	isPinned := req.URL.Query().Get("pin")
-
-	log.Printf("[DEBUGGING] url queries - page:%s, size: %s, tag: %s", page, size, tag)
 
 	offset, limit := utils.ParsePaginationParams(page, size)
 
