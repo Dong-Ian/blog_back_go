@@ -67,17 +67,6 @@ pipeline {
       }
     }
 
-    stage('Raspberry PI 용 도커 이미지 빌드') {
-      steps {
-        script {
-          // 브랜치에 따라 이미지 이름 변경
-          RASP_DOCKER_IMAGE = docker.build("${DOCKER_IMAGE_NAME}-raspberry", "--platform=linux/arm64/v8 -f Dockerfile-raspberry .")
-        }
-
-        echo "Built: ${RASP_DOCKER_IMAGE}"
-      }
-    }
-
     stage('도커 이미지 Push') {
       steps {
         script {
@@ -87,9 +76,6 @@ pipeline {
 
             DOCKER_IMAGE.push(env.BUILD_NUMBER)
             DOCKER_IMAGE.push('latest')
-            
-            RASP_DOCKER_IMAGE.push(env.BUILD_NUMBER)
-            RASP_DOCKER_IMAGE.push('latest')
           }
         }
 
