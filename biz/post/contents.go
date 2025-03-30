@@ -10,17 +10,17 @@ import (
 )
 
 // 특정 게시글 가져오기
-func GetPostData(postSeq string, blogId string) (types.SelectSpecificPostDataResult, error){
-	updateErr := UpdateViewCount(postSeq)
-
-	if updateErr != nil {
-		return types.SelectSpecificPostDataResult{}, updateErr
-	}
-
+func GetPostData(postSeq string, blogId string) (types.SelectSpecificPostDataResult, error) {
 	postList, getPostErr := GetPostContents(postSeq, blogId)
 
 	if getPostErr != nil {
 		return types.SelectSpecificPostDataResult{}, getPostErr
+	}
+
+	updateErr := UpdateViewCount(postSeq)
+
+	if updateErr != nil {
+		return types.SelectSpecificPostDataResult{}, updateErr
 	}
 
 	return postList, nil
@@ -52,7 +52,6 @@ func UpdateViewCount(postSeq string) error {
 func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDataResult, error) {
 	var queryResult types.SelectSpecificPostDataResult
 
-
 	connect, connectErr := database.InitDatabaseConnection()
 
 	if connectErr != nil {
@@ -83,7 +82,6 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 		&queryResult.RegDate,
 		&queryResult.ModDate)
 
-
 	if postScanErr != nil {
 		if postScanErr == sql.ErrNoRows {
 			queryResult.CategoryName = nil
@@ -95,8 +93,8 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 		log.Printf("[CONTENTS] Can Post Data Error: %v", postScanErr)
 		return types.SelectSpecificPostDataResult{}, postScanErr
 	}
-		// log.Println(*queryResult.CategoryName)
-		// log.Println(*queryResult.Tags)
+	// log.Println(*queryResult.CategoryName)
+	// log.Println(*queryResult.Tags)
 	return queryResult, nil
 }
 

@@ -14,11 +14,10 @@ var SelectSpecificPostContents = `
 	WHERE p.post_seq = ?
 		AND p.post_status = 1
 		AND p.blog_owner = ?
-	;
 `
 
 // 게시글의 태그 쿼리
-var SelectPostTags =`
+var SelectPostTags = `
 		SELECT
 			tags
 		FROM

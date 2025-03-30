@@ -33,7 +33,7 @@ type PostsByTagsResponseType struct {
 	ModDate      string   `json:"modDate"`
 }
 
-type PostTotalUnPinnedCountType struct {
+type PostTotalCountType struct {
 	Count string
 }
 

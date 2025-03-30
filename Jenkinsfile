@@ -41,7 +41,7 @@ pipeline {
     // DOCKER_IMAGE_NAME = 'stats_service/go_back'
     DOCKER_IMAGE_NAME = 'sjc.vultrcr.com/dongregistry/blog_back'
 
-    SERVER_TARGET = 'dong-server'
+    SERVER_TARGET = 'dong-server-ip'
 
     // Git, Docker 레지스트리(https://registry.zetra.kr) 로그인 정보 설정
     GIT_KEY_ID = '2'

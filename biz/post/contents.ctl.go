@@ -11,30 +11,19 @@ import (
 	queries "github.com/donghquinn/blog_back_go/queries/posts"
 	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
-	"github.com/donghquinn/blog_back_go/utils"
+	"github.com/gorilla/mux"
 )
 
 // 게시글 컨텐츠 컨트롤러
 func PostContentsController(res http.ResponseWriter, req *http.Request) {
-	var postContentsRequest types.ViewPostContents
+	pathVar := mux.Vars(req)
 
-	parseErr := utils.DecodeBody(req, &postContentsRequest)
+	postSeq := pathVar["postSeq"]
 
-	if parseErr != nil {
-		log.Printf("[POST_CONTENT] Parse Request ERror: %v", parseErr)
-
-		response.Response(res, response.CommonResponseWithMessage{
-			Status:  401,
-			Code:    "01",
-			Message: "Parse View Specific Post Contents Error",
-			Result:  false,
-		})
-
-		return
-	}
+	blogId := req.Header.Get("BlogId")
 
 	// 게시글 쿼리
-	queryResult, queryErr := GetPostData(postContentsRequest.PostSeq, postContentsRequest.BlogId)
+	queryResult, queryErr := GetPostData(postSeq, blogId)
 
 	if queryErr != nil {
 		log.Printf("[POST_CONTENT] Query Specific Contents Error: %v", queryErr)
@@ -49,7 +38,7 @@ func PostContentsController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	imageData, imageErr := GetImageData(postContentsRequest.PostSeq)
+	imageData, imageErr := GetImageData(postSeq)
 
 	if imageErr != nil {
 		log.Printf("[POST_CONTENT] Image Data Error: %v", queryErr)

@@ -17,6 +17,8 @@ github.com/donghquinn/gqbd v0.2.2 h1:qU5uX8GWdxACXQ/gciX/wygJDAaL29uCGwsIhuHWOmM
 github.com/donghquinn/gqbd v0.2.2/go.mod h1:BOoXmGbzOWVSMaFywayOzP42SJbJI6Ia4im4JGU6pSQ=
 github.com/donghquinn/gqbd v0.4.0 h1:0gSOLTeo1nDXDmYzBD3cXi/Xs6VNEHO3Nkf9dgIoE9s=
 github.com/donghquinn/gqbd v0.4.0/go.mod h1:BOoXmGbzOWVSMaFywayOzP42SJbJI6Ia4im4JGU6pSQ=
+github.com/donghquinn/gqbd v0.5.0 h1:ntpSiSYQS9bn+DCDKZBshM5nx471lU3ISn5AyQc+P7o=
+github.com/donghquinn/gqbd v0.5.0/go.mod h1:BOoXmGbzOWVSMaFywayOzP42SJbJI6Ia4im4JGU6pSQ=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpvNJ1Y=

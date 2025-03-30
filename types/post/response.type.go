@@ -27,15 +27,14 @@ type ResponseGetImageUrlType struct {
 
 // 게시글 리스트 응답 구조체
 type ResponsePostListType struct {
-	Status           int                         `json:"status"`
-	Code             string                      `json:"code"`
-	Message          string                      `json:"message"`
-	Result           bool                        `json:"result"`
-	PinnedPostList   []SelectAllPostDataResponse `json:"pinnedPostList"`
-	UnpinnedPostList []SelectAllPostDataResponse `json:"unpinnedPostList"`
-	PostCount        string                      `json:"postCount"`
-	Page             int                         `json:"page"`
-	Size             int                         `json:"size"`
+	Status    int                         `json:"status"`
+	Code      string                      `json:"code"`
+	Message   string                      `json:"message"`
+	Result    bool                        `json:"result"`
+	PostList  []SelectAllPostDataResponse `json:"pinnedPostList"`
+	PostCount int64                       `json:"postCount"`
+	Page      string                      `json:"page"`
+	Size      string                      `json:"size"`
 }
 
 type ResponsePinnedPostListType struct {
