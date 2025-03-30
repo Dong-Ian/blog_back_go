@@ -70,7 +70,7 @@ func QueryPostList(blogId string, isPinned string, category string, tag string, 
 		var row types.SelectAllPostDataResponse
 		var encodedName string // 인코딩된 사용자 이름을 저장할 임시 변수
 
-		scanErr := result.Scan(
+		if scanErr := result.Scan(
 			&row.PostSeq,
 			&row.PostTitle,
 			&row.PostContents,
@@ -79,9 +79,8 @@ func QueryPostList(blogId string, isPinned string, category string, tag string, 
 			&row.IsPinned,
 			&row.Viewed,
 			&row.RegDate,
-			&row.ModDate)
-
-		if scanErr != nil {
+			&row.ModDate,
+		); scanErr != nil {
 			if scanErr == sql.ErrNoRows {
 				return []types.SelectAllPostDataResponse{}, nil
 			} else {
