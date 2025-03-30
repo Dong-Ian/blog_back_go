@@ -34,7 +34,7 @@ func GetPostListController(res http.ResponseWriter, req *http.Request) {
 	category := req.URL.Query().Get("category")
 	isPinned := req.URL.Query().Get("pin")
 
-	offset, limit := utils.ParsePaginationParams(page, size)
+	offset, limit := utils.ParsePaginationParams(size, page)
 
 	unpinnedQueryResult, queryErr := QueryPostList(blogId, isPinned, category, tag, limit, offset)
 

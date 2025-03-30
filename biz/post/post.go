@@ -124,7 +124,7 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 	}
 
 	query, args, queryBuildErr := qb.Build()
-	log.Printf("[DEBUGGING] Debugging - q: %s, args: %v", query, args)
+
 	if queryBuildErr != nil {
 		log.Printf("[POST_LIST] Create Query Builder Error: %v", queryBuildErr)
 		return -999, queryBuildErr

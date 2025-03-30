@@ -13,7 +13,7 @@ import (
 )
 
 // JWT 토큰 생성
-func CreateJwtToken(userId string, uuid string, userEmail string, userStatus string, blogId string, expire time.Duration) (string, error) {
+func CreateJwtToken(userId string, userEmail string, userStatus string, blogId string, expire time.Duration) (string, error) {
 	globalConfig := configs.GlobalConfig
 
 	jwtToken := jwt.New(jwt.SigningMethodHS256)
@@ -23,7 +23,6 @@ func CreateJwtToken(userId string, uuid string, userEmail string, userStatus str
 	claims["userId"] = userId
 	claims["userEmail"] = userEmail
 	claims["userStatus"] = userStatus
-	claims["uuid"] = uuid
 	claims["blogId"] = blogId
 
 	// 만료 시간 - 3시간

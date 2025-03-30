@@ -10,7 +10,6 @@ import (
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
 	types "github.com/donghquinn/blog_back_go/types/user"
-	"github.com/google/uuid"
 )
 
 func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst types.UserLoginRequest) types.LoginResponse {
@@ -63,17 +62,6 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 		}
 	}
 
-	uuid1, uuidErr1 := uuid.NewUUID()
-
-	if uuidErr1 != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr1)
-		return types.LoginResponse{
-			Status:  406,
-			Code:    "06",
-			Message: "Create UUID Error",
-		}
-	}
-
 	// dbCon, dbErr := database.InitDatabaseConnection()
 
 	// if dbErr != nil {
@@ -88,7 +76,7 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 	// }
 
 	// JWT 토큰 생성
-	accessToken, tokenErr := auth.CreateJwtToken(queryResult.UserId, uuid1.String(), decodeEmail, queryResult.UserStatus, queryResult.BlogId, 3*time.Hour)
+	accessToken, tokenErr := auth.CreateJwtToken(queryResult.UserId, decodeEmail, queryResult.UserStatus, queryResult.BlogId, 3*time.Hour)
 
 	if tokenErr != nil {
 
@@ -99,19 +87,8 @@ func CreateLoginToken(res http.ResponseWriter, req *http.Request, loginRequst ty
 		}
 	}
 
-	uuid2, uuidErr2 := uuid.NewUUID()
-
-	if uuidErr2 != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr2)
-		return types.LoginResponse{
-			Status:  406,
-			Code:    "06",
-			Message: "Create UUID Error",
-		}
-	}
-
 	// JWT 토큰 생성
-	refreshToken, refreshTokenErr := auth.CreateJwtToken(queryResult.UserId, uuid2.String(), decodeEmail, queryResult.UserStatus, queryResult.BlogId, 7*24*time.Hour)
+	refreshToken, refreshTokenErr := auth.CreateJwtToken(queryResult.UserId, decodeEmail, queryResult.UserStatus, queryResult.BlogId, 7*24*time.Hour)
 
 	if refreshTokenErr != nil {
 		return types.LoginResponse{
@@ -220,19 +197,8 @@ func RefreshToken(res http.ResponseWriter, req *http.Request) types.LoginRespons
 		}
 	}
 
-	uuid1, uuidErr1 := uuid.NewUUID()
-
-	if uuidErr1 != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr1)
-		return types.LoginResponse{
-			Status:  406,
-			Code:    "06",
-			Message: "Create UUID Error",
-		}
-	}
-
 	// JWT 토큰 생성
-	accessToken, tokenErr := auth.CreateJwtToken(userData.UserId, uuid1.String(), userData.Email, userData.UserStatus, userData.BlogId, 3*time.Hour)
+	accessToken, tokenErr := auth.CreateJwtToken(userData.UserId, userData.Email, userData.UserStatus, userData.BlogId, 3*time.Hour)
 
 	if tokenErr != nil {
 		return types.LoginResponse{
@@ -242,19 +208,8 @@ func RefreshToken(res http.ResponseWriter, req *http.Request) types.LoginRespons
 		}
 	}
 
-	uuid2, uuidErr2 := uuid.NewUUID()
-
-	if uuidErr2 != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr2)
-		return types.LoginResponse{
-			Status:  406,
-			Code:    "06",
-			Message: "Create UUID Error",
-		}
-	}
-
 	// JWT 토큰 생성
-	newRefreshToken, refreshTokenErr := auth.CreateJwtToken(userData.UserId, uuid2.String(), userData.Email, userData.UserStatus, userData.BlogId, 7*24*time.Hour)
+	newRefreshToken, refreshTokenErr := auth.CreateJwtToken(userData.UserId, userData.Email, userData.UserStatus, userData.BlogId, 7*24*time.Hour)
 
 	if refreshTokenErr != nil {
 		return types.LoginResponse{

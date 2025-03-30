@@ -59,3 +59,52 @@
 2025/03/31 00:09:37 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
 2025/03/31 00:10:10 Received Shut Down Signal
 2025/03/31 00:10:10 Server Has been Shutdown Gracefully
+2025/03/31 00:15:25 === 로그 초기화 완료 ===
+2025/03/31 00:15:25 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:15:25 [MINIO] Found Already Existing Bucket
+2025/03/31 00:15:25 Waiting for Database Connection,,,
+2025/03/31 00:15:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:15:36 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:15:36 [START] Server Listening On: 9473
+2025/03/31 00:15:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:15:46 [GET_POST] BlogId header is missing
+2025/03/31 00:16:54 [GET_POST] BlogId header is missing
+2025/03/31 00:17:03 [INSERT] Insert Query Err: Error 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`blog_db`.`post_table`, CONSTRAINT `post_table_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`))
+2025/03/31 00:17:03 [REGISTER] Insert Post Data Error: Error 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`blog_db`.`post_table`, CONSTRAINT `post_table_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`))
+2025/03/31 00:17:03 [POST_REGIST] Insert Post Data Error: <nil>
+2025/03/31 00:17:22 [GET_POST] BlogId header is missing
+2025/03/31 00:17:52 [JWT] Parsing JWT Validation Error: token is malformed: could not base64 decode header: illegal base64 data at input byte 36
+2025/03/31 00:17:52 ValidateErr Cookie Error :token is malformed: could not base64 decode header: illegal base64 data at input byte 36
+2025/03/31 00:20:11 Received Shut Down Signal
+2025/03/31 00:20:11 Server Has been Shutdown Gracefully
+2025/03/31 00:20:12 === 로그 초기화 완료 ===
+2025/03/31 00:20:13 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:20:13 [MINIO] Found Already Existing Bucket
+2025/03/31 00:20:13 Waiting for Database Connection,,,
+2025/03/31 00:20:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:20:23 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:20:23 [START] Server Listening On: 9473
+2025/03/31 00:20:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:22:45 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 1]
+2025/03/31 00:22:54 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 10]
+2025/03/31 00:22:57 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 0]
+2025/03/31 00:23:06 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:25:01 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:25:06 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:25:18 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 1]
+2025/03/31 00:25:49 Received Shut Down Signal
+2025/03/31 00:25:49 Server Has been Shutdown Gracefully
+2025/03/31 00:25:51 === 로그 초기화 완료 ===
+2025/03/31 00:25:52 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:25:52 [MINIO] Found Already Existing Bucket
+2025/03/31 00:25:52 Waiting for Database Connection,,,
+2025/03/31 00:26:02 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:26:02 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:26:02 [START] Server Listening On: 9473
+2025/03/31 00:26:02 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:26:03 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewed, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ? ORDER BY p.reg_date DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 1 9]
+2025/03/31 00:26:03 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 1]
+2025/03/31 00:26:26 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewed, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY p.reg_date DESC LIMIT ?, args: [DONGHYUN 1 10]
+2025/03/31 00:26:27 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:26:48 Received Shut Down Signal
+2025/03/31 00:26:48 Server Has been Shutdown Gracefully

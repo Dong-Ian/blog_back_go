@@ -9,7 +9,6 @@ import (
 	"github.com/donghquinn/blog_back_go/middlewares"
 	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/user"
-	"github.com/google/uuid"
 )
 
 func DefaultController(res http.ResponseWriter, req *http.Request) {
@@ -49,36 +48,8 @@ func RefreshController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	uuid1, uuidErr1 := uuid.NewUUID()
-
-	if uuidErr1 != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr1)
-
-		response.Response(res, response.CommonResponseWithMessage{
-			Status:  402,
-			Code:    "02",
-			Message: "Create UUID Error",
-			Result:  false,
-		})
-
-	}
-
-	uuid2, uuidErr2 := uuid.NewUUID()
-
-	if uuidErr2 != nil {
-		log.Printf("[REDIS] Create UUID Error: %v", uuidErr2)
-
-		response.Response(res, response.CommonResponseWithMessage{
-			Status:  406,
-			Code:    "06",
-			Message: "Create UUID Error",
-			Result:  false,
-		})
-
-	}
-
 	// JWT 토큰 생성
-	accessToken, tokenErr := auth.CreateJwtToken(user.UserId, uuid1.String(), user.UserEmail, user.UserStatus, user.BlogId, 3*time.Hour)
+	accessToken, tokenErr := auth.CreateJwtToken(user.UserId, user.UserEmail, user.UserStatus, user.BlogId, 3*time.Hour)
 
 	if tokenErr != nil {
 		log.Printf("[REFRESH] Create Token Error: %v", tokenErr)
@@ -94,7 +65,7 @@ func RefreshController(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// JWT 토큰 생성
-	refreshToken, tokenErr := auth.CreateJwtToken(user.UserId, uuid2.String(), user.UserEmail, user.UserStatus, user.BlogId, 7*24*time.Hour)
+	refreshToken, tokenErr := auth.CreateJwtToken(user.UserId, user.UserEmail, user.UserStatus, user.BlogId, 7*24*time.Hour)
 
 	if tokenErr != nil {
 		log.Printf("[REFRESH] Create Refresh Token Error: %v", tokenErr)
