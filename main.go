@@ -11,9 +11,11 @@ import (
 
 	"github.com/donghquinn/blog_back_go/configs"
 	"github.com/donghquinn/blog_back_go/libraries/network"
+	"github.com/donghquinn/blog_back_go/utils"
 )
 
 func main() {
+	go utils.ScheduleLogRotation()
 	network.SetConfigs()
 
 	network.DatabaseConnect()

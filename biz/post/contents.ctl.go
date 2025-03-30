@@ -11,16 +11,27 @@ import (
 	queries "github.com/donghquinn/blog_back_go/queries/posts"
 	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/post"
+	"github.com/donghquinn/blog_back_go/utils"
 	"github.com/gorilla/mux"
 )
 
 // 게시글 컨텐츠 컨트롤러
 func PostContentsController(res http.ResponseWriter, req *http.Request) {
 	pathVar := mux.Vars(req)
-
 	postSeq := pathVar["postSeq"]
 
-	blogId := req.Header.Get("BlogId")
+	blogId, getErr := utils.GetBlogIdFromContext(req.Context())
+
+	if !getErr {
+		response.Response(res, response.CommonResponseWithMessage{
+			Status:  http.StatusBadRequest,
+			Code:    "01",
+			Message: "No Blog Id Found",
+			Result:  false,
+		})
+
+		return
+	}
 
 	// 게시글 쿼리
 	queryResult, queryErr := GetPostData(postSeq, blogId)
