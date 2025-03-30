@@ -81,7 +81,7 @@ func QueryPostList(blogId string, isPinned string, category string, tag string, 
 			&row.ModDate,
 		); scanErr != nil {
 			if scanErr == sql.ErrNoRows {
-				return []types.SelectAllPostDataResponse{}, nil
+				return queryResult, nil
 			} else {
 				log.Printf("[POST_LIST] Scan and Assign Unpinned Query Result Error: %v", scanErr)
 				return nil, scanErr

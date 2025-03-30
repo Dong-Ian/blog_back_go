@@ -121,3 +121,114 @@
 2025/03/31 00:28:07 [POST_LIST] Query Post Data Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
 2025/03/31 00:28:26 Received Shut Down Signal
 2025/03/31 00:28:26 Server Has been Shutdown Gracefully
+2025/03/31 00:35:22 === 로그 초기화 완료 ===
+2025/03/31 00:35:22 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:35:22 [MINIO] Found Already Existing Bucket
+2025/03/31 00:35:22 Waiting for Database Connection,,,
+2025/03/31 00:35:32 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:35:32 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:35:32 [START] Server Listening On: 9473
+2025/03/31 00:35:32 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:36:43 Received Shut Down Signal
+2025/03/31 00:36:43 Server Has been Shutdown Gracefully
+2025/03/31 00:36:45 === 로그 초기화 완료 ===
+2025/03/31 00:36:45 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:36:45 [MINIO] Found Already Existing Bucket
+2025/03/31 00:36:45 Waiting for Database Connection,,,
+2025/03/31 00:36:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:36:55 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:36:55 [START] Server Listening On: 9473
+2025/03/31 00:36:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:37:08 Received Shut Down Signal
+2025/03/31 00:37:08 Server Has been Shutdown Gracefully
+2025/03/31 00:37:10 === 로그 초기화 완료 ===
+2025/03/31 00:37:10 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:37:10 [MINIO] Found Already Existing Bucket
+2025/03/31 00:37:10 Waiting for Database Connection,,,
+2025/03/31 00:37:20 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:37:20 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:37:20 [START] Server Listening On: 9473
+2025/03/31 00:37:20 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:41:33 Received Shut Down Signal
+2025/03/31 00:41:33 Server Has been Shutdown Gracefully
+2025/03/31 00:41:35 === 로그 초기화 완료 ===
+2025/03/31 00:41:35 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:41:35 [MINIO] Found Already Existing Bucket
+2025/03/31 00:41:35 Waiting for Database Connection,,,
+2025/03/31 00:41:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:41:45 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:41:45 [START] Server Listening On: 9473
+2025/03/31 00:41:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:42:51 Received Shut Down Signal
+2025/03/31 00:42:51 Server Has been Shutdown Gracefully
+2025/03/31 00:42:53 === 로그 초기화 완료 ===
+2025/03/31 00:42:53 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:42:54 [MINIO] Found Already Existing Bucket
+2025/03/31 00:42:54 Waiting for Database Connection,,,
+2025/03/31 00:43:04 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:43:04 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:43:04 [START] Server Listening On: 9473
+2025/03/31 00:43:04 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:43:33 Received Shut Down Signal
+2025/03/31 00:43:33 Server Has been Shutdown Gracefully
+2025/03/31 00:43:35 === 로그 초기화 완료 ===
+2025/03/31 00:43:35 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:43:35 [MINIO] Found Already Existing Bucket
+2025/03/31 00:43:35 Waiting for Database Connection,,,
+2025/03/31 00:43:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:43:45 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:43:45 [START] Server Listening On: 9473
+2025/03/31 00:43:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:44:11 Received Shut Down Signal
+2025/03/31 00:44:11 Server Has been Shutdown Gracefully
+2025/03/31 00:44:13 === 로그 초기화 완료 ===
+2025/03/31 00:44:13 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:44:13 [MINIO] Found Already Existing Bucket
+2025/03/31 00:44:13 Waiting for Database Connection,,,
+2025/03/31 00:44:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:44:23 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:44:23 [START] Server Listening On: 9473
+2025/03/31 00:44:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:45:13 Received Shut Down Signal
+2025/03/31 00:45:13 Server Has been Shutdown Gracefully
+2025/03/31 00:45:15 === 로그 초기화 완료 ===
+2025/03/31 00:45:15 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:45:15 [MINIO] Found Already Existing Bucket
+2025/03/31 00:45:15 Waiting for Database Connection,,,
+2025/03/31 00:45:25 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:45:25 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:45:25 [START] Server Listening On: 9473
+2025/03/31 00:45:25 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:45:28 usernmae: 김동현
+2025/03/31 00:46:43 Received Shut Down Signal
+2025/03/31 00:46:43 Server Has been Shutdown Gracefully
+2025/03/31 00:46:45 === 로그 초기화 완료 ===
+2025/03/31 00:46:45 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:46:45 [MINIO] Found Already Existing Bucket
+2025/03/31 00:46:45 Waiting for Database Connection,,,
+2025/03/31 00:46:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:46:55 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:46:55 [START] Server Listening On: 9473
+2025/03/31 00:46:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:51:39 Received Shut Down Signal
+2025/03/31 00:51:39 Server Has been Shutdown Gracefully
+2025/03/31 00:51:41 === 로그 초기화 완료 ===
+2025/03/31 00:51:41 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:51:41 [MINIO] Found Already Existing Bucket
+2025/03/31 00:51:41 Waiting for Database Connection,,,
+2025/03/31 00:51:51 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:51:51 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:51:51 [START] Server Listening On: 9473
+2025/03/31 00:51:51 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:53:27 Received Shut Down Signal
+2025/03/31 00:53:27 Server Has been Shutdown Gracefully
+2025/03/31 00:53:29 === 로그 초기화 완료 ===
+2025/03/31 00:53:29 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:53:29 [MINIO] Found Already Existing Bucket
+2025/03/31 00:53:29 Waiting for Database Connection,,,
+2025/03/31 00:53:39 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:53:39 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:53:39 [START] Server Listening On: 9473
+2025/03/31 00:53:39 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:55:40 Received Shut Down Signal
+2025/03/31 00:55:40 Server Has been Shutdown Gracefully

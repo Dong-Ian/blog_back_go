@@ -66,13 +66,17 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 	defer connect.Close()
 
 	if queryErr != nil {
+		if queryErr == sql.ErrNoRows {
+			return types.SelectSpecificPostDataResult{}, nil
+		}
+
 		log.Printf("[CONTENTS] Query A Post Contents Error: %v", queryErr)
-		return types.SelectSpecificPostDataResult{}, queryErr
+		return queryResult, queryErr
 	}
 
 	var encodedName string
 
-	postScanErr := result.Scan(
+	if postScanErr := result.Scan(
 		&queryResult.PostSeq,
 		&queryResult.PostTitle,
 		&queryResult.PostContents,
@@ -83,22 +87,25 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 		&queryResult.Viewed,
 		&queryResult.IsPinned,
 		&queryResult.RegDate,
-		&queryResult.ModDate)
-
-	if postScanErr != nil {
+		&queryResult.ModDate,
+	); postScanErr != nil {
 		if postScanErr == sql.ErrNoRows {
-			queryResult.CategoryName = nil
-			queryResult.Tags = nil
-
-			return queryResult, nil
+			return types.SelectSpecificPostDataResult{}, nil
 		}
 
 		log.Printf("[CONTENTS] Can Post Data Error: %v", postScanErr)
-		return types.SelectSpecificPostDataResult{}, postScanErr
+		return queryResult, postScanErr
 	}
 
-	userName, _ := crypt.DecryptString(queryResult.UserName)
-	queryResult.UserName = userName
+	// 사용자 이름 복호화
+	userName, decryptErr := crypt.DecryptString(encodedName)
+
+	if decryptErr != nil {
+		log.Printf("[CONTENTS] Decrypt user name Error: %v", decryptErr)
+		queryResult.UserName = encodedName // 복호화 실패 시 기본값
+	} else {
+		queryResult.UserName = userName
+	}
 	// log.Println(*queryResult.CategoryName)
 	// log.Println(*queryResult.Tags)
 	return queryResult, nil
