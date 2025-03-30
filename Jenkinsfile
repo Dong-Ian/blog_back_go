@@ -6,8 +6,8 @@ def getDeployTargets(envName) {
   targets['master'] = [[
     COMPOSE_ENV: 'master',
     SSH_MODE: 'KEYONLY',
-    SSH_KEY_ID: 'toon-server-ssh-key',
-    COPY_DIR: '/mnt/blockstorage/containers/blog_back'
+    SSH_KEY_ID: 'dong-ssh-key',
+    COPY_DIR: '/containers/blog_back'
   ]]
 
   return targets[envName]
@@ -41,7 +41,7 @@ pipeline {
     // DOCKER_IMAGE_NAME = 'stats_service/go_back'
     DOCKER_IMAGE_NAME = 'sjc.vultrcr.com/dongregistry/blog_back'
 
-    SERVER_TARGET = 'toon-server-ip'
+    SERVER_TARGET = 'dong-server'
 
     // Git, Docker 레지스트리(https://registry.zetra.kr) 로그인 정보 설정
     GIT_KEY_ID = '2'
