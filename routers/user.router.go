@@ -23,7 +23,7 @@ func UserAdminRouter(server *mux.Router) {
 	sub.Use(middlewares.AuthMiddleware)
 
 	sub.HandleFunc("/token/check", user.CheckTokenController).Methods(http.MethodGet)
-	sub.HandleFunc("/user/profile/update", user.UpdateProfileController).Methods(http.MethodPost)
-	sub.HandleFunc("/user/profile/title", user.UpdateTitleController).Methods(http.MethodPost)
-	sub.HandleFunc("/user/profile/color", user.UpdateColorController).Methods(http.MethodPost)
+	sub.HandleFunc("/user/profile/update", user.UpdateProfileController).Methods(http.MethodPut)
+	sub.HandleFunc("/user/profile/title", user.UpdateTitleController).Methods(http.MethodPut)
+	sub.HandleFunc("/user/profile/color", user.UpdateColorController).Methods(http.MethodPut)
 }
