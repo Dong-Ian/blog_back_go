@@ -115,7 +115,7 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 
 	if category != "" {
 		qb = qb.LeftJoin("category_table c", "c.post_seq = p.post_seq").
-			Where("p.category_name LIKE ?", "%"+category+"%")
+			Where("c.category_name LIKE ?", "%"+category+"%")
 	}
 
 	if tag != "" {
