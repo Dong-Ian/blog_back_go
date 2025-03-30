@@ -19,8 +19,8 @@ func QueryPostList(blogId string, isPinned string, category string, tag string, 
 	qb := gqbd.BuildSelect(gqbd.MariaDB, "post_table p", "p.post_seq", "p.post_title", "p.post_contents",
 		"c.category_name", "IFNULL(u.user_name, 'unknown') AS user_name", "p.is_pinned", "p.viewd",
 		"p.reg_date", "p.mod_date").
-		LeftJoin("user_table u", "u.user_id = p.user_id AND u.user_status = 1").
-		LeftJoin("category_table c", "c.post_seq = p.post_seq AND c.category_status = 1").
+		LeftJoin("user_table u", "u.user_id = p.user_id").
+		LeftJoin("category_table c", "c.post_seq = p.post_seq").
 		Where("p.blog_owner = ?", blogId).
 		Where("p.post_status = ?", "1")
 
