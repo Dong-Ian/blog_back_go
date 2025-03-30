@@ -102,10 +102,11 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 
 	if decryptErr != nil {
 		log.Printf("[CONTENTS] Decrypt user name Error: %v", decryptErr)
-		queryResult.UserName = encodedName // 복호화 실패 시 기본값
-	} else {
-		queryResult.UserName = userName
+		return queryResult, nil
 	}
+
+	queryResult.UserName = userName
+
 	// log.Println(*queryResult.CategoryName)
 	// log.Println(*queryResult.Tags)
 	return queryResult, nil
