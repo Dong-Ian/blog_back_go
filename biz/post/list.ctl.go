@@ -39,7 +39,7 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 	unpinnedQueryResult, queryErr := QueryUnpinnedPostData(blogId, isPinned, category, tag, limit, offset)
 
 	if queryErr != nil {
-		log.Printf("[POST_EDIT] Query Post Data Error: %v", queryErr)
+		log.Printf("[POST_LIST] Query Post Data Error: %v", queryErr)
 		response.Response(res, response.CommonResponseWithMessage{
 			Status:  http.StatusInternalServerError,
 			Code:    "02",
@@ -53,7 +53,7 @@ func GetPostController(res http.ResponseWriter, req *http.Request) {
 	totalCount, countErr := GetTotalPostCount(blogId, isPinned, category, tag)
 
 	if countErr != nil {
-		log.Printf("[POST_EDIT] Query Post Data Error: %v", queryErr)
+		log.Printf("[POST_LIST] Query Post Data Error: %v", queryErr)
 		response.Response(res, response.CommonResponseWithMessage{
 			Status:  http.StatusInternalServerError,
 			Code:    "03",

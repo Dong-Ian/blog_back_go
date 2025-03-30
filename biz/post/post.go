@@ -44,7 +44,7 @@ func QueryUnpinnedPostData(blogId string, isPinned string, category string, tag 
 	query, args, queryBuildErr := qb.Build()
 
 	if queryBuildErr != nil {
-		log.Printf("[LIST] Create Query Builder Error: %v", queryBuildErr)
+		log.Printf("[POST_LIST] Create Query Builder Error: %v", queryBuildErr)
 		return nil, queryBuildErr
 	}
 
@@ -59,7 +59,7 @@ func QueryUnpinnedPostData(blogId string, isPinned string, category string, tag 
 	result, queryErr := connect.QueryBuilderRows(query, args)
 
 	if queryErr != nil {
-		log.Printf("[LIST] Get Unpinned Post Data Error: %v", queryErr)
+		log.Printf("[POST_LIST] Get Unpinned Post Data Error: %v", queryErr)
 
 		return nil, queryErr
 	}
@@ -85,7 +85,7 @@ func QueryUnpinnedPostData(blogId string, isPinned string, category string, tag 
 			if scanErr == sql.ErrNoRows {
 				return []types.SelectAllPostDataResponse{}, nil
 			} else {
-				log.Printf("[LIST] Scan and Assign Unpinned Query Result Error: %v", scanErr)
+				log.Printf("[POST_LIST] Scan and Assign Unpinned Query Result Error: %v", scanErr)
 				return nil, scanErr
 			}
 		}
@@ -93,7 +93,7 @@ func QueryUnpinnedPostData(blogId string, isPinned string, category string, tag 
 		decodedName, decodeErr := crypt.DecryptString(encodedName)
 
 		if decodeErr != nil {
-			log.Printf("[LIST] Decode user name Error: %v", decodeErr)
+			log.Printf("[POST_LIST] Decode user name Error: %v", decodeErr)
 			return nil, decodeErr
 		}
 
@@ -238,7 +238,7 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 	query, args, queryBuildErr := qb.Build()
 
 	if queryBuildErr != nil {
-		log.Printf("[LIST] Create Query Builder Error: %v", queryBuildErr)
+		log.Printf("[POST_LIST] Create Query Builder Error: %v", queryBuildErr)
 		return -999, queryBuildErr
 	}
 
@@ -251,7 +251,7 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 	queryResult, queryErr := connect.QueryBuilderOneRow(query, args)
 
 	if queryErr != nil {
-		log.Printf("[LIST] Get UnPinned Post Count Error: %v", queryErr)
+		log.Printf("[POST_LIST] Get UnPinned Post Count Error: %v", queryErr)
 
 		return -999, queryErr
 	}
@@ -259,7 +259,7 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 	var totalCount int64
 
 	if scanErr := queryResult.Scan(&totalCount); scanErr != nil {
-		log.Printf("[TOTAL_COUNT] Total Count Scan Erro: %v", scanErr)
+		log.Printf("[POST_LIST] Total Count Scan Erro: %v", scanErr)
 		return -9999, scanErr
 	}
 
