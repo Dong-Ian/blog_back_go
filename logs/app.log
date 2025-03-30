@@ -1,0 +1,47 @@
+2025/03/31 00:00:24 === 로그 초기화 완료 ===
+2025/03/31 00:00:24 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:00:24 [MINIO] Found Already Existing Bucket
+2025/03/31 00:00:24 Waiting for Database Connection,,,
+2025/03/31 00:00:34 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:34 [DEBUG] App Host 0.0.0.0:5000
+2025/03/31 00:00:34 [START] Server Listening On: 5000
+2025/03/31 00:00:34 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:34 Server Start Listening Error: listen tcp 0.0.0.0:5000: bind: address already in use
+2025/03/31 00:00:48 === 로그 초기화 완료 ===
+2025/03/31 00:00:48 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:00:48 [MINIO] Found Already Existing Bucket
+2025/03/31 00:00:48 Waiting for Database Connection,,,
+2025/03/31 00:00:58 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:58 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:00:58 [START] Server Listening On: 9473
+2025/03/31 00:00:58 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:59 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:00:59 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:00:59 [DEBUGGING] Debugging - q: SELECT `p.post_seq`, `p.post_title`, `p.post_contents`, `c.category_name`, `IFNULL(u.user_name, 'unknown') AS user_name`, `p.is_pinned`, `p.viewd`, `p.reg_date`, `p.mod_date` FROM `post_table p` LEFT JOIN `user_table u` ON u.user_id = p.user_id LEFT JOIN `category_table c` ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY `p.reg_date` DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:00:59 [QUERY] Query Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:00:59 [POST_LIST] Get Unpinned Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:00:59 [POST_LIST] Query Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:01:01 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:01:01 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:01:01 [DEBUGGING] Debugging - q: SELECT `p.post_seq`, `p.post_title`, `p.post_contents`, `c.category_name`, `IFNULL(u.user_name, 'unknown') AS user_name`, `p.is_pinned`, `p.viewd`, `p.reg_date`, `p.mod_date` FROM `post_table p` LEFT JOIN `user_table u` ON u.user_id = p.user_id LEFT JOIN `category_table c` ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY `p.reg_date` DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:01:01 [QUERY] Query Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:01:01 [POST_LIST] Get Unpinned Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:01:01 [POST_LIST] Query Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:08:37 Received Shut Down Signal
+2025/03/31 00:08:37 Server Has been Shutdown Gracefully
+2025/03/31 00:08:45 === 로그 초기화 완료 ===
+2025/03/31 00:08:46 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:08:46 [MINIO] Found Already Existing Bucket
+2025/03/31 00:08:46 Waiting for Database Connection,,,
+2025/03/31 00:08:56 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:08:56 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:08:56 [START] Server Listening On: 9473
+2025/03/31 00:08:56 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:08:57 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:08:57 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:08:57 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewd, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY p.reg_date DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:08:57 [QUERY] Query Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
+2025/03/31 00:08:57 [POST_LIST] Get Unpinned Post Data Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
+2025/03/31 00:08:57 [POST_LIST] Query Post Data Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
+2025/03/31 00:09:13 Received Shut Down Signal
+2025/03/31 00:09:13 Server Has been Shutdown Gracefully

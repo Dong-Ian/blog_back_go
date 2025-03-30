@@ -9,11 +9,9 @@ import (
 )
 
 func PostRouter(server *mux.Router) {
-	server.HandleFunc("/post/{postSeq}", post.PostContentsController).Methods(http.MethodGet)
 	server.HandleFunc("/post/list", post.GetPostListController).Methods(http.MethodGet)
-
+	server.HandleFunc("/post/{postSeq}", post.PostContentsController).Methods(http.MethodGet)
 	server.HandleFunc("/post/url", post.GetImageUrl).Methods(http.MethodPost)
-
 	server.HandleFunc("/post/category/list", post.GetCategoryController).Methods(http.MethodPost)
 }
 

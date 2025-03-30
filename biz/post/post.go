@@ -6,6 +6,7 @@ import (
 
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
+	queries "github.com/donghquinn/blog_back_go/queries/posts"
 	types "github.com/donghquinn/blog_back_go/types/post"
 	"github.com/donghquinn/gqbd"
 )
@@ -15,7 +16,7 @@ import (
 // 포스트들 가져오기 - 모듈함수
 func QueryPostList(blogId string, isPinned string, category string, tag string, limit int, offset int) ([]types.SelectAllPostDataResponse, error) {
 	qb := gqbd.BuildSelect(gqbd.MariaDB, "post_table p", "p.post_seq", "p.post_title", "p.post_contents",
-		"c.category_name", "IFNULL(u.user_name, 'unknown') AS user_name", "p.is_pinned", "p.viewd",
+		"c.category_name", "IFNULL(u.user_name, 'unknown') AS user_name", "p.is_pinned", "p.viewed",
 		"p.reg_date", "p.mod_date").
 		LeftJoin("user_table u", "u.user_id = p.user_id").
 		LeftJoin("category_table c", "c.post_seq = p.post_seq").
@@ -153,4 +154,48 @@ func GetTotalPostCount(blogId string, isPinned string, category string, tag stri
 	}
 
 	return totalCount, nil
+}
+
+// 게시글 번호에 맞는 file 데이터 전부 가져오기
+func GetImageData(postSeq string) ([]types.SelectPostImageData, error) {
+	var returnImageDate []types.SelectPostImageData
+
+	connect, connectErr := database.InitDatabaseConnection()
+
+	if connectErr != nil {
+		log.Printf("[CONTENTS] Init Database Connection Error for Image Data: %v", connectErr)
+		return []types.SelectPostImageData{}, connectErr
+	}
+
+	result, queryErr := connect.GetMultiple(queries.SelectImageData, postSeq, "POST_IMAGE")
+
+	if queryErr != nil {
+		log.Printf("[CONTENTS] Query Image Data Error: %v", queryErr)
+		return []types.SelectPostImageData{}, queryErr
+	}
+
+	defer connect.Close()
+
+	for result.Next() {
+		var row types.SelectPostImageData
+
+		scanErr := result.Scan(
+			&row.ObjectName,
+			&row.FileFormat,
+			&row.TargetPurpose,
+			&row.TargetSeq)
+
+		if scanErr != nil {
+			if scanErr == sql.ErrNoRows {
+				returnImageDate = append(returnImageDate, types.SelectPostImageData{})
+			} else {
+				log.Printf("[CONTENTS] Scan Files Error: %v", scanErr)
+				return []types.SelectPostImageData{}, nil
+			}
+		}
+
+		returnImageDate = append(returnImageDate, row)
+	}
+
+	return returnImageDate, nil
 }
