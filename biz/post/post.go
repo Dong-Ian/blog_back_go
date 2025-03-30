@@ -32,7 +32,7 @@ func QueryPostList(blogId string, isPinned string, category string, tag string, 
 	}
 
 	if tag != "" {
-		qb = qb.LeftJoin("tag_table t", "t.post_seq = p.post_seeq").
+		qb = qb.LeftJoin("tag_table t", "t.post_seq = p.post_seq").
 			Where("t.tags LIKE ?", "%"+tag+"%")
 	}
 

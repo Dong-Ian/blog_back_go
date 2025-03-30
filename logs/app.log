@@ -108,3 +108,16 @@
 2025/03/31 00:26:27 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
 2025/03/31 00:26:48 Received Shut Down Signal
 2025/03/31 00:26:48 Server Has been Shutdown Gracefully
+2025/03/31 00:27:15 === 로그 초기화 완료 ===
+2025/03/31 00:27:16 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:27:16 [MINIO] Found Already Existing Bucket
+2025/03/31 00:27:16 Waiting for Database Connection,,,
+2025/03/31 00:27:26 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:27:26 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:27:26 [START] Server Listening On: 9473
+2025/03/31 00:27:26 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:28:07 [QUERY] Query Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
+2025/03/31 00:28:07 [POST_LIST] Get Unpinned Post Data Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
+2025/03/31 00:28:07 [POST_LIST] Query Post Data Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
+2025/03/31 00:28:26 Received Shut Down Signal
+2025/03/31 00:28:26 Server Has been Shutdown Gracefully
