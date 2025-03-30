@@ -31,7 +31,7 @@ type ResponsePostListType struct {
 	Code      string                      `json:"code"`
 	Message   string                      `json:"message"`
 	Result    bool                        `json:"result"`
-	PostList  []SelectAllPostDataResponse `json:"pinnedPostList"`
+	PostList  []SelectAllPostDataResponse `json:"postList"`
 	PostCount int64                       `json:"postCount"`
 	Page      string                      `json:"page"`
 	Size      string                      `json:"size"`

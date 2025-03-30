@@ -14,7 +14,7 @@ services:
     #   - ${APP_PORT}:${APP_PORT}
     volumes:
       - ./.env:/home/node/.env
-      - ./log:/home/node/log
+      - ./logs:/home/node/logs
     networks:
       - proxy
 

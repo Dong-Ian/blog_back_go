@@ -10,7 +10,7 @@ import (
 )
 
 // 전체 포스트 가져오기 - 페이징
-func GetPostController(res http.ResponseWriter, req *http.Request) {
+func GetPostListController(res http.ResponseWriter, req *http.Request) {
 	blogId, getErr := utils.GetBlogIdFromContext(req.Context())
 
 	if !getErr {
