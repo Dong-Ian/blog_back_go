@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/posts"
 	types "github.com/donghquinn/blog_back_go/types/post"
@@ -69,6 +70,8 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 		return types.SelectSpecificPostDataResult{}, queryErr
 	}
 
+	var encodedName string
+
 	postScanErr := result.Scan(
 		&queryResult.PostSeq,
 		&queryResult.PostTitle,
@@ -76,7 +79,7 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 		&queryResult.PostStatus,
 		&queryResult.Tags,
 		&queryResult.CategoryName,
-		&queryResult.UserName,
+		&encodedName,
 		&queryResult.Viewed,
 		&queryResult.IsPinned,
 		&queryResult.RegDate,
@@ -93,6 +96,9 @@ func GetPostContents(postSeq string, blogId string) (types.SelectSpecificPostDat
 		log.Printf("[CONTENTS] Can Post Data Error: %v", postScanErr)
 		return types.SelectSpecificPostDataResult{}, postScanErr
 	}
+
+	userName, _ := crypt.DecryptString(queryResult.UserName)
+	queryResult.UserName = userName
 	// log.Println(*queryResult.CategoryName)
 	// log.Println(*queryResult.Tags)
 	return queryResult, nil
