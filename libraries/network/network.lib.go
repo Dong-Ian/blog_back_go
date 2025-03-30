@@ -16,6 +16,8 @@ import (
 func OpenServer() *http.Server {
 	router := mux.NewRouter()
 
+	router.Use(middlewares.CheckBlogId)
+
 	routers.DefaultRouter(router)
 
 	routers.UploadImageRouter(router)
@@ -29,7 +31,6 @@ func OpenServer() *http.Server {
 	// handler := cors.Default().Handler(router)
 
 	handler := middlewares.CorsHanlder().Handler(router)
-
 	// router.Use(mux.CORSMethodMiddleware(router))
 
 	serving := &http.Server{

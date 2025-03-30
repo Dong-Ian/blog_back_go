@@ -19,6 +19,7 @@ func main() {
 	network.DatabaseConnect()
 
 	server := network.OpenServer()
+
 	// 종료 신호를 받을 채널 생성
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

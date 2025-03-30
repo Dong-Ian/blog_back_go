@@ -11,19 +11,18 @@ import (
 
 // 전체 포스트 가져오기 - 페이징
 func GetPostController(res http.ResponseWriter, req *http.Request) {
-	blogId := req.Header.Get("BlogId")
+	blogId, getErr := utils.GetBlogIdFromContext(req.Context())
 
-	if blogId == "" {
-		log.Printf("[GET_POST] BlogId header is missing")
+	if !getErr {
 		response.Response(res, response.CommonResponseWithMessage{
 			Status:  http.StatusBadRequest,
 			Code:    "01",
-			Message: "No blog Id Provided",
+			Message: "Get BlogId Error from context",
+			Result:  false,
 		})
 
 		return
 	}
-
 	log.Printf("[DEBUGGING] blogId: %s", blogId)
 
 	page := req.URL.Query().Get("page")
