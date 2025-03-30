@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     expose:
-      - 9473
+      - 5000
     # ports:
     #   - ${APP_PORT}:${APP_PORT}
     volumes:
