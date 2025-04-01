@@ -1,51 +1,10 @@
-version: "3.7"
 services:
-  db:
-    image: mariadb:11.4.1-rc-jammy
-    ports:
-      - 3306:3306
-    restart: always
-    container_name: blog_db
-    env_file:
-      - .db.env
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./mariadb/conf.d:/etc/mysql/conf.d
-      - ./mariadb/data:/var/lib/mysql
-    networks:
-      - proxy
-
-  redis:
-    image: redis:7.2.5-alpine
-    container_name: blog_redis
-    restart: always
-    ports:
-      - ${REDIS_PORT}:${REDIS_PORT}
-    # expose:
-    #   - ${REDIS_PORT}
-    volumes:
-      - ./redis.conf:/usr/local/conf/redis.conf
-      - ./redis_data:/data\
-    command: redis-server --requirepass ${REDIS_PASS}
-    env_file:
-      - .redis.env
-    labels:
-      - "name=blog"
-      - "mode=standalone"
-    networks:
-      - proxy
-    
   app:
-    depends_on: 
-      - redis
-      - db
-    image: "sjc.vultrcr.com/dongregistry/blog_back:latest"
+    image: "sjc.vultrcr.com/dongregistry/blog_back-${BUILD_BRANCH}:latest"
     # build:
       # context: .
       # dockerfile: Dockerfile
-    container_name: dong_ian_back
+    container_name: blog_back-${BUILD_BRANCH}
     restart: unless-stopped
     env_file:
       - .env
@@ -55,6 +14,7 @@ services:
     #   - ${APP_PORT}:${APP_PORT}
     volumes:
       - ./.env:/home/node/.env
+      - ./logs:/home/node/logs
     networks:
       - proxy
 
