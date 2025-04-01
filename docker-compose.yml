@@ -1,6 +1,6 @@
 services:
   app:
-    image: "sjc.vultrcr.com/dongregistry/blog_back:latest"
+    image: "sjc.vultrcr.com/dongregistry/blog_back-${BUILD_BRANCH}:latest"
     # build:
       # context: .
       # dockerfile: Dockerfile

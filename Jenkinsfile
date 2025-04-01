@@ -69,7 +69,7 @@ pipeline {
   stage('도커 이미지 빌드') {
       steps {
         script {
-          DOCKER_IMAGE = docker.build(DOCKER_IMAGE_NAME)
+          DOCKER_IMAGE = docker.build("${DOCKER_IMAGE_NAME}-${BUILD_BRANCH}")
         }
 
         echo "Built: ${DOCKER_IMAGE_NAME}"
