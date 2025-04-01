@@ -109,7 +109,9 @@ func GetUserProfileByUserId(userId string) (types.SelectUserProfileQueryResult, 
 func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 	minioConfig := configs.MinioConfig
 	// 이미지 데이터 url 가져오기 시작
+
 	var userImageData []types.SelectFileQueryResult
+
 	var imageUrlList types.UserImageFileData
 
 	connect, dbErr := database.InitDatabaseConnection()
@@ -152,6 +154,7 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 		}
 
 		userImageData = append(userImageData, row)
+
 	}
 
 	// imageUrls, urlErr := getImages(userImageData)
