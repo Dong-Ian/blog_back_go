@@ -3,19 +3,29 @@ package routers
 import (
 	"net/http"
 
-	controllers "github.com/donghquinn/blog_back_go/controllers/posts"
+	"github.com/donghquinn/blog_back_go/biz/post"
+	"github.com/donghquinn/blog_back_go/middlewares"
 	"github.com/gorilla/mux"
 )
 
 func PostRouter(server *mux.Router) {
-	server.HandleFunc("/post/contents", controllers.PostContentsController).Methods(http.MethodPost)
-	server.HandleFunc("/post/list", controllers.GetPostController).Methods(http.MethodPost)
-	server.HandleFunc("/post/list/pinned", controllers.GetPinnedPostController).Methods(http.MethodPost)
+	server.HandleFunc("/post/list", post.GetPostListController).Methods(http.MethodGet)
+	server.HandleFunc("/post/{postSeq}", post.PostContentsController).Methods(http.MethodGet)
+	server.HandleFunc("/post/url", post.GetImageUrl).Methods(http.MethodPost)
+	server.HandleFunc("/post/category/list", post.GetCategoryController).Methods(http.MethodGet)
+}
 
-	server.HandleFunc("/post/list/tag", controllers.GetPostsByTagController).Methods(http.MethodPost)
-	server.HandleFunc("/post/list/category", controllers.GetPostsByCategoryController).Methods(http.MethodPost)
+func PostAdminRouter(server *mux.Router) {
+	sub := server.PathPrefix("/admin").Subrouter()
+	sub.Use(middlewares.AuthMiddleware)
 
-	server.HandleFunc("/post/url", controllers.GetImageUrl).Methods(http.MethodPost)
+	sub.HandleFunc("/post/register", post.RegisterPostController).Methods(http.MethodPost)
+	sub.HandleFunc("/post/edit", post.EditPostController).Methods(http.MethodPut)
 
-	server.HandleFunc("/post/category/list", controllers.GetCategoryController).Methods(http.MethodPost)
+	sub.HandleFunc("/post/delete", post.DeletePostController).Methods(http.MethodPut)
+
+	sub.HandleFunc("/post/update/pin", post.UpdatePinPostController).Methods(http.MethodPut)
+	sub.HandleFunc("/post/update/unpin", post.UpdateUnPinPostController).Methods(http.MethodPut)
+	sub.HandleFunc("/post/update/secret", post.ChangeToSecretPostController).Methods(http.MethodPut)
+	sub.HandleFunc("/post/update/unsecret", post.ChangeToNotSecretPostController).Methods(http.MethodPut)
 }

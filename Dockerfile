@@ -1,4 +1,4 @@
-FROM golang:1.24.0-alpine3.20 AS base
+FROM golang:1.24.1-alpine3.20 AS base
 
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
@@ -12,12 +12,12 @@ WORKDIR /app
 
 COPY . .
 
-RUN go mod download
+# RUN go mod download
 
 RUN go build -o backend .
 
 
-FROM golang:1.24.0-alpine3.20 AS RUNNER
+FROM golang:1.24.1-alpine3.20 AS RUNNER
 
 WORKDIR /home/node
 

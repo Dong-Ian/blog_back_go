@@ -30,7 +30,7 @@ func InitDatabaseConnection() (*DataBaseConnector, error) {
 	// driver := sql.Open("mysql", )
 
 	db, err := sql.Open("mysql", dbUrl)
-	
+
 	if err != nil {
 		log.Printf("[DATABASE] Start Database Connection Error: %v", err)
 
@@ -41,7 +41,7 @@ func InitDatabaseConnection() (*DataBaseConnector, error) {
 	db.SetMaxIdleConns(50)
 	db.SetMaxOpenConns(100)
 
-	connect :=  &DataBaseConnector{db}
+	connect := &DataBaseConnector{db}
 	return connect, nil
 }
 
@@ -75,7 +75,7 @@ func CheckConnection() error {
 	return nil
 }
 
-func (connect *DataBaseConnector) CreateTable( queryList []string) error {
+func (connect *DataBaseConnector) CreateTable(queryList []string) error {
 	ctx := context.Background()
 
 	tx, txErr := connect.Begin()
@@ -112,7 +112,7 @@ func (connect *DataBaseConnector) GetMultiple(queryString string, args ...string
 	var arguments []interface{}
 
 	for _, arg := range args {
-	    arguments = append(arguments, arg)
+		arguments = append(arguments, arg)
 	}
 
 	result, err := connect.Query(queryString, arguments...)
@@ -149,8 +149,35 @@ func (connect *DataBaseConnector) QueryOne(queryString string, args ...string) (
 	return result, nil
 }
 
+func (connect *DataBaseConnector) QueryBuilderRows(queryString string, args []interface{}) (*sql.Rows, error) {
+	result, err := connect.Query(queryString, args...)
+
+	if err != nil {
+		log.Printf("[QUERY] Query Error: %v\n", err)
+
+		return nil, err
+	}
+
+	defer connect.Close()
+
+	return result, nil
+}
+func (connect *DataBaseConnector) QueryBuilderOneRow(queryString string, args []interface{}) (*sql.Row, error) {
+	result := connect.QueryRow(queryString, args...)
+
+	if result.Err() != nil {
+		log.Printf("[QUERY] Query Error: %v\n", result.Err())
+
+		return nil, result.Err()
+	}
+
+	defer connect.Close()
+
+	return result, nil
+}
+
 // 인서트 쿼리
-func (connect *DataBaseConnector)InsertQuery(queryString string, args ...string) (int64, error) {
+func (connect *DataBaseConnector) InsertQuery(queryString string, args ...string) (int64, error) {
 	var arguments []interface{}
 
 	for _, arg := range args {

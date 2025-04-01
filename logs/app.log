@@ -1,0 +1,234 @@
+2025/03/31 00:00:24 === 로그 초기화 완료 ===
+2025/03/31 00:00:24 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:00:24 [MINIO] Found Already Existing Bucket
+2025/03/31 00:00:24 Waiting for Database Connection,,,
+2025/03/31 00:00:34 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:34 [DEBUG] App Host 0.0.0.0:5000
+2025/03/31 00:00:34 [START] Server Listening On: 5000
+2025/03/31 00:00:34 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:34 Server Start Listening Error: listen tcp 0.0.0.0:5000: bind: address already in use
+2025/03/31 00:00:48 === 로그 초기화 완료 ===
+2025/03/31 00:00:48 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:00:48 [MINIO] Found Already Existing Bucket
+2025/03/31 00:00:48 Waiting for Database Connection,,,
+2025/03/31 00:00:58 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:58 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:00:58 [START] Server Listening On: 9473
+2025/03/31 00:00:58 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:00:59 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:00:59 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:00:59 [DEBUGGING] Debugging - q: SELECT `p.post_seq`, `p.post_title`, `p.post_contents`, `c.category_name`, `IFNULL(u.user_name, 'unknown') AS user_name`, `p.is_pinned`, `p.viewd`, `p.reg_date`, `p.mod_date` FROM `post_table p` LEFT JOIN `user_table u` ON u.user_id = p.user_id LEFT JOIN `category_table c` ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY `p.reg_date` DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:00:59 [QUERY] Query Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:00:59 [POST_LIST] Get Unpinned Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:00:59 [POST_LIST] Query Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:01:01 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:01:01 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:01:01 [DEBUGGING] Debugging - q: SELECT `p.post_seq`, `p.post_title`, `p.post_contents`, `c.category_name`, `IFNULL(u.user_name, 'unknown') AS user_name`, `p.is_pinned`, `p.viewd`, `p.reg_date`, `p.mod_date` FROM `post_table p` LEFT JOIN `user_table u` ON u.user_id = p.user_id LEFT JOIN `category_table c` ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY `p.reg_date` DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:01:01 [QUERY] Query Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:01:01 [POST_LIST] Get Unpinned Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:01:01 [POST_LIST] Query Post Data Error: Error 1146 (42S02): Table 'blog_db.post_table p' doesn't exist
+2025/03/31 00:08:37 Received Shut Down Signal
+2025/03/31 00:08:37 Server Has been Shutdown Gracefully
+2025/03/31 00:08:45 === 로그 초기화 완료 ===
+2025/03/31 00:08:46 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:08:46 [MINIO] Found Already Existing Bucket
+2025/03/31 00:08:46 Waiting for Database Connection,,,
+2025/03/31 00:08:56 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:08:56 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:08:56 [START] Server Listening On: 9473
+2025/03/31 00:08:56 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:08:57 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:08:57 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:08:57 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewd, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY p.reg_date DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:08:57 [QUERY] Query Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
+2025/03/31 00:08:57 [POST_LIST] Get Unpinned Post Data Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
+2025/03/31 00:08:57 [POST_LIST] Query Post Data Error: Error 1054 (42S22): Unknown column 'p.viewd' in 'field list'
+2025/03/31 00:09:13 Received Shut Down Signal
+2025/03/31 00:09:13 Server Has been Shutdown Gracefully
+2025/03/31 00:09:25 === 로그 초기화 완료 ===
+2025/03/31 00:09:25 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:09:25 [MINIO] Found Already Existing Bucket
+2025/03/31 00:09:25 Waiting for Database Connection,,,
+2025/03/31 00:09:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:09:36 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:09:36 [START] Server Listening On: 9473
+2025/03/31 00:09:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:09:37 [DEBUGGING] blogId: DONGHYUN
+2025/03/31 00:09:37 [DEBUGGING] url queries - page:1, size: 10, tag: 
+2025/03/31 00:09:37 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewed, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY p.reg_date DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 9]
+2025/03/31 00:09:37 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:10:10 Received Shut Down Signal
+2025/03/31 00:10:10 Server Has been Shutdown Gracefully
+2025/03/31 00:15:25 === 로그 초기화 완료 ===
+2025/03/31 00:15:25 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:15:25 [MINIO] Found Already Existing Bucket
+2025/03/31 00:15:25 Waiting for Database Connection,,,
+2025/03/31 00:15:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:15:36 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:15:36 [START] Server Listening On: 9473
+2025/03/31 00:15:36 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:15:46 [GET_POST] BlogId header is missing
+2025/03/31 00:16:54 [GET_POST] BlogId header is missing
+2025/03/31 00:17:03 [INSERT] Insert Query Err: Error 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`blog_db`.`post_table`, CONSTRAINT `post_table_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`))
+2025/03/31 00:17:03 [REGISTER] Insert Post Data Error: Error 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`blog_db`.`post_table`, CONSTRAINT `post_table_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`))
+2025/03/31 00:17:03 [POST_REGIST] Insert Post Data Error: <nil>
+2025/03/31 00:17:22 [GET_POST] BlogId header is missing
+2025/03/31 00:17:52 [JWT] Parsing JWT Validation Error: token is malformed: could not base64 decode header: illegal base64 data at input byte 36
+2025/03/31 00:17:52 ValidateErr Cookie Error :token is malformed: could not base64 decode header: illegal base64 data at input byte 36
+2025/03/31 00:20:11 Received Shut Down Signal
+2025/03/31 00:20:11 Server Has been Shutdown Gracefully
+2025/03/31 00:20:12 === 로그 초기화 완료 ===
+2025/03/31 00:20:13 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:20:13 [MINIO] Found Already Existing Bucket
+2025/03/31 00:20:13 Waiting for Database Connection,,,
+2025/03/31 00:20:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:20:23 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:20:23 [START] Server Listening On: 9473
+2025/03/31 00:20:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:22:45 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 1]
+2025/03/31 00:22:54 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 10]
+2025/03/31 00:22:57 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 0]
+2025/03/31 00:23:06 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:25:01 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:25:06 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:25:18 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 1]
+2025/03/31 00:25:49 Received Shut Down Signal
+2025/03/31 00:25:49 Server Has been Shutdown Gracefully
+2025/03/31 00:25:51 === 로그 초기화 완료 ===
+2025/03/31 00:25:52 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:25:52 [MINIO] Found Already Existing Bucket
+2025/03/31 00:25:52 Waiting for Database Connection,,,
+2025/03/31 00:26:02 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:26:02 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:26:02 [START] Server Listening On: 9473
+2025/03/31 00:26:02 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:26:03 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewed, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ? ORDER BY p.reg_date DESC LIMIT ? OFFSET ?, args: [DONGHYUN 1 1 1 9]
+2025/03/31 00:26:03 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ? AND p.is_pinned = ?, args: [DONGHYUN 1 1]
+2025/03/31 00:26:26 [DEBUGGING] Debugging - q: SELECT p.post_seq, p.post_title, p.post_contents, c.category_name, IFNULL(u.user_name, 'unknown') AS user_name, p.is_pinned, p.viewed, p.reg_date, p.mod_date FROM post_table p LEFT JOIN user_table u ON u.user_id = p.user_id LEFT JOIN category_table c ON c.post_seq = p.post_seq WHERE p.blog_owner = ? AND p.post_status = ? ORDER BY p.reg_date DESC LIMIT ?, args: [DONGHYUN 1 10]
+2025/03/31 00:26:27 [DEBUGGING] Debugging - q: SELECT COUNT(p.post_seq) FROM post_table p WHERE p.blog_owner = ? AND p.post_status = ?, args: [DONGHYUN 1]
+2025/03/31 00:26:48 Received Shut Down Signal
+2025/03/31 00:26:48 Server Has been Shutdown Gracefully
+2025/03/31 00:27:15 === 로그 초기화 완료 ===
+2025/03/31 00:27:16 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:27:16 [MINIO] Found Already Existing Bucket
+2025/03/31 00:27:16 Waiting for Database Connection,,,
+2025/03/31 00:27:26 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:27:26 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:27:26 [START] Server Listening On: 9473
+2025/03/31 00:27:26 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:28:07 [QUERY] Query Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
+2025/03/31 00:28:07 [POST_LIST] Get Unpinned Post Data Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
+2025/03/31 00:28:07 [POST_LIST] Query Post Data Error: Error 1054 (42S22): Unknown column 'p.post_seeq' in 'on clause'
+2025/03/31 00:28:26 Received Shut Down Signal
+2025/03/31 00:28:26 Server Has been Shutdown Gracefully
+2025/03/31 00:35:22 === 로그 초기화 완료 ===
+2025/03/31 00:35:22 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:35:22 [MINIO] Found Already Existing Bucket
+2025/03/31 00:35:22 Waiting for Database Connection,,,
+2025/03/31 00:35:32 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:35:32 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:35:32 [START] Server Listening On: 9473
+2025/03/31 00:35:32 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:36:43 Received Shut Down Signal
+2025/03/31 00:36:43 Server Has been Shutdown Gracefully
+2025/03/31 00:36:45 === 로그 초기화 완료 ===
+2025/03/31 00:36:45 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:36:45 [MINIO] Found Already Existing Bucket
+2025/03/31 00:36:45 Waiting for Database Connection,,,
+2025/03/31 00:36:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:36:55 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:36:55 [START] Server Listening On: 9473
+2025/03/31 00:36:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:37:08 Received Shut Down Signal
+2025/03/31 00:37:08 Server Has been Shutdown Gracefully
+2025/03/31 00:37:10 === 로그 초기화 완료 ===
+2025/03/31 00:37:10 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:37:10 [MINIO] Found Already Existing Bucket
+2025/03/31 00:37:10 Waiting for Database Connection,,,
+2025/03/31 00:37:20 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:37:20 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:37:20 [START] Server Listening On: 9473
+2025/03/31 00:37:20 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:41:33 Received Shut Down Signal
+2025/03/31 00:41:33 Server Has been Shutdown Gracefully
+2025/03/31 00:41:35 === 로그 초기화 완료 ===
+2025/03/31 00:41:35 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:41:35 [MINIO] Found Already Existing Bucket
+2025/03/31 00:41:35 Waiting for Database Connection,,,
+2025/03/31 00:41:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:41:45 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:41:45 [START] Server Listening On: 9473
+2025/03/31 00:41:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:42:51 Received Shut Down Signal
+2025/03/31 00:42:51 Server Has been Shutdown Gracefully
+2025/03/31 00:42:53 === 로그 초기화 완료 ===
+2025/03/31 00:42:53 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:42:54 [MINIO] Found Already Existing Bucket
+2025/03/31 00:42:54 Waiting for Database Connection,,,
+2025/03/31 00:43:04 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:43:04 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:43:04 [START] Server Listening On: 9473
+2025/03/31 00:43:04 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:43:33 Received Shut Down Signal
+2025/03/31 00:43:33 Server Has been Shutdown Gracefully
+2025/03/31 00:43:35 === 로그 초기화 완료 ===
+2025/03/31 00:43:35 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:43:35 [MINIO] Found Already Existing Bucket
+2025/03/31 00:43:35 Waiting for Database Connection,,,
+2025/03/31 00:43:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:43:45 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:43:45 [START] Server Listening On: 9473
+2025/03/31 00:43:45 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:44:11 Received Shut Down Signal
+2025/03/31 00:44:11 Server Has been Shutdown Gracefully
+2025/03/31 00:44:13 === 로그 초기화 완료 ===
+2025/03/31 00:44:13 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:44:13 [MINIO] Found Already Existing Bucket
+2025/03/31 00:44:13 Waiting for Database Connection,,,
+2025/03/31 00:44:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:44:23 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:44:23 [START] Server Listening On: 9473
+2025/03/31 00:44:23 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:45:13 Received Shut Down Signal
+2025/03/31 00:45:13 Server Has been Shutdown Gracefully
+2025/03/31 00:45:15 === 로그 초기화 완료 ===
+2025/03/31 00:45:15 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:45:15 [MINIO] Found Already Existing Bucket
+2025/03/31 00:45:15 Waiting for Database Connection,,,
+2025/03/31 00:45:25 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:45:25 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:45:25 [START] Server Listening On: 9473
+2025/03/31 00:45:25 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:45:28 usernmae: 김동현
+2025/03/31 00:46:43 Received Shut Down Signal
+2025/03/31 00:46:43 Server Has been Shutdown Gracefully
+2025/03/31 00:46:45 === 로그 초기화 완료 ===
+2025/03/31 00:46:45 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:46:45 [MINIO] Found Already Existing Bucket
+2025/03/31 00:46:45 Waiting for Database Connection,,,
+2025/03/31 00:46:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:46:55 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:46:55 [START] Server Listening On: 9473
+2025/03/31 00:46:55 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:51:39 Received Shut Down Signal
+2025/03/31 00:51:39 Server Has been Shutdown Gracefully
+2025/03/31 00:51:41 === 로그 초기화 완료 ===
+2025/03/31 00:51:41 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:51:41 [MINIO] Found Already Existing Bucket
+2025/03/31 00:51:41 Waiting for Database Connection,,,
+2025/03/31 00:51:51 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:51:51 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:51:51 [START] Server Listening On: 9473
+2025/03/31 00:51:51 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:53:27 Received Shut Down Signal
+2025/03/31 00:53:27 Server Has been Shutdown Gracefully
+2025/03/31 00:53:29 === 로그 초기화 완료 ===
+2025/03/31 00:53:29 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/03/31 00:53:29 [MINIO] Found Already Existing Bucket
+2025/03/31 00:53:29 Waiting for Database Connection,,,
+2025/03/31 00:53:39 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:53:39 [DEBUG] App Host 0.0.0.0:9473
+2025/03/31 00:53:39 [START] Server Listening On: 9473
+2025/03/31 00:53:39 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/03/31 00:55:40 Received Shut Down Signal
+2025/03/31 00:55:40 Server Has been Shutdown Gracefully
