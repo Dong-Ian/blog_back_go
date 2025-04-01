@@ -6,9 +6,16 @@ def getDeployTargets(envName) {
   targets['master'] = [[
     COMPOSE_ENV: 'master',
     SSH_MODE: 'KEYONLY',
-    SSH_KEY_ID: 'toon-server-ssh-key',
-    COPY_DIR: '/mnt/blockstorage/containers/blog_back'
+    SSH_KEY_ID: 'dong-ssh-key',
+    COPY_DIR: '/home/dong/containers/blog_back'
   ]]
+
+  targets['dev'] = [[
+  COMPOSE_ENV: 'dev',
+  SSH_MODE: 'KEYONLY',
+  SSH_KEY_ID: 'dong-ssh-key',
+  COPY_DIR: '/home/dong/containers/blog_back-dev'
+]]
 
   return targets[envName]
 }
@@ -16,7 +23,8 @@ def getDeployTargets(envName) {
 // 브랜치별 환경 정보
 def getBuildBranch(branchName) {
   branches = [
-    'origin/master': 'master'
+    'origin/master': 'master',
+    'origin/dev': 'dev'
   ]
 
   return branches[branchName]
@@ -36,10 +44,13 @@ pipeline {
 
     // 도커 설정
     DOCKER_IMAGE = ''
+    RASP_DOCKER_IMAGE = ""
+
     // DOCKER_IMAGE_NAME = 'stats_service/go_back'
     DOCKER_IMAGE_NAME = 'sjc.vultrcr.com/dongregistry/blog_back'
 
-    SERVER_TARGET = 'toon-server-ip'
+    SERVER_TARGET = 'dong-server-ip'
+    SERVER_TARGET_PORT = 'SERVER_TARGET_PORT'
 
     // Git, Docker 레지스트리(https://registry.zetra.kr) 로그인 정보 설정
     GIT_KEY_ID = '2'
@@ -104,15 +115,15 @@ pipeline {
                 withCredentials([
                   // DOTENV 파일과 SSH KEY를 가져옴
                   file(credentialsId: APP_ENV_ID, variable: 'DOTENV'),
-                  file(credentialsId: DB_ENV_ID, variable: 'DB_ENV'),
-                  file(credentialsId: REDIS_ENV_ID, variable: 'REDIS_ENV'),
-
                   string(credentialsId: SERVER_TARGET, variable: 'SSH_IP'),
+                  string(credentialsId: SERVER_TARGET_PORT, variable: 'SSH_PORT'),
 
                   sshUserPrivateKey(credentialsId: target.SSH_KEY_ID, keyFileVariable: 'SSH_PRIVATE_KEY', usernameVariable: 'USERNAME')
                   ]) {
                   remote.name = SSH_IP
                   remote.host = SSH_IP
+                  remote.port = SSH_PORT.toInteger()
+
                   echo "DOTENV file: ${DOTENV}"
                   echo "UserName: ${USERNAME}"
                   echo "COPY DIR: ${SSH_IP}"
@@ -130,8 +141,6 @@ pipeline {
 
                   // 각 상황에 맞는 .env.* 파일 전송
                   sshPut remote: remote, from: DOTENV, into: "${target.COPY_DIR}/.env", failOnError: 'true'
-                  sshPut remote: remote, from: DB_ENV, into: "${target.COPY_DIR}/.db.env", failOnError: 'true'
-                  sshPut remote: remote, from: REDIS_ENV, into: "${target.COPY_DIR}/.redis.env", failOnError: 'true'
 
                   // 도커 이미지 Pull 및 재시작
                   sshCommand remote: remote, command: """
