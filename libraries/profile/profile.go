@@ -3,11 +3,11 @@ package profile
 import (
 	"log"
 
+	"github.com/donghquinn/blog_back_go/configs"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
 	"github.com/donghquinn/blog_back_go/types"
 )
-
 
 func GetUserProfile(blogId string, userId string) (types.UserProfileDataResponseType, error) {
 	var userProfileResult types.UserProfileDataResponseType
@@ -19,23 +19,23 @@ func GetUserProfile(blogId string, userId string) (types.UserProfileDataResponse
 	}
 
 	imageUrlList, imageUrlErr := GetUserProfileImageList(userProfileData.UserId)
-	
+
 	if imageUrlErr != nil {
 		return types.UserProfileDataResponseType{}, imageUrlErr
 	}
 
-	 userProfileResult = types.UserProfileDataResponseType {
-		UserId: userProfileData.UserId,
-		UserName: userProfileData.UserName,
-		UserEmail: userProfileData.UserEmail,
-		Color: userProfileData.Color,
-		Title: userProfileData.Title,
-		Instagram: userProfileData.Instagram,
-		GithubUrl: userProfileData.GithubUrl,
+	userProfileResult = types.UserProfileDataResponseType{
+		UserId:      userProfileData.UserId,
+		UserName:    userProfileData.UserName,
+		UserEmail:   userProfileData.UserEmail,
+		Color:       userProfileData.Color,
+		Title:       userProfileData.Title,
+		Instagram:   userProfileData.Instagram,
+		GithubUrl:   userProfileData.GithubUrl,
 		PersonalUrl: userProfileData.PersonalUrl,
-		Memo: userProfileData.Memo,
-		Images: imageUrlList,
-	 }
+		Memo:        userProfileData.Memo,
+		Images:      imageUrlList,
+	}
 
 	return userProfileResult, nil
 }
@@ -106,9 +106,12 @@ func GetUserProfileByUserId(userId string) (types.SelectUserProfileQueryResult, 
 	return userProfileData, nil
 }
 
-func GetUserProfileImageList(userId string) (types.UserImageFileData, error){
-		// 이미지 데이터 url 가져오기 시작
-	var userImageData []types.SelectFileQueryResult
+func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
+	minioConfig := configs.MinioConfig
+	// 이미지 데이터 url 가져오기 시작
+
+	// var userImageData []types.SelectFileQueryResult
+
 	var imageUrlList types.UserImageFileData
 
 	connect, dbErr := database.InitDatabaseConnection()
@@ -118,44 +121,55 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error){
 	}
 
 	images, imagesErr := connect.GetMultiple(queries.SelectUserProfileProfileAndBackground, userId, "USER_PROFILE", "USER_BACKGROUND")
-	
+
 	if imagesErr != nil {
 		log.Printf("[PROFILE] Get Profile And Background Images Error: %v", imagesErr)
 		return types.UserImageFileData{}, imagesErr
 	}
-	
+
 	defer connect.Close()
 
 	for images.Next() {
 		var row types.SelectFileQueryResult
 
-		images.Scan(
+		if scanErr := images.Scan(
 			&row.FileFormat,
 			&row.FileType,
 			&row.TargetPurpose,
 			&row.TargetId,
-			&row.ObjectName)
+			&row.ObjectName,
+		); scanErr != nil {
+			log.Printf("[PROFILE] Scan Error: %v", scanErr)
+			return imageUrlList, scanErr
+		}
+		if row.TargetPurpose == "USER_BACKGROUND" {
+			imageUrlList.BackgroundImage = "https://" + minioConfig.HostUrl + "/" + minioConfig.BlogBucket + "/" + row.ObjectName
+			log.Printf("[DEBUGGING] Get Profile Image: %s", imageUrlList.BackgroundImage)
+		}
 
-		userImageData = append(userImageData, row)
+		if row.TargetPurpose == "USER_PROFILE" {
+			imageUrlList.ProfileImage = "https://" + minioConfig.HostUrl + "/" + minioConfig.BlogBucket + "/" + row.ObjectName
+			log.Printf("[DEBUGGING] Get Background Image: %s", imageUrlList.ProfileImage)
+
+		}
+		// userImageData = append(userImageData, row)
 	}
 
-	imageUrls, urlErr := getImages(userImageData)
+	// imageUrls, urlErr := getImages(userImageData)
 
-	imageUrlList = imageUrls
+	// imageUrlList = imageUrls
 
-	if urlErr != nil {
-		return types.UserImageFileData{}, urlErr
-	}
+	// if urlErr != nil {
+	// 	return types.UserImageFileData{}, urlErr
+	// }
 
 	return imageUrlList, nil
 }
 
-
-
-func getImages(imageData []types.SelectFileQueryResult) (types.UserImageFileData, error){
+func getImages(imageData []types.SelectFileQueryResult) (types.UserImageFileData, error) {
 	var imageUrlData types.UserImageFileData
 
-	for _, row := range(imageData) {
+	for _, row := range imageData {
 		imageUrl, err := database.GetImageUrl(row.ObjectName, row.FileType)
 
 		if err != nil {
