@@ -110,7 +110,7 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 	minioConfig := configs.MinioConfig
 	// 이미지 데이터 url 가져오기 시작
 
-	var userImageData []types.SelectFileQueryResult
+	// var userImageData []types.SelectFileQueryResult
 
 	var imageUrlList types.UserImageFileData
 
@@ -152,9 +152,7 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 			log.Printf("[DEBUGGING] Get Background Image: %s", imageUrlList.ProfileImage)
 
 		}
-
-		userImageData = append(userImageData, row)
-
+		// userImageData = append(userImageData, row)
 	}
 
 	// imageUrls, urlErr := getImages(userImageData)
@@ -168,7 +166,7 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 	return imageUrlList, nil
 }
 
-func getImages(imageData []types.SelectFileQueryResult) (types.UserImageFileData, error) {
+func GetImages(imageData []types.SelectFileQueryResult) (types.UserImageFileData, error) {
 	var imageUrlData types.UserImageFileData
 
 	for _, row := range imageData {
