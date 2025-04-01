@@ -3,6 +3,7 @@ package user
 import (
 	"log"
 
+	"github.com/donghquinn/blog_back_go/configs"
 	"github.com/donghquinn/blog_back_go/libraries/database"
 	queries "github.com/donghquinn/blog_back_go/queries/users"
 	types "github.com/donghquinn/blog_back_go/types/user"
@@ -106,6 +107,7 @@ func GetUserProfileByUserId(userId string) (types.SelectUserProfileQueryResult, 
 }
 
 func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
+	minioConfig := configs.MinioConfig
 	// 이미지 데이터 url 가져오기 시작
 	var userImageData []types.SelectFileQueryResult
 	var imageUrlList types.UserImageFileData
@@ -128,23 +130,37 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 	for images.Next() {
 		var row types.SelectFileQueryResult
 
-		images.Scan(
+		if scanErr := images.Scan(
 			&row.FileFormat,
 			&row.FileType,
 			&row.TargetPurpose,
 			&row.TargetId,
-			&row.ObjectName)
+			&row.ObjectName,
+		); scanErr != nil {
+			log.Printf("[PROFILE] Scan Error: %v", scanErr)
+			return imageUrlList, scanErr
+		}
+		if row.TargetPurpose == "USER_BACKGROUND" {
+			imageUrlList.BackgroundImage = minioConfig.HostUrl + "/" + minioConfig.BlogBucket + "/" + row.ObjectName
+			log.Printf("[DEBUGGING] Get Profile Image: %s", imageUrlList.BackgroundImage)
+		}
+
+		if row.TargetPurpose == "USER_PROFILE" {
+			imageUrlList.ProfileImage = minioConfig.HostUrl + "/" + minioConfig.BlogBucket + "/" + row.ObjectName
+			log.Printf("[DEBUGGING] Get Background Image: %s", imageUrlList.ProfileImage)
+
+		}
 
 		userImageData = append(userImageData, row)
 	}
 
-	imageUrls, urlErr := getImages(userImageData)
+	// imageUrls, urlErr := getImages(userImageData)
 
-	imageUrlList = imageUrls
+	// imageUrlList = imageUrls
 
-	if urlErr != nil {
-		return types.UserImageFileData{}, urlErr
-	}
+	// if urlErr != nil {
+	// 	return types.UserImageFileData{}, urlErr
+	// }
 
 	return imageUrlList, nil
 }
