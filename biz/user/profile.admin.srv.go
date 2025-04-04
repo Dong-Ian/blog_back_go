@@ -144,12 +144,10 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 		}
 		if row.TargetPurpose == "USER_BACKGROUND" {
 			imageUrlList.BackgroundImage = "https://" + minioConfig.HostUrl + "/" + minioConfig.BlogBucket + "/" + row.ObjectName
-			log.Printf("[DEBUGGING] Get Profile Image: %s", imageUrlList.BackgroundImage)
 		}
 
 		if row.TargetPurpose == "USER_PROFILE" {
 			imageUrlList.ProfileImage = "https://" + minioConfig.HostUrl + "/" + minioConfig.BlogBucket + "/" + row.ObjectName
-			log.Printf("[DEBUGGING] Get Background Image: %s", imageUrlList.ProfileImage)
 
 		}
 		// userImageData = append(userImageData, row)
