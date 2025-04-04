@@ -7,29 +7,29 @@ import (
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/user"
+	"github.com/gorilla/mux"
 
 	"github.com/donghquinn/blog_back_go/utils"
 )
 
 func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
-	var getUserProfileRequest types.UserGetProfileRequest
+	blogId, getErr := utils.GetBlogIdFromContext(req.Context())
 
-	parseErr := utils.DecodeBody(req, &getUserProfileRequest)
-
-	if parseErr != nil {
-		log.Printf("[LOGIN] Parse Body Error: %v", parseErr)
-
+	if !getErr {
 		response.Response(res, response.CommonResponseWithMessage{
-			Status:  401,
+			Status:  http.StatusBadRequest,
 			Code:    "01",
-			Message: "Parse Body Error",
+			Message: "Get BlogId Error from context",
 			Result:  false,
 		})
 
 		return
 	}
 
-	profile, querErr := GetUserProfile(getUserProfileRequest.BlogId, getUserProfileRequest.UserId)
+	pathVar := mux.Vars(req)
+	userId := pathVar["userId"]
+
+	profile, querErr := GetUserProfile(blogId, userId)
 
 	if querErr != nil {
 		log.Printf("[UPLOAD_PROFILE] Profile Query Error: %v", querErr)

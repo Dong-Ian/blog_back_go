@@ -15,7 +15,7 @@ func UserRouter(server *mux.Router) {
 	server.HandleFunc("/user/search/email", user.SearchEmailController).Methods(http.MethodPost)
 	server.HandleFunc("/user/search/password", user.SearchPasswordController).Methods(http.MethodPost)
 
-	server.HandleFunc("/user/profile", user.GetUserProfileController).Methods(http.MethodPost)
+	server.HandleFunc("/user/profile/{userId}", user.GetUserProfileController).Methods(http.MethodGet)
 }
 
 func UserAdminRouter(server *mux.Router) {
