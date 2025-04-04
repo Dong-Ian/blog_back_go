@@ -232,3 +232,22 @@
 2025/03/31 00:53:39 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 2025/03/31 00:55:40 Received Shut Down Signal
 2025/03/31 00:55:40 Server Has been Shutdown Gracefully
+2025/04/04 17:51:20 === 로그 초기화 완료 ===
+2025/04/04 17:51:21 [MINIO] Making New Bucket Error: Your previous request to create the named bucket succeeded and you already own it.
+2025/04/04 17:51:21 [MINIO] Found Already Existing Bucket
+2025/04/04 17:51:21 Waiting for Database Connection,,,
+2025/04/04 17:51:31 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/04/04 17:51:31 [DEBUG] App Host 0.0.0.0:9473
+2025/04/04 17:51:31 [START] Server Listening On: 9473
+2025/04/04 17:51:31 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+2025/04/04 17:52:13 [GET_POST] BlogId header is missing
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/logo.png
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/logo.png
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/logo.png
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/KakaoTalk_Photo_2023-02-20-20-31-53.jpeg
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/KakaoTalk_Photo_2023-02-20-20-31-53.jpeg
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/jenkins.svg
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/KakaoTalk_Photo_2023-02-20-20-31-53.jpeg
+2025/04/04 17:52:21 [DEBUGGING] Get Background Image: https://file.donghyuns.com/blog/nodonyo.png
+2025/04/04 17:52:27 Received Shut Down Signal
+2025/04/04 17:52:27 Server Has been Shutdown Gracefully
