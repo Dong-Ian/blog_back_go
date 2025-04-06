@@ -25,6 +25,8 @@ func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	log.Printf("[PROFILE] BlogId: %s", blogId)
+
 	profile, querErr := GetUserProfile(blogId)
 
 	if querErr != nil {
