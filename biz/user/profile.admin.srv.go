@@ -42,7 +42,6 @@ func GetUserProfile(blogId string) (types.UserProfileDataResponseType, error) {
 
 // 기본 유저 구하기
 func GetDefaultUserProfile(blogId string) (types.SelectUserProfileQueryResult, error) {
-	log.Printf("[PROFILE] Get Default User Profile: %s", blogId)
 	var userProfileData types.SelectUserProfileQueryResult
 
 	connect, dbErr := database.InitDatabaseConnection()
@@ -113,7 +112,6 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 
 	// var userImageData []types.SelectFileQueryResult
 
-	log.Printf("[PROFILE] Get User Profile Image List: %s", userId)
 	var imageUrlList types.UserImageFileData
 
 	connect, dbErr := database.InitDatabaseConnection()
