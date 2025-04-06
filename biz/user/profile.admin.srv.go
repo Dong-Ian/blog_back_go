@@ -9,7 +9,7 @@ import (
 	types "github.com/donghquinn/blog_back_go/types/user"
 )
 
-func GetUserProfile(blogId string, userId string) (types.UserProfileDataResponseType, error) {
+func GetUserProfile(blogId string) (types.UserProfileDataResponseType, error) {
 	var userProfileResult types.UserProfileDataResponseType
 
 	userProfileData, profileErr := GetDefaultUserProfile(blogId)
@@ -152,14 +152,6 @@ func GetUserProfileImageList(userId string) (types.UserImageFileData, error) {
 		}
 		// userImageData = append(userImageData, row)
 	}
-
-	// imageUrls, urlErr := getImages(userImageData)
-
-	// imageUrlList = imageUrls
-
-	// if urlErr != nil {
-	// 	return types.UserImageFileData{}, urlErr
-	// }
 
 	return imageUrlList, nil
 }

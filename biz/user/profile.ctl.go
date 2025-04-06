@@ -7,7 +7,6 @@ import (
 	crypt "github.com/donghquinn/blog_back_go/libraries/crypto"
 	"github.com/donghquinn/blog_back_go/response"
 	types "github.com/donghquinn/blog_back_go/types/user"
-	"github.com/gorilla/mux"
 
 	"github.com/donghquinn/blog_back_go/utils"
 )
@@ -26,10 +25,7 @@ func GetUserProfileController(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	pathVar := mux.Vars(req)
-	userId := pathVar["userId"]
-
-	profile, querErr := GetUserProfile(blogId, userId)
+	profile, querErr := GetUserProfile(blogId)
 
 	if querErr != nil {
 		log.Printf("[UPLOAD_PROFILE] Profile Query Error: %v", querErr)
